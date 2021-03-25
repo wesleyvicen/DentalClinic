@@ -40,7 +40,6 @@ public class Paciente implements Serializable {
 	@JoinColumn(name = "clinica_id")
 	private Clinica clinica;
 	private String email;
-	
 
 	@ElementCollection
 	@CollectionTable(name = "CONTATO")
@@ -48,8 +47,8 @@ public class Paciente implements Serializable {
 
 	@Column(nullable = false)
 	private LocalDateTime nascimento;
-	//Pessoa Responsavel, Apenas nome.
-	private String Responsavel;
+	// Pessoa Responsavel, Apenas nome.
+	private String responsavel;
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
 	private TipoSexo sexo;
@@ -57,16 +56,16 @@ public class Paciente implements Serializable {
 	@Column(nullable = false)
 	private TipoCivil estadoCivil;
 	private String indicacao;
-	
+
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
 	private TipoPlano planoSaude;
-	
+
 	private String convenio;
 	private String rg;
 	@Column(nullable = false)
 	private String cpf;
-	private String Ocupacao;
+	private String ocupacao;
 	@Column(nullable = false)
 	private String endereco;
 	private String enderecoNum;
@@ -77,7 +76,63 @@ public class Paciente implements Serializable {
 	private String estado;
 	@Column(nullable = false)
 	private String cep;
+
 	public Paciente() {
+	}
+
+	public Paciente(Integer id, String nome, Clinica clinica, String email, Set<String> telefones,
+			LocalDateTime nascimento, String responsavel, TipoSexo sexo, TipoCivil estadoCivil, String indicacao,
+			TipoPlano planoSaude, String convenio, String rg, String cpf, String ocupacao, String endereco,
+			String enderecoNum, String bairro, String cidade, String estado, String cep) {
+		super();
+		this.id = id;
+		this.nome = nome;
+		this.clinica = clinica;
+		this.email = email;
+		this.telefones = telefones;
+		this.nascimento = nascimento;
+		this.responsavel = responsavel;
+		this.sexo = sexo;
+		this.estadoCivil = estadoCivil;
+		this.indicacao = indicacao;
+		this.planoSaude = planoSaude;
+		this.convenio = convenio;
+		this.rg = rg;
+		this.cpf = cpf;
+		this.ocupacao = ocupacao;
+		this.endereco = endereco;
+		this.enderecoNum = enderecoNum;
+		this.bairro = bairro;
+		this.cidade = cidade;
+		this.estado = estado;
+		this.cep = cep;
+	}
+
+	public Paciente(String nome, Clinica clinica, String email, Set<String> telefones, LocalDateTime nascimento,
+			String responsavel, TipoSexo sexo, TipoCivil estadoCivil, String indicacao, TipoPlano planoSaude,
+			String convenio, String rg, String cpf, String ocupacao, String endereco, String enderecoNum, String bairro,
+			String cidade, String estado, String cep) {
+		super();
+		this.nome = nome;
+		this.clinica = clinica;
+		this.email = email;
+		this.telefones = telefones;
+		this.nascimento = nascimento;
+		this.responsavel = responsavel;
+		this.sexo = sexo;
+		this.estadoCivil = estadoCivil;
+		this.indicacao = indicacao;
+		this.planoSaude = planoSaude;
+		this.convenio = convenio;
+		this.rg = rg;
+		this.cpf = cpf;
+		this.ocupacao = ocupacao;
+		this.endereco = endereco;
+		this.enderecoNum = enderecoNum;
+		this.bairro = bairro;
+		this.cidade = cidade;
+		this.estado = estado;
+		this.cep = cep;
 	}
 
 	public Integer getId() {
@@ -110,6 +165,134 @@ public class Paciente implements Serializable {
 
 	public void setTelefones(Set<String> telefones) {
 		this.telefones = telefones;
+	}
+
+	public LocalDateTime getNascimento() {
+		return nascimento;
+	}
+
+	public void setNascimento(LocalDateTime nascimento) {
+		this.nascimento = nascimento;
+	}
+
+	public String getResponsavel() {
+		return responsavel;
+	}
+
+	public void setResponsavel(String responsavel) {
+		this.responsavel = responsavel;
+	}
+
+	public TipoSexo getSexo() {
+		return sexo;
+	}
+
+	public void setSexo(TipoSexo sexo) {
+		this.sexo = sexo;
+	}
+
+	public TipoCivil getEstadoCivil() {
+		return estadoCivil;
+	}
+
+	public void setEstadoCivil(TipoCivil estadoCivil) {
+		this.estadoCivil = estadoCivil;
+	}
+
+	public String getIndicacao() {
+		return indicacao;
+	}
+
+	public void setIndicacao(String indicacao) {
+		this.indicacao = indicacao;
+	}
+
+	public TipoPlano getPlanoSaude() {
+		return planoSaude;
+	}
+
+	public void setPlanoSaude(TipoPlano planoSaude) {
+		this.planoSaude = planoSaude;
+	}
+
+	public String getConvenio() {
+		return convenio;
+	}
+
+	public void setConvenio(String convenio) {
+		this.convenio = convenio;
+	}
+
+	public String getRg() {
+		return rg;
+	}
+
+	public void setRg(String rg) {
+		this.rg = rg;
+	}
+
+	public String getCpf() {
+		return cpf;
+	}
+
+	public void setCpf(String cpf) {
+		this.cpf = cpf;
+	}
+
+	public String getOcupacao() {
+		return ocupacao;
+	}
+
+	public void setOcupacao(String ocupacao) {
+		this.ocupacao = ocupacao;
+	}
+
+	public String getEndereco() {
+		return endereco;
+	}
+
+	public void setEndereco(String endereco) {
+		this.endereco = endereco;
+	}
+
+	public String getEnderecoNum() {
+		return enderecoNum;
+	}
+
+	public void setEnderecoNum(String enderecoNum) {
+		this.enderecoNum = enderecoNum;
+	}
+
+	public String getBairro() {
+		return bairro;
+	}
+
+	public void setBairro(String bairro) {
+		this.bairro = bairro;
+	}
+
+	public String getCidade() {
+		return cidade;
+	}
+
+	public void setCidade(String cidade) {
+		this.cidade = cidade;
+	}
+
+	public String getEstado() {
+		return estado;
+	}
+
+	public void setEstado(String estado) {
+		this.estado = estado;
+	}
+
+	public String getCep() {
+		return cep;
+	}
+
+	public void setCep(String cep) {
+		this.cep = cep;
 	}
 
 	@Override

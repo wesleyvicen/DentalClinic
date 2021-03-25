@@ -1,12 +1,14 @@
 package enums;
 
-public enum TipoConta {
-	CB("Conta Banco"),
-	CC("Conta Cr�dito");
+public enum TipoCivil {
+	S("Solteiro"),
+	C("Casado"),
+	D("Divorciado"),
+	V("Viúvo");
 	
 	private String descricao;
 	
-	private TipoConta(String descricao) {
+	private TipoCivil(String descricao) {
 		this.descricao = descricao;
 	}
 	

@@ -80,16 +80,14 @@ public class Paciente implements Serializable {
 	public Paciente() {
 	}
 
-	public Paciente(Integer id, String nome, Clinica clinica, String email, Set<String> telefones,
-			LocalDateTime nascimento, String responsavel, TipoSexo sexo, TipoCivil estadoCivil, String indicacao,
-			TipoPlano planoSaude, String convenio, String rg, String cpf, String ocupacao, String endereco,
-			String enderecoNum, String bairro, String cidade, String estado, String cep) {
+	public Paciente(Integer id, String nome, String email, LocalDateTime nascimento, String responsavel, TipoSexo sexo,
+			TipoCivil estadoCivil, String indicacao, TipoPlano planoSaude, String convenio, String rg, String cpf,
+			String ocupacao, String endereco, String enderecoNum, String bairro, String cidade, String estado,
+			String cep) {
 		super();
 		this.id = id;
 		this.nome = nome;
-		this.clinica = clinica;
 		this.email = email;
-		this.telefones = telefones;
 		this.nascimento = nascimento;
 		this.responsavel = responsavel;
 		this.sexo = sexo;
@@ -108,15 +106,13 @@ public class Paciente implements Serializable {
 		this.cep = cep;
 	}
 
-	public Paciente(String nome, Clinica clinica, String email, Set<String> telefones, LocalDateTime nascimento,
+	public Paciente(String nome, String email, LocalDateTime nascimento,
 			String responsavel, TipoSexo sexo, TipoCivil estadoCivil, String indicacao, TipoPlano planoSaude,
 			String convenio, String rg, String cpf, String ocupacao, String endereco, String enderecoNum, String bairro,
 			String cidade, String estado, String cep) {
 		super();
 		this.nome = nome;
-		this.clinica = clinica;
 		this.email = email;
-		this.telefones = telefones;
 		this.nascimento = nascimento;
 		this.responsavel = responsavel;
 		this.sexo = sexo;

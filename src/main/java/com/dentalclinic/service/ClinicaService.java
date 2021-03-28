@@ -22,6 +22,13 @@ public class ClinicaService {
 		List<Clinica> list = clinicaRepository.findAll();
 		return list.stream().map(x -> new ClinicaDTO(x)).collect(Collectors.toList());
 	}
+	
+	@Transactional
+	public ClinicaDTO findID(Long id) {
+		Clinica clinica = clinicaRepository.getOne(id);
+		clinica = clinicaRepository.save(clinica);
+		return new ClinicaDTO(clinica);
+	}
 
 	@Transactional
 	public ClinicaDTO insert(ClinicaDTO dto) {

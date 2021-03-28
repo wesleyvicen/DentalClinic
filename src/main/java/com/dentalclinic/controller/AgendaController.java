@@ -9,9 +9,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dentalclinic.dto.AgendaDTO;
+import com.dentalclinic.model.Agenda;
 import com.dentalclinic.service.AgendaService;
 
 @RestController
@@ -26,6 +29,13 @@ public class AgendaController {
 		List<AgendaDTO> list = agendaService.findAll();
 		return ResponseEntity.ok().body(list);
 	}
+//	@RequestMapping(method = RequestMethod.GET, params = {"start", "end" })
+//	public ResponseEntity<?> findByDateBetween( @RequestParam("start") String start, @RequestParam("end") String end){
+//		
+//			List<Agenda> list = agendaService.findByDate(start, end);
+//			
+//			return ResponseEntity.ok().body(list);
+//	}
 
 	@PostMapping
 	public ResponseEntity<AgendaDTO> insert(@RequestBody AgendaDTO dto) {

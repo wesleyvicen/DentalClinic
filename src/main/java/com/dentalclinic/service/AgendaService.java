@@ -26,6 +26,17 @@ public class AgendaService {
 		return list.stream().map(x -> new AgendaDTO(x)).collect(Collectors.toList());
 	}
 
+//	@Transactional(readOnly = true)
+//	public List<Agenda> findByDate(String start, String end) {
+//		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+//		Agenda agenda = new Agenda();
+//		LocalDateTime startF = LocalDateTime.parse(start, formatter);
+//		agenda.setStart(startF);
+//		LocalDateTime endF = LocalDateTime.parse(start, formatter);
+//		agenda.setEnd(endF);
+//		return agendaRepository.findByDateBetween(startF, endF);
+//	}
+
 	@Transactional
 	public AgendaDTO insert(AgendaDTO dto) {
 		Agenda agenda = new Agenda();

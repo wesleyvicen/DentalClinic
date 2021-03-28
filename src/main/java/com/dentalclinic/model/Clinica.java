@@ -18,7 +18,7 @@ public class Clinica implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	private Long id;
 	private String nome;
 	@OneToMany(mappedBy = "clinica")
 	private List<Paciente> paciente = new ArrayList<>();
@@ -26,7 +26,7 @@ public class Clinica implements Serializable {
 	public Clinica() {
 	}
 
-	public Clinica(Integer id, String nome) {
+	public Clinica(Long id, String nome) {
 		super();
 		this.id = id;
 		this.nome = nome;
@@ -34,11 +34,11 @@ public class Clinica implements Serializable {
 
 
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

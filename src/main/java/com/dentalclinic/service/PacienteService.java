@@ -3,11 +3,13 @@ package com.dentalclinic.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.dentalclinic.dto.NewPacienteDTO;
-import com.dentalclinic.dto.PacienteDTO;
 import com.dentalclinic.model.Paciente;
 import com.dentalclinic.repository.ClinicaRepository;
 import com.dentalclinic.repository.PacienteRepository;
@@ -44,6 +46,11 @@ public class PacienteService {
 
 		paciente = pacienteRepository.save(paciente);
 		return paciente;
+	}
+	
+	public Page<Paciente> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
+		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
+		return pacienteRepository.findAll(pageRequest);
 	}
 
 	public Paciente fromDTO(NewPacienteDTO dto) {

@@ -1,7 +1,7 @@
 package com.dentalclinic.model;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -42,11 +42,11 @@ public class Paciente implements Serializable {
 	private String email;
 
 	@ElementCollection
-	@CollectionTable(name = "CONTATO")
+	@CollectionTable(name="TELEFONE")
 	private Set<String> telefones = new HashSet<>();
 
 	@Column(nullable = false)
-	private LocalDateTime nascimento;
+	private LocalDate nascimento;
 	// Pessoa Responsavel, Apenas nome.
 	private String responsavel;
 	@Enumerated(EnumType.STRING)
@@ -80,7 +80,7 @@ public class Paciente implements Serializable {
 	public Paciente() {
 	}
 
-	public Paciente(Integer id, String nome, String email, LocalDateTime nascimento, String responsavel, TipoSexo sexo,
+	public Paciente(Integer id, String nome, String email, LocalDate nascimento, String responsavel, TipoSexo sexo,
 			TipoCivil estadoCivil, String indicacao, TipoPlano planoSaude, String convenio, String rg, String cpf,
 			String ocupacao, String endereco, String enderecoNum, String bairro, String cidade, String estado,
 			String cep) {
@@ -106,7 +106,7 @@ public class Paciente implements Serializable {
 		this.cep = cep;
 	}
 
-	public Paciente(String nome, String email, LocalDateTime nascimento,
+	public Paciente(String nome, String email, LocalDate nascimento,
 			String responsavel, TipoSexo sexo, TipoCivil estadoCivil, String indicacao, TipoPlano planoSaude,
 			String convenio, String rg, String cpf, String ocupacao, String endereco, String enderecoNum, String bairro,
 			String cidade, String estado, String cep) {
@@ -163,11 +163,11 @@ public class Paciente implements Serializable {
 		this.telefones = telefones;
 	}
 
-	public LocalDateTime getNascimento() {
+	public LocalDate getNascimento() {
 		return nascimento;
 	}
 
-	public void setNascimento(LocalDateTime nascimento) {
+	public void setNascimento(LocalDate nascimento) {
 		this.nascimento = nascimento;
 	}
 

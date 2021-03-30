@@ -12,7 +12,8 @@ import enums.TipoCivil;
 import enums.TipoPlano;
 import enums.TipoSexo;
 
-public class PacienteDTO implements Serializable {
+
+public class NewPacienteDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private String nome;
@@ -45,11 +46,11 @@ public class PacienteDTO implements Serializable {
 	private String estado;
 	private String cep;
 
-	public PacienteDTO() {
+	public NewPacienteDTO() {
 	}
-
-	public PacienteDTO(Paciente entity) {
-
+	
+	public NewPacienteDTO(Paciente entity) {
+		
 		this.nome = entity.getNome();
 		this.clinica = entity.getClinica();
 		this.email = entity.getEmail();
@@ -94,6 +95,8 @@ public class PacienteDTO implements Serializable {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+
+
 
 	public String getTelefone1() {
 		return telefone1;

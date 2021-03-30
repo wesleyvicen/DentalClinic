@@ -41,8 +41,9 @@ public class AgendaDTO implements Serializable {
 		this.id = entity.getId();
 		this.title = entity.getTitle();
 		DateTimeFormatter dateFormater = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		this.start = entity.getStart().format(dateFormater);
-		this.end = entity.getEnd().format(dateFormater);
+		DateTimeFormatter dateFormaterH = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+		this.start = entity.getStart().format(dateFormaterH);
+		this.end = entity.getEnd().format(dateFormaterH);
 		this.allDay = entity.getAllDay().format(dateFormater);
 		this.status = entity.getStatus();
 	}

@@ -36,7 +36,7 @@ public class Usuario implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	@Column(nullable = false, length = 20)
+	@Column(nullable = false, length = 82)
 	private String login;
 	@JsonIgnore
 	@Column(nullable = false, length = 255)

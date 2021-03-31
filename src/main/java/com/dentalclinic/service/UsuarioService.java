@@ -1,5 +1,7 @@
 package com.dentalclinic.service;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -120,10 +122,13 @@ public class UsuarioService {
 		}
 		
 		TokenDto tokenDto = jwtUtil.getToken(loginDto.getUsuario());
-		
+		LocalDateTime agora = LocalDateTime.now();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+		String dataInicio = agora.format(formatter);
+		String dataFim = agora.plusMinutes(60).format(formatter);
 		sessaoDto.setToken(tokenDto.getToken());
-		sessaoDto.setDataInicio(tokenDto.getHoraInicio());
-		sessaoDto.setDataFim(tokenDto.getHoraFim());
+		sessaoDto.setDataInicio(dataInicio);
+		sessaoDto.setDataFim(dataFim);
 
 		sessaoDto.setUsuario(usuarioMapper.getUsuarioDtoFromEntity(usuario));
 

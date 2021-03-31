@@ -1,8 +1,8 @@
 package com.dentalclinic.dto;
 
 public class SessaoDto {
-	public String dataFim;
 	public String dataInicio;
+	public String dataFim;
 	public String token;
 	public UsuarioDto usuario;
 	

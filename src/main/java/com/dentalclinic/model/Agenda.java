@@ -5,12 +5,18 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 public class Agenda implements Serializable {
@@ -20,12 +26,25 @@ public class Agenda implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private String title;
+	@Column(name = "start")
+	@DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm")
 	private LocalDateTime start;
+	@Column(name = "end")
+	@DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm")
 	private LocalDateTime end;
+	@Column(name = "allDay")
+	@DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	private LocalDate allDay;
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "paciente_id", referencedColumnName = "id")
 	private Paciente paciente;
+	@ManyToOne()
+	@JoinColumn(name = "login_usuario", referencedColumnName = "login")
+	private Usuario usuario;
+	@Column(nullable = false, precision = 9, scale = 3)
 	private Boolean status;
 
 	public Agenda() {
@@ -52,6 +71,14 @@ public class Agenda implements Serializable {
 		this.allDay = allDay;
 		this.paciente = paciente;
 		this.status = status;
+	}
+
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}
 
 	public Integer getId() {

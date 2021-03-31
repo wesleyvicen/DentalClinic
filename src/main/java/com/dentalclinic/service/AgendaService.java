@@ -1,29 +1,31 @@
 package com.dentalclinic.service;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.dentalclinic.dto.AgendaDTO;
 import com.dentalclinic.model.Agenda;
 import com.dentalclinic.repository.AgendaRepository;
+import com.dentalclinic.repository.UsuarioRepository;
 
 @Service
 public class AgendaService {
 
 	@Autowired
 	private AgendaRepository agendaRepository;
+	
+	@Autowired
+	UsuarioRepository usuarioRepository;
+	
+	@Autowired
+	private UsuarioService usuarioService;
 
 	@Transactional(readOnly = true)
-	public List<AgendaDTO> findAll() {
+	public List<Agenda> findAll() {
 		List<Agenda> list = agendaRepository.findAll();
-		return list.stream().map(x -> new AgendaDTO(x)).collect(Collectors.toList());
+		return list;
 	}
 
 //	@Transactional(readOnly = true)
@@ -36,23 +38,27 @@ public class AgendaService {
 //		agenda.setEnd(endF);
 //		return agendaRepository.findByDateBetween(startF, endF);
 //	}
+	
+	@Transactional
+	public List<Agenda> getAgendasWithLogin(String login) {
+		List<Agenda> list = agendaRepository.getAgendasWithLogin(login);
+		return list;
+	}
+
 
 	@Transactional
-	public AgendaDTO insert(AgendaDTO dto) {
+	public Agenda insert(Agenda obj) {
 		Agenda agenda = new Agenda();
-		agenda.setTitle(dto.getTitle());
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-		DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		LocalDateTime start = LocalDateTime.parse(dto.getStart(), formatter);
-		agenda.setStart(start);
-		LocalDateTime end = LocalDateTime.parse(dto.getEnd(), formatter);
-		agenda.setEnd(end);
-		LocalDate allDay = LocalDate.parse(dto.getAllDay(), formato);
-		agenda.setAllDay(allDay);
-		agenda.setStatus(dto.getStatus());
+		agenda.setTitle(obj.getTitle());
+
+		agenda.setStart(obj.getStart());
+		agenda.setEnd(obj.getEnd());
+		agenda.setAllDay(obj.getAllDay());
+		agenda.setStatus(obj.getStatus());
+		agenda.setUsuario(usuarioService.getUsuarioWithLogin(obj.getUsuario().getLogin()));		
 
 		agenda = agendaRepository.save(agenda);
-		return new AgendaDTO(agenda);
+		return agenda;
 	}
 
 }

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dentalclinic.dto.ClinicaDTO;
+import com.dentalclinic.model.Clinica;
 import com.dentalclinic.service.ClinicaService;
 
 @RestController
@@ -29,9 +30,9 @@ public class ClinicaController {
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<ClinicaDTO> findId(@PathVariable Long id) {
-		ClinicaDTO dto = clinicaService.findID(id);
-		return ResponseEntity.ok().body(dto);
+	public ResponseEntity<Clinica> findId(@PathVariable Long id) {
+		Clinica clinica = clinicaService.findID(id);
+		return ResponseEntity.ok().body(clinica);
 	}
 	
 	@PostMapping

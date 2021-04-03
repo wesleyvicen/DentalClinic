@@ -32,8 +32,6 @@ public class Clinica implements Serializable {
 		this.nome = nome;
 	}
 
-
-
 	public Long getId() {
 		return id;
 	}

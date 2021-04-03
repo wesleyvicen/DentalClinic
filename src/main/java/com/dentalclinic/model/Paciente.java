@@ -32,7 +32,7 @@ public class Paciente implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(nullable = false)
-	private Integer id;
+	private Long id;
 	@Column(nullable = false)
 	private String nome;
 	@JsonIgnore
@@ -40,7 +40,7 @@ public class Paciente implements Serializable {
 	@JoinColumn(name = "clinica_id")
 	private Clinica clinica;
 	private String email;
-
+	@JsonIgnore
 	@ElementCollection
 	@CollectionTable(name="TELEFONE")
 	private Set<String> telefones = new HashSet<>();
@@ -80,7 +80,7 @@ public class Paciente implements Serializable {
 	public Paciente() {
 	}
 
-	public Paciente(Integer id, String nome, String email, LocalDate nascimento, String responsavel, TipoSexo sexo,
+	public Paciente(Long id, String nome, String email, LocalDate nascimento, String responsavel, TipoSexo sexo,
 			TipoCivil estadoCivil, String indicacao, TipoPlano planoSaude, String convenio, String rg, String cpf,
 			String ocupacao, String endereco, String enderecoNum, String bairro, String cidade, String estado,
 			String cep) {
@@ -131,11 +131,11 @@ public class Paciente implements Serializable {
 		this.cep = cep;
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

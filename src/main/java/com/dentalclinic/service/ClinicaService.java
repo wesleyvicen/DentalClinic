@@ -24,10 +24,10 @@ public class ClinicaService {
 	}
 	
 	@Transactional
-	public ClinicaDTO findID(Long id) {
+	public Clinica findID(Long id) {
 		Clinica clinica = clinicaRepository.getOne(id);
 		clinica = clinicaRepository.save(clinica);
-		return new ClinicaDTO(clinica);
+		return clinica;
 	}
 
 	@Transactional

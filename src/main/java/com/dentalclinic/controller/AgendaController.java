@@ -27,13 +27,6 @@ public class AgendaController {
 		List<Agenda> list = agendaService.getAgendasWithLogin(login);
 		return ResponseEntity.ok().body(list);
 	}
-//	@RequestMapping(method = RequestMethod.GET, params = {"start", "end" })
-//	public ResponseEntity<?> findByDateBetween( @RequestParam("start") String start, @RequestParam("end") String end){
-//		
-//			List<Agenda> list = agendaService.findByDate(start, end);
-//			
-//			return ResponseEntity.ok().body(list);
-//	}
 
 	@PostMapping
 	public ResponseEntity<Agenda> insert(@RequestBody Agenda dto) {

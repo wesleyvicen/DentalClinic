@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,6 +34,12 @@ public class PacienteController {
 		List<PacienteDTO> listDto = list.stream().map(obj -> new PacienteDTO(obj)).collect(Collectors.toList());
 		return ResponseEntity.ok().body(listDto);
 	}
+	
+	@GetMapping("/{id}")
+	public ResponseEntity<Paciente> getById(@PathVariable Long id) {
+		Paciente dto = pacienteService.getById(id);
+		return ResponseEntity.ok().body(dto);
+	}	
 
 	@RequestMapping(value = "/page", method = RequestMethod.GET)
 	public ResponseEntity<Page<PacienteDTO>> findPage(@RequestParam(value = "page", defaultValue = "0") Integer page,

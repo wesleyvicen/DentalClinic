@@ -14,6 +14,4 @@ public interface PacienteRepository extends JpaRepository<Paciente, Long> {
 
 	List<Paciente> findAll();
 	
-	@Query(value = "Select agenda from Paciente paciente Left Join Fetch paciente.usuario usuario where paciente.usuario.login = :loginUsuario")	
-	List<Paciente> getPacientesWithLogin(@Param("loginUsuario") String login);
 }

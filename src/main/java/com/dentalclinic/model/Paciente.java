@@ -43,6 +43,8 @@ public class Paciente implements Serializable {
 	@ManyToOne()
 	@JoinColumn(name = "login_usuario", referencedColumnName = "login")
 	private Usuario usuario;
+
+	@Column(nullable = false)
 	private LocalDate nascimento;
 	// Pessoa Responsavel, Apenas nome.
 	private String responsavel;

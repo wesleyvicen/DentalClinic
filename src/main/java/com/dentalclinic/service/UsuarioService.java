@@ -47,7 +47,7 @@ public class UsuarioService {
 	@Transactional
 	public UsuarioDto addUsuario(UsuarioDto usuarioDto) {
 		Usuario usuario = new Usuario();
-		usuario.setCpf(usuarioDto.getCpf());
+		usuario.setTelefone(usuarioDto.getTelefone());
 		usuario.setLogin(usuarioDto.getLogin());
 		usuario.setNome(usuarioDto.getNome());
 		usuario.setSenha(pe.encode(usuarioDto.getSenha()));

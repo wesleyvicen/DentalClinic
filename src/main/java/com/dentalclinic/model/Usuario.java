@@ -44,7 +44,7 @@ public class Usuario implements Serializable {
 	@Column(length = 50)
 	private String nome;
 	@Column(nullable = false, length = 11)
-	private String cpf;
+	private String telefone;
 	/*
 	 * @OneToMany(mappedBy = "usuario") private List<Conta> contas;
 	 */
@@ -57,19 +57,19 @@ public class Usuario implements Serializable {
 
 	}
 
-	public Usuario(String login, String senha, String nome, String cpf) {
+	public Usuario(String login, String senha, String nome, String telefone) {
 		super();
 		this.login = login;
 		this.senha = senha;
 		this.nome = nome;
-		this.cpf = cpf;
+		this.telefone = telefone;
 	}
 
 	public Usuario(UsuarioDto usuarioDto) {
 		this.login = usuarioDto.getLogin();
 		this.senha = usuarioDto.getSenha();
 		this.nome = usuarioDto.getNome();
-		this.cpf = usuarioDto.getCpf();
+		this.telefone = usuarioDto.getTelefone();
 	}
 
 	public Integer getId() {
@@ -104,12 +104,12 @@ public class Usuario implements Serializable {
 		this.nome = nome;
 	}
 
-	public String getCpf() {
-		return cpf;
+	public String getTelefone() {
+		return telefone;
 	}
 
-	public void setCpf(String cpf) {
-		this.cpf = cpf;
+	public void setTelefone(String telefone) {
+		this.telefone = telefone;
 	}
 
 	public Set<Perfil> getPerfis() {
@@ -122,7 +122,7 @@ public class Usuario implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Usuario [login=" + login + ", senha=" + senha + ", nome=" + nome + ", cpf=" + cpf + "]";
+		return "Usuario [login=" + login + ", senha=" + senha + ", nome=" + nome + ", telefone=" + telefone + "]";
 	}
 
 }

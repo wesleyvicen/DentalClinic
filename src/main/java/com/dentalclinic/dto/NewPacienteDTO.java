@@ -41,6 +41,7 @@ public class NewPacienteDTO implements Serializable {
 	private String cidade;
 	private String estado;
 	private String cep;
+	private String login_usuario;
 
 	public NewPacienteDTO() {
 	}
@@ -65,6 +66,15 @@ public class NewPacienteDTO implements Serializable {
 		this.cidade = entity.getCidade();
 		this.estado = entity.getEstado();
 		this.cep = entity.getCep();
+		this.login_usuario = entity.getUsuario().getLogin();
+	}
+	
+	public String getLogin_usuario() {
+		return login_usuario;
+	}
+
+	public void setLogin_usuario(String login_usuario) {
+		this.login_usuario = login_usuario;
 	}
 
 	public String getNome() {
@@ -82,8 +92,6 @@ public class NewPacienteDTO implements Serializable {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-
-
 
 	public String getTelefone1() {
 		return telefone1;

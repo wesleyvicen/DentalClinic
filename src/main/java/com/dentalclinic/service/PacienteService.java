@@ -22,6 +22,9 @@ public class PacienteService {
 	@Autowired
 	private PacienteRepository pacienteRepository;
 	
+	@Autowired
+	private UsuarioService usuarioService;
+	
 	@Transactional(readOnly = true)
 	public List<Paciente> findAll() {
 		return pacienteRepository.findAll();
@@ -61,6 +64,7 @@ public class PacienteService {
 				dto.getSexo(), dto.getEstadoCivil(), dto.getIndicacao(), dto.getPlanoSaude(), dto.getConvenio(),
 				dto.getRg(), dto.getCpf(), dto.getOcupacao(), dto.getEndereco(), dto.getEnderecoNum(), dto.getBairro(),
 				dto.getCidade(), dto.getEstado(), dto.getCep());
+		paciente.setUsuario(usuarioService.getUsuarioWithLogin(dto.getLogin_usuario()));	
 		paciente.getTelefones().add(dto.getTelefone1());
 		if (dto.getTelefone2() != null) {
 			paciente.getTelefones().add(dto.getTelefone2());

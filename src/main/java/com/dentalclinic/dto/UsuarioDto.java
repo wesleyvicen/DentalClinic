@@ -7,21 +7,21 @@ import com.dentalclinic.model.Usuario;
  *
  */
 public class UsuarioDto {
-	private String cpf;
+	private String telefone;
 	private String login;
 	private String nome;
 	private String senha;
 	
 	public UsuarioDto(Usuario usuario) {
-		this.cpf = usuario.getCpf();
+		this.telefone = usuario.getTelefone();
 		this.login = usuario.getLogin();
 		this.nome = usuario.getNome();
 		this.senha = usuario.getSenha();
 	}
 	
-	public UsuarioDto(String cpf, String login, String nome, String senha) {
+	public UsuarioDto(String telefone, String login, String nome, String senha) {
 		super();
-		this.cpf = cpf;
+		this.telefone = telefone;
 		this.login = login;
 		this.nome = nome;
 		this.senha = senha;
@@ -31,11 +31,11 @@ public class UsuarioDto {
 		// TODO Auto-generated constructor stub
 	}
 
-	public String getCpf() {
-		return cpf;
+	public String getTelefone() {
+		return telefone;
 	}
-	public void setCpf(String cpf) {
-		this.cpf = cpf;
+	public void setTelefone(String telefone) {
+		this.telefone = telefone;
 	}
 	public String getLogin() {
 		return login;
@@ -58,7 +58,7 @@ public class UsuarioDto {
 
 	@Override
 	public String toString() {
-		return "UsuarioDto [cpf=" + cpf + ", login=" + login + ", nome=" + nome + ", senha=" + senha + "]";
+		return "UsuarioDto [telefone=" + telefone + ", login=" + login + ", nome=" + nome + ", senha=" + senha + "]";
 	}
 	
 	

@@ -1,7 +1,6 @@
 package com.dentalclinic.controller;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -28,18 +27,17 @@ public class PacienteController {
 	@Autowired
 	private PacienteService pacienteService;
 
-	@GetMapping
-	public ResponseEntity<List<PacienteDTO>> findAll() {
-		List<Paciente> list = pacienteService.findAll();
-		List<PacienteDTO> listDto = list.stream().map(obj -> new PacienteDTO(obj)).collect(Collectors.toList());
-		return ResponseEntity.ok().body(listDto);
+	@RequestMapping(method = RequestMethod.GET, params = { "login" })
+	public ResponseEntity<List<Paciente>> findAll(@RequestParam(name = "login") String login) {
+		List<Paciente> list = pacienteService.getPacientesWithLogin(login);
+		return ResponseEntity.ok().body(list);
 	}
-	
+
 	@GetMapping("/{id}")
 	public ResponseEntity<Paciente> getById(@PathVariable Long id) {
 		Paciente dto = pacienteService.getById(id);
 		return ResponseEntity.ok().body(dto);
-	}	
+	}
 
 	@RequestMapping(value = "/page", method = RequestMethod.GET)
 	public ResponseEntity<Page<PacienteDTO>> findPage(@RequestParam(value = "page", defaultValue = "0") Integer page,

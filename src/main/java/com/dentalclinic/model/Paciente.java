@@ -43,37 +43,27 @@ public class Paciente implements Serializable {
 	@ManyToOne()
 	@JoinColumn(name = "login_usuario", referencedColumnName = "login")
 	private Usuario usuario;
-
-	@Column(nullable = false)
 	private LocalDate nascimento;
 	// Pessoa Responsavel, Apenas nome.
 	private String responsavel;
 	@Enumerated(EnumType.STRING)
-	@Column(nullable = false)
 	private TipoSexo sexo;
 	@Enumerated(EnumType.STRING)
-	@Column(nullable = false)
 	private TipoCivil estadoCivil;
 	private String indicacao;
 
 	@Enumerated(EnumType.STRING)
-	@Column(nullable = false)
 	private TipoPlano planoSaude;
 
 	private String convenio;
 	private String rg;
-	@Column(nullable = false)
 	private String cpf;
 	private String ocupacao;
-	@Column(nullable = false)
 	private String endereco;
 	private String enderecoNum;
 	private String bairro;
-	@Column(nullable = false)
 	private String cidade;
-	@Column(nullable = false)
 	private String estado;
-	@Column(nullable = false)
 	private String cep;
 
 	public Paciente() {

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.dentalclinic.dto.NewPacienteDTO;
+import com.dentalclinic.dto.PacienteDTO;
 import com.dentalclinic.exceptions.ObjectNotFoundException;
 import com.dentalclinic.model.Paciente;
 import com.dentalclinic.repository.PacienteRepository;
@@ -21,9 +22,6 @@ public class PacienteService {
 	@Autowired
 	private PacienteRepository pacienteRepository;
 	
-	@Autowired
-	private ClinicaService ClinicaService;
-
 	@Transactional(readOnly = true)
 	public List<Paciente> findAll() {
 		return pacienteRepository.findAll();
@@ -64,7 +62,6 @@ public class PacienteService {
 				dto.getRg(), dto.getCpf(), dto.getOcupacao(), dto.getEndereco(), dto.getEnderecoNum(), dto.getBairro(),
 				dto.getCidade(), dto.getEstado(), dto.getCep());
 		paciente.getTelefones().add(dto.getTelefone1());
-		paciente.setClinica(ClinicaService.findID(dto.getClinica().getId()));
 		if (dto.getTelefone2() != null) {
 			paciente.getTelefones().add(dto.getTelefone2());
 		}

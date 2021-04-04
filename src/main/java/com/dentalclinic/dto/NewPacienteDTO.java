@@ -2,10 +2,7 @@ package com.dentalclinic.dto;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
 
-import com.dentalclinic.model.Clinica;
 import com.dentalclinic.model.Paciente;
 
 import enums.TipoCivil;
@@ -17,7 +14,6 @@ public class NewPacienteDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private String nome;
-	private Clinica clinica;
 	private String email;
 
 	private String telefone1;
@@ -52,7 +48,6 @@ public class NewPacienteDTO implements Serializable {
 	public NewPacienteDTO(Paciente entity) {
 		
 		this.nome = entity.getNome();
-		this.clinica = entity.getClinica();
 		this.email = entity.getEmail();
 		this.nascimento = entity.getNascimento();
 		this.responsavel = entity.getResponsavel();
@@ -78,14 +73,6 @@ public class NewPacienteDTO implements Serializable {
 
 	public void setNome(String nome) {
 		this.nome = nome;
-	}
-
-	public Clinica getClinica() {
-		return clinica;
-	}
-
-	public void setClinica(Clinica clinica) {
-		this.clinica = clinica;
 	}
 
 	public String getEmail() {

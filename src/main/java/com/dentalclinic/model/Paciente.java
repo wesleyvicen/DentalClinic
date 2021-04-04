@@ -14,8 +14,6 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -35,10 +33,6 @@ public class Paciente implements Serializable {
 	private Long id;
 	@Column(nullable = false)
 	private String nome;
-	@JsonIgnore
-	@ManyToOne
-	@JoinColumn(name = "clinica_id")
-	private Clinica clinica;
 	private String email;
 	@JsonIgnore
 	@ElementCollection
@@ -295,17 +289,9 @@ public class Paciente implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((clinica == null) ? 0 : clinica.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((telefones == null) ? 0 : telefones.hashCode());
 		return result;
-	}
-
-	public Clinica getClinica() {
-		return clinica;
-	}
-
-	public void setClinica(Clinica clinica) {
-		this.clinica = clinica;
 	}
 
 	@Override
@@ -317,17 +303,19 @@ public class Paciente implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Paciente other = (Paciente) obj;
-		if (clinica == null) {
-			if (other.clinica != null)
-				return false;
-		} else if (!clinica.equals(other.clinica))
-			return false;
 		if (id == null) {
 			if (other.id != null)
 				return false;
 		} else if (!id.equals(other.id))
 			return false;
+		if (telefones == null) {
+			if (other.telefones != null)
+				return false;
+		} else if (!telefones.equals(other.telefones))
+			return false;
 		return true;
 	}
+	
+	
 
 }

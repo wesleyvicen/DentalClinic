@@ -24,7 +24,7 @@ public class Agenda implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	private Long id;
 	private String title;
 	@Column(name = "start")
 	@DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
@@ -50,7 +50,7 @@ public class Agenda implements Serializable {
 	public Agenda() {
 	}
 
-	public Agenda(Integer id, String title, LocalDateTime start, LocalDateTime end, LocalDate allDay, Paciente paciente,
+	public Agenda(Long id, String title, LocalDateTime start, LocalDateTime end, LocalDate allDay, Paciente paciente,
 			Boolean status) {
 		super();
 		this.id = id;
@@ -59,7 +59,7 @@ public class Agenda implements Serializable {
 		this.end = end;
 		this.allDay = allDay;
 		this.paciente = paciente;
-		this.status = status;
+		this.status = (status == null) ? true : status;
 	}
 
 	public Agenda(String title, LocalDateTime start, LocalDateTime end, LocalDate allDay, Paciente paciente,
@@ -70,7 +70,16 @@ public class Agenda implements Serializable {
 		this.end = end;
 		this.allDay = allDay;
 		this.paciente = paciente;
-		this.status = status;
+		this.status = (status == null) ? true : status;
+	}
+	
+	public Agenda(Long id, String title, LocalDateTime start, LocalDateTime end, LocalDate allDay, Boolean status) {
+		super();
+		this.title = title;
+		this.start = start;
+		this.end = end;
+		this.allDay = allDay;
+		this.status = (status == null) ? true : status;
 	}
 
 	public Usuario getUsuario() {
@@ -81,11 +90,11 @@ public class Agenda implements Serializable {
 		this.usuario = usuario;
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

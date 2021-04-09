@@ -3,7 +3,10 @@ package com.dentalclinic.service;
 import java.util.List;
 import java.util.Optional;
 
+import com.dentalclinic.model.Agenda;
+import com.dentalclinic.service.exception.DataIntegrityException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
@@ -35,6 +38,18 @@ public class PacienteService {
 		return list;
 	}
 
+	public Paciente getById(Long id) {
+		Optional<Paciente> obj = pacienteRepository.findById(id);
+		return obj.orElseThrow(() -> new ObjectNotFoundException(
+				"Objeto Não encontrado! ID: " + id + ", Tipo: " + Paciente.class.getName()));
+	}
+
+	public Paciente update(Paciente obj) {
+		Paciente newObj = getById(obj.getId());
+		updateData(newObj, obj);
+		return pacienteRepository.save(newObj);
+	}
+
 	@Transactional
 	public Paciente insert(Paciente paciente) {
 		paciente = pacienteRepository.save(paciente);
@@ -47,13 +62,46 @@ public class PacienteService {
 		return pacienteRepository.findAll(pageRequest);
 	}
 
+	public void delete(Long id) {
+		pacienteRepository.findById(id);
+		try {
+
+			pacienteRepository.deleteById(id);
+		} catch (DataIntegrityViolationException e) {
+			throw new DataIntegrityException("Não é possivel excluir porque existe entidades relacionadas");
+		}
+	}
+
+	private void updateData(Paciente newObj, Paciente obj) {
+
+		newObj.setNome(obj.getNome() == null ? newObj.getNome() : obj.getNome());
+		newObj.setEmail(obj.getEmail() == null ? newObj.getEmail() : obj.getEmail());
+		newObj.setNascimento(obj.getNascimento() == null ? newObj.getNascimento() : obj.getNascimento());
+		newObj.setResponsavel(obj.getResponsavel() == null ? newObj.getResponsavel() : obj.getResponsavel());
+		newObj.setSexo(obj.getSexo() == null ? newObj.getSexo() : obj.getSexo());
+		newObj.setEstadoCivil(obj.getEstadoCivil() == null ? newObj.getEstadoCivil() : obj.getEstadoCivil());
+		newObj.setIndicacao(obj.getIndicacao() == null ? newObj.getIndicacao() : obj.getIndicacao());
+		newObj.setPlanoSaude(obj.getPlanoSaude() == null ? newObj.getPlanoSaude() : obj.getPlanoSaude());
+		newObj.setConvenio(obj.getConvenio() == null ? newObj.getConvenio() : obj.getConvenio());
+		newObj.setRg(obj.getRg() == null ? newObj.getRg() : obj.getRg());
+		newObj.setCpf(obj.getCpf() == null ? newObj.getCpf() : obj.getCpf());
+		newObj.setOcupacao(obj.getOcupacao() == null ? newObj.getOcupacao() : obj.getOcupacao());
+		newObj.setEndereco(obj.getEndereco() == null ? newObj.getEndereco() : obj.getEndereco());
+		newObj.setEnderecoNum(obj.getEnderecoNum() == null ? newObj.getEnderecoNum() : obj.getEnderecoNum());
+		newObj.setBairro(obj.getBairro() == null ? newObj.getBairro() : obj.getBairro());
+		newObj.setCidade(obj.getCidade() == null ? newObj.getCidade() : obj.getCidade());
+		newObj.setEstado(obj.getEstado() == null ? newObj.getEstado() : obj.getEstado());
+		newObj.setCep(obj.getCep() == null ? newObj.getCep() : obj.getCep());
+
+	}
+
 	@Transactional
 	public Paciente fromDTO(NewPacienteDTO dto) {
 		Paciente paciente = new Paciente(dto.getNome(), dto.getEmail(), dto.getNascimento(), dto.getResponsavel(),
 				dto.getSexo(), dto.getEstadoCivil(), dto.getIndicacao(), dto.getPlanoSaude(), dto.getConvenio(),
 				dto.getRg(), dto.getCpf(), dto.getOcupacao(), dto.getEndereco(), dto.getEnderecoNum(), dto.getBairro(),
 				dto.getCidade(), dto.getEstado(), dto.getCep());
-		paciente.setUsuario(usuarioService.getUsuarioWithLogin(dto.getLogin_usuario()));	
+		paciente.setUsuario(usuarioService.getUsuarioWithLogin(dto.getLogin_usuario()));
 		paciente.getTelefones().add(dto.getTelefone1());
 		if (dto.getTelefone2() != null) {
 			paciente.getTelefones().add(dto.getTelefone2());
@@ -62,12 +110,6 @@ public class PacienteService {
 			paciente.getTelefones().add(dto.getTelefone3());
 		}
 		return paciente;
-	}
-	
-	public Paciente getById(Long id) {
-		Optional<Paciente> obj = pacienteRepository.findById(id);
-		return obj.orElseThrow(() -> new ObjectNotFoundException(
-				"Objeto Não encontrado! ID: " + id + ", Tipo: " + Paciente.class.getName()));
 	}
 
 }

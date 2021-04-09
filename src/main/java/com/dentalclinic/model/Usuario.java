@@ -49,6 +49,8 @@ public class Usuario implements Serializable {
 	 * @OneToMany(mappedBy = "usuario") private List<Conta> contas;
 	 */
 
+	private Boolean status = false;
+
 	@ElementCollection(fetch = FetchType.EAGER)
 	@CollectionTable(name = "PERFIS")
 	private Set<Integer> perfis = new HashSet<>();
@@ -63,6 +65,15 @@ public class Usuario implements Serializable {
 		this.senha = senha;
 		this.nome = nome;
 		this.telefone = telefone;
+	}
+
+	public Usuario(String login, String senha, String nome, String telefone, Boolean status) {
+		super();
+		this.login = login;
+		this.senha = senha;
+		this.nome = nome;
+		this.telefone = telefone;
+		this.status = status;
 	}
 
 	public Usuario(UsuarioDto usuarioDto) {
@@ -118,6 +129,14 @@ public class Usuario implements Serializable {
 	
 	public void addPerfil(Perfil perfil) {
 		perfis.add(perfil.getCod());
+	}
+
+	public Boolean getStatus() {
+		return status;
+	}
+
+	public void setStatus(Boolean status) {
+		this.status = status;
 	}
 
 	@Override

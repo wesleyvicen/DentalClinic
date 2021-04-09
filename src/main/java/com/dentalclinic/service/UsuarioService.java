@@ -51,6 +51,7 @@ public class UsuarioService {
 		usuario.setLogin(usuarioDto.getLogin());
 		usuario.setNome(usuarioDto.getNome());
 		usuario.setSenha(pe.encode(usuarioDto.getSenha()));
+		usuario.setStatus(usuarioDto.getStatus());
 		if (!existsUsuarioWithLogin(usuario.getLogin())) {
 			usuarioRepository.save(usuario);
 			incluirUsuarioConta(usuario);

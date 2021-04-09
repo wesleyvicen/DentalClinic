@@ -2,6 +2,8 @@ package com.dentalclinic.controller;
 
 import java.util.List;
 
+import com.dentalclinic.dto.AgendaDTO;
+import com.dentalclinic.model.Agenda;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -54,5 +56,20 @@ public class PacienteController {
 		Paciente paciente = pacienteService.fromDTO(dto);
 
 		return new ResponseEntity<>(pacienteService.insert(paciente), HttpStatus.CREATED);
+	}
+
+	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+	public ResponseEntity<Void> update(@RequestBody NewPacienteDTO objDto, @PathVariable Long id) {
+		Paciente obj = pacienteService.fromDTO(objDto);
+		obj.setId(id);
+		obj = pacienteService.update(obj);
+		return ResponseEntity.noContent().build();
+
+	}
+
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+	public ResponseEntity<Void> delete(@PathVariable Long id) {
+		pacienteService.delete(id);
+		return ResponseEntity.noContent().build();
 	}
 }

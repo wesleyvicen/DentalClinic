@@ -2,23 +2,11 @@ package com.dentalclinic.model;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
-import javax.persistence.CollectionTable;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import enums.TipoCivil;
 import enums.TipoPlano;
@@ -36,10 +24,11 @@ public class Paciente implements Serializable {
 	@Column(nullable = false)
 	private String nome;
 	private String email;
-	@JsonIgnore
-	@ElementCollection
-	@CollectionTable(name="TELEFONE")
-	private Set<String> telefones = new HashSet<>();
+
+	@OneToMany(mappedBy="paciente", cascade=CascadeType.ALL, fetch = FetchType.EAGER)
+	private List<Telefone> telefones = new ArrayList<>();
+
+
 	@ManyToOne()
 	@JoinColumn(name = "login_usuario", referencedColumnName = "login")
 	private Usuario usuario;
@@ -153,11 +142,11 @@ public class Paciente implements Serializable {
 		this.email = email;
 	}
 
-	public Set<String> getTelefones() {
+	public List<Telefone> getTelefones() {
 		return telefones;
 	}
 
-	public void setTelefones(Set<String> telefones) {
+	public void setTelefones(List<Telefone> telefones) {
 		this.telefones = telefones;
 	}
 
@@ -294,7 +283,6 @@ public class Paciente implements Serializable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((telefones == null) ? 0 : telefones.hashCode());
 		return result;
 	}
 
@@ -311,11 +299,6 @@ public class Paciente implements Serializable {
 			if (other.id != null)
 				return false;
 		} else if (!id.equals(other.id))
-			return false;
-		if (telefones == null) {
-			if (other.telefones != null)
-				return false;
-		} else if (!telefones.equals(other.telefones))
 			return false;
 		return true;
 	}

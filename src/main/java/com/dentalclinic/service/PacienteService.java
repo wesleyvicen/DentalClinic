@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.dentalclinic.model.Agenda;
+import com.dentalclinic.model.Telefone;
 import com.dentalclinic.service.exception.DataIntegrityException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -102,12 +103,15 @@ public class PacienteService {
 				dto.getRg(), dto.getCpf(), dto.getOcupacao(), dto.getEndereco(), dto.getEnderecoNum(), dto.getBairro(),
 				dto.getCidade(), dto.getEstado(), dto.getCep());
 		paciente.setUsuario(usuarioService.getUsuarioWithLogin(dto.getLogin_usuario()));
-		paciente.getTelefones().add(dto.getTelefone1());
+		Telefone tel1 = new Telefone(dto.getTelefone1(), paciente);
+		paciente.getTelefones().add(tel1);
 		if (dto.getTelefone2() != null) {
-			paciente.getTelefones().add(dto.getTelefone2());
+			Telefone tel2 = new Telefone(dto.getTelefone1(), paciente);
+			paciente.getTelefones().add(tel2);
 		}
 		if (dto.getTelefone3() != null) {
-			paciente.getTelefones().add(dto.getTelefone3());
+			Telefone tel3 = new Telefone(dto.getTelefone1(), paciente);
+			paciente.getTelefones().add(tel3);
 		}
 		return paciente;
 	}

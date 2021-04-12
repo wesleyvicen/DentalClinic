@@ -40,6 +40,10 @@ public class UsuarioService {
 	@Autowired
 	JWTUtil jwtUtil;
 	
+	@Autowired
+	private EmailService emailService;
+	
+	
 	// encripta a senha digitada pelo usuário
 	@Autowired
 	private BCryptPasswordEncoder pe;
@@ -55,6 +59,7 @@ public class UsuarioService {
 		if (!existsUsuarioWithLogin(usuario.getLogin())) {
 			usuarioRepository.save(usuario);
 			incluirUsuarioConta(usuario);
+			emailService.sendConfirmationEmail(usuario);
 			return usuarioDto;
 		} else {
 			throw new IllegalStateException();

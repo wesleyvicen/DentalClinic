@@ -1,6 +1,7 @@
 package com.dentalclinic.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,9 +26,10 @@ public class AgendaController {
 	private AgendaService agendaService;
 
 	@RequestMapping(method = RequestMethod.GET, params = { "login" })
-	public ResponseEntity<List<Agenda>> findAll(@RequestParam(name = "login") String login) {
+	public ResponseEntity<List<AgendaDTO>> findAll(@RequestParam(name = "login") String login) {
 		List<Agenda> list = agendaService.getAgendasWithLogin(login);
-		return ResponseEntity.ok().body(list);
+		List<AgendaDTO> listDto = list.stream().map(obj -> new AgendaDTO(obj)).collect(Collectors.toList());  
+		return ResponseEntity.ok().body(listDto);
 	}
 
 	@PostMapping

@@ -2,8 +2,6 @@ package com.dentalclinic.controller;
 
 import java.util.List;
 
-import com.dentalclinic.dto.AgendaDTO;
-import com.dentalclinic.model.Agenda;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;

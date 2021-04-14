@@ -17,6 +17,7 @@ import javax.persistence.OneToOne;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Agenda implements Serializable {
@@ -41,6 +42,7 @@ public class Agenda implements Serializable {
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "paciente_id", referencedColumnName = "id")
 	private Paciente paciente;
+	@JsonIgnore
 	@ManyToOne()
 	@JoinColumn(name = "login_usuario", referencedColumnName = "login")
 	private Usuario usuario;

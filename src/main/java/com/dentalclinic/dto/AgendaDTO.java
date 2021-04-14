@@ -23,6 +23,8 @@ public class AgendaDTO implements Serializable {
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private LocalDate allDay;
 	private Boolean status;
+	private Long paciente_id;
+	private String login_usuario;
 
 	public AgendaDTO() {
 
@@ -35,6 +37,9 @@ public class AgendaDTO implements Serializable {
 		this.end = obj.getEnd();
 		this.allDay = obj.getAllDay();
 		this.status = obj.getStatus();
+		this.login_usuario = obj.getUsuario().getLogin();
+		this.paciente_id = obj.getPaciente().getId();
+
 	}
 
 	public Long getId() {
@@ -83,6 +88,22 @@ public class AgendaDTO implements Serializable {
 
 	public void setStatus(Boolean status) {
 		this.status = status;
+	}
+
+	public Long getPaciente_id() {
+		return paciente_id;
+	}
+
+	public void setPaciente_id(Long paciente_id) {
+		this.paciente_id = paciente_id;
+	}
+
+	public String getLogin_usuario() {
+		return login_usuario;
+	}
+
+	public void setLogin_usuario(String login_usuario) {
+		this.login_usuario = login_usuario;
 	}
 
 }

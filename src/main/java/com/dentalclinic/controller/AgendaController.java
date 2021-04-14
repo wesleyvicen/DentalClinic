@@ -31,7 +31,7 @@ public class AgendaController {
 	}
 
 	@PostMapping
-	public ResponseEntity<Agenda> insert(@RequestBody Agenda dto) {
+	public ResponseEntity<Agenda> insert(@RequestBody AgendaDTO dto) {
 		return new ResponseEntity<>(agendaService.insert(dto), HttpStatus.CREATED);
 	}
 

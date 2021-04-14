@@ -51,7 +51,7 @@ public class AgendaService {
 	}
 
 	@Transactional
-	public Agenda insert(Agenda obj) {
+	public Agenda insert(AgendaDTO obj) {
 		Agenda agenda = new Agenda();
 		agenda.setTitle(obj.getTitle());
 
@@ -59,9 +59,8 @@ public class AgendaService {
 		agenda.setEnd(obj.getEnd());
 		agenda.setAllDay(obj.getAllDay());
 		agenda.setStatus(obj.getStatus());
-		agenda.setPaciente(null);
-		agenda.setUsuario(usuarioService.getUsuarioWithLogin(obj.getUsuario().getLogin()));	
-		agenda.setPaciente(pacienteService.getById(obj.getPaciente().getId()));
+		agenda.setUsuario(usuarioService.getUsuarioWithLogin(obj.getLogin_usuario()));	
+		agenda.setPaciente(pacienteService.getById(obj.getPaciente_id()));
 
 		agenda = agendaRepository.save(agenda);
 		return agenda;

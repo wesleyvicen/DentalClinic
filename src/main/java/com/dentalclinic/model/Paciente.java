@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import enums.TipoCivil;
 import enums.TipoPlano;
@@ -28,7 +29,7 @@ public class Paciente implements Serializable {
 	@OneToMany(mappedBy="paciente", cascade=CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<Telefone> telefones = new ArrayList<>();
 
-
+	@JsonIgnore
 	@ManyToOne()
 	@JoinColumn(name = "login_usuario", referencedColumnName = "login")
 	private Usuario usuario;

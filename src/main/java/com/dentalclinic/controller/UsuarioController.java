@@ -1,5 +1,7 @@
 package com.dentalclinic.controller;
 
+import java.net.URI;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -8,7 +10,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.dentalclinic.dto.LoginDto;
 import com.dentalclinic.dto.UsuarioDto;
@@ -66,6 +70,12 @@ public class UsuarioController {
 					"Erro: %s",
 					ex.getMessage()), HttpStatus.BAD_REQUEST);
 		}
+	}
+	
+	@RequestMapping(value = "/picture", method=RequestMethod.POST)
+	public ResponseEntity<Void> uploadProfilePicture(@RequestParam(name="file") MultipartFile file) {
+		URI uri = usuarioService.uploadProfilePicture(file);
+		return ResponseEntity.created(uri).build();
 	}
 
 }

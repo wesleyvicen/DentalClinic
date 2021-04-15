@@ -3,9 +3,6 @@ package com.dentalclinic.service;
 import java.util.List;
 import java.util.Optional;
 
-import com.dentalclinic.model.Agenda;
-import com.dentalclinic.model.Telefone;
-import com.dentalclinic.service.exception.DataIntegrityException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
@@ -17,7 +14,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.dentalclinic.dto.NewPacienteDTO;
 import com.dentalclinic.exceptions.ObjectNotFoundException;
 import com.dentalclinic.model.Paciente;
+import com.dentalclinic.model.Telefone;
 import com.dentalclinic.repository.PacienteRepository;
+import com.dentalclinic.service.exception.DataIntegrityException;
 
 @Service
 public class PacienteService {

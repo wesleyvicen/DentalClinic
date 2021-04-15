@@ -1,5 +1,6 @@
 package com.dentalclinic.service;
 
+import java.net.URI;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.dentalclinic.dto.LoginDto;
 import com.dentalclinic.dto.SessaoDto;
@@ -39,6 +41,9 @@ public class UsuarioService {
 	
 	@Autowired
 	JWTUtil jwtUtil;
+	
+	@Autowired
+	private S3Service s3Service;
 	
 	// encripta a senha digitada pelo usuário
 	@Autowired
@@ -147,5 +152,9 @@ public class UsuarioService {
 		catch (Exception e) {
 			return null;
 		}
+	}
+	
+	public URI uploadProfilePicture(MultipartFile multipartFile) {
+		return s3Service.uploadFile(multipartFile);
 	}
 }

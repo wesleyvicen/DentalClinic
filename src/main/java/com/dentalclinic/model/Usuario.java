@@ -54,6 +54,8 @@ public class Usuario implements Serializable {
 	@ElementCollection(fetch = FetchType.EAGER)
 	@CollectionTable(name = "PERFIS")
 	private Set<Integer> perfis = new HashSet<>();
+	
+	private String imageUrl;
 
 	public Usuario() {
 
@@ -142,6 +144,14 @@ public class Usuario implements Serializable {
 	@Override
 	public String toString() {
 		return "Usuario [login=" + login + ", senha=" + senha + ", nome=" + nome + ", telefone=" + telefone + "]";
+	}
+
+	public String getImageUrl() {
+		return imageUrl;
+	}
+
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
 	}
 
 }

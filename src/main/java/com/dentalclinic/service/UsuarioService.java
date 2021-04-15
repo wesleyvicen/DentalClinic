@@ -25,6 +25,7 @@ import com.dentalclinic.model.Usuario;
 import com.dentalclinic.repository.UsuarioRepository;
 import com.dentalclinic.security.JWTUtil;
 import com.dentalclinic.security.UserSS;
+import com.dentalclinic.service.exception.AuthorizationException;
 
 /**
  * @author B�rbara Rodrigues, Gabriel Botelho, Guilherme Cruz, Lucas Caputo,
@@ -155,6 +156,15 @@ public class UsuarioService {
 	}
 	
 	public URI uploadProfilePicture(MultipartFile multipartFile) {
-		return s3Service.uploadFile(multipartFile);
+		UserSS user = authenticated();
+		if(user == null) {
+			throw new AuthorizationException("Acesso negado");
+		}
+		URI uri = s3Service.uploadFile(multipartFile);
+		
+		Usuario usuario = usuarioRepository.findById(user.getId()).orElse(null);
+		usuario.setImageUrl(uri.toString());
+		usuarioRepository.save(usuario);
+		return uri;
 	}
 }

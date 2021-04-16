@@ -1,5 +1,6 @@
 package com.dentalclinic.controller;
 
+import java.net.URI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.dentalclinic.dto.NewPacienteDTO;
 import com.dentalclinic.dto.PacienteDTO;
@@ -69,5 +71,11 @@ public class PacienteController {
 	public ResponseEntity<Void> delete(@PathVariable Long id) {
 		pacienteService.delete(id);
 		return ResponseEntity.noContent().build();
+	}
+	
+	@RequestMapping(value = "/picture/{id}", method=RequestMethod.POST)
+	public ResponseEntity<Void> uploadProfilePicture(@PathVariable Long id, @RequestParam(name="file") MultipartFile file) {
+		URI uri = pacienteService.uploadProfilePicture(id, file);
+		return ResponseEntity.created(uri).build();
 	}
 }

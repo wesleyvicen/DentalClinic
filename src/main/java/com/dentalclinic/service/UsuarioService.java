@@ -50,9 +50,9 @@ public class UsuarioService {
 
 	@Autowired
 	private ImageService imageService;
-
-	@Value("${img.prefix.client.profile}")
-	private String prefix;
+//
+//	@Value("${img.prefix.client.profile}")
+//	private String prefix;
 
 	// encripta a senha digitada pelo usuário
 	@Autowired

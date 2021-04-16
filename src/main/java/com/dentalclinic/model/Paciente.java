@@ -5,7 +5,23 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+import org.hibernate.annotations.Proxy;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -26,8 +42,12 @@ public class Paciente implements Serializable {
 	private String nome;
 	private String email;
 
+
 	@OneToMany(mappedBy="paciente", cascade=CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<Telefone> telefones = new ArrayList<>();
+	@LazyCollection(LazyCollectionOption.FALSE)
+	@OneToMany(mappedBy="paciente", cascade=CascadeType.ALL)
+	private List<DocumentUrl> documentsUrl = new ArrayList<>();
 
 	@JsonIgnore
 	@ManyToOne()
@@ -149,6 +169,14 @@ public class Paciente implements Serializable {
 
 	public void setTelefones(List<Telefone> telefones) {
 		this.telefones = telefones;
+	}
+
+	public List<DocumentUrl> getDocumentsUrl() {
+		return documentsUrl;
+	}
+
+	public void setDocumentsUrl(List<DocumentUrl> documentsUrl) {
+		this.documentsUrl = documentsUrl;
 	}
 
 	public LocalDate getNascimento() {

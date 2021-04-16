@@ -1,5 +1,6 @@
 package com.dentalclinic.service;
 
+import java.awt.image.BufferedImage;
 import java.net.URI;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -10,6 +11,7 @@ import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -25,6 +27,7 @@ import com.dentalclinic.model.Usuario;
 import com.dentalclinic.repository.UsuarioRepository;
 import com.dentalclinic.security.JWTUtil;
 import com.dentalclinic.security.UserSS;
+import com.dentalclinic.service.exception.AuthorizationException;
 
 /**
  * @author B�rbara Rodrigues, Gabriel Botelho, Guilherme Cruz, Lucas Caputo,
@@ -35,16 +38,22 @@ import com.dentalclinic.security.UserSS;
 public class UsuarioService {
 	@Autowired
 	UsuarioRepository usuarioRepository;
-	
+
 	@Autowired
 	BCryptPasswordEncoder passwordEncoder;
-	
+
 	@Autowired
 	JWTUtil jwtUtil;
-	
+
 	@Autowired
 	private S3Service s3Service;
-	
+
+	@Autowired
+	private ImageService imageService;
+//
+//	@Value("${img.prefix.client.profile}")
+//	private String prefix;
+
 	// encripta a senha digitada pelo usuário
 	@Autowired
 	private BCryptPasswordEncoder pe;
@@ -67,7 +76,7 @@ public class UsuarioService {
 	}
 
 	@Transactional
-	private void incluirUsuarioConta(Usuario usuario) {		
+	private void incluirUsuarioConta(Usuario usuario) {
 
 		usuarioRepository.save(usuario);
 
@@ -76,17 +85,15 @@ public class UsuarioService {
 	@Transactional
 	public Usuario getUsuarioWithLoginAndSenha(String login, String senha) {
 		Usuario usuario = getUsuarioWithLogin(login);
-		if(usuario == null) {
+		if (usuario == null) {
 			throw new IllegalArgumentException("Usuário não existe");
-		}
-		else if(pe.matches(senha, usuario.getSenha())) {
+		} else if (pe.matches(senha, usuario.getSenha())) {
 			return usuario;
-		}
-		else {
+		} else {
 			throw new IllegalArgumentException("Senha incorreta!");
 		}
 	}
-	
+
 	@Transactional
 	public Usuario getUsuarioWithLogin(String login) {
 		return usuarioRepository.getUsuarioWithLogin(login);
@@ -100,7 +107,7 @@ public class UsuarioService {
 		} else {
 			return false;
 		}
-			
+
 	}
 
 	@Transactional
@@ -120,13 +127,13 @@ public class UsuarioService {
 	public SessaoDto logar(LoginDto loginDto) {
 		SessaoDto sessaoDto = new SessaoDto();
 
-		UsuarioMapper usuarioMapper = new UsuarioMapper();				
-		Usuario usuario = getUsuarioWithLoginAndSenha(loginDto.getUsuario(), loginDto.getSenha());		
-		
-		if(usuario == null) {
+		UsuarioMapper usuarioMapper = new UsuarioMapper();
+		Usuario usuario = getUsuarioWithLoginAndSenha(loginDto.getUsuario(), loginDto.getSenha());
+
+		if (usuario == null) {
 			throw new IllegalArgumentException("Usuário ou senha errados!");
 		}
-		
+
 		TokenDto tokenDto = jwtUtil.getToken(loginDto.getUsuario());
 		LocalDateTime agora = LocalDateTime.now();
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
@@ -139,7 +146,7 @@ public class UsuarioService {
 		sessaoDto.setUsuario(usuarioMapper.getUsuarioDtoFromEntity(usuario));
 
 		return sessaoDto;
-	}	
+	}
 
 	/***
 	 * 
@@ -148,13 +155,25 @@ public class UsuarioService {
 	public static UserSS authenticated() {
 		try {
 			return (UserSS) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			return null;
 		}
 	}
-	
+
 	public URI uploadProfilePicture(MultipartFile multipartFile) {
-		return s3Service.uploadFile(multipartFile);
+		UserSS user = authenticated();
+		if (user == null) {
+			throw new AuthorizationException("Acesso negado");
+		}
+
+		Usuario usuario = usuarioRepository.findById(user.getId()).orElse(null);
+
+		BufferedImage jpgImage = imageService.getJpgImageFromFile(multipartFile);
+		String fileName = user.getUsername() + "_" + user.getId() + ".jpg";
+		URI uri = s3Service.uploadFile(imageService.getInputStream(jpgImage, "jpg"), fileName, "image");
+		usuario.setImageUrl(uri.toString());
+		usuarioRepository.save(usuario);
+
+		return uri;
 	}
 }

@@ -57,7 +57,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	 */
 	private static final String[] PUBLIC_MATCHERS_GET = {  };
 	
-	private static final String[] PUBLIC_MATCHERS_POST = { "/user/**", "/user/login/**" };
+	private static final String[] PUBLIC_MATCHERS_POST = { "/user", "/user/login/**" };
 
 	// Basic Auth com usuario em memoria e sem criptografia
 //	@Autowired

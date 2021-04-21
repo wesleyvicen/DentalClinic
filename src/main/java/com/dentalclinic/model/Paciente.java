@@ -180,6 +180,14 @@ public class Paciente implements Serializable {
 		this.telefone3 = telefone3;
 	}
 
+	public List<DocumentUrl> getDocumentsUrl() {
+		return documentsUrl;
+	}
+
+	public void setDocumentsUrl(List<DocumentUrl> documentsUrl) {
+		this.documentsUrl = documentsUrl;
+	}
+
 	public LocalDate getNascimento() {
 		return nascimento;
 	}

@@ -21,7 +21,7 @@ import enums.Perfil;
 public class UserSS implements UserDetails {
 
 	private static final long serialVersionUID = 1L;
-//	private String id;
+	private Integer id;
 	private String login;
 	private String senha;
 	// falta determinar o perfil do usuário do sistema
@@ -31,8 +31,9 @@ public class UserSS implements UserDetails {
 
 	}
 
-	public UserSS(String login, String senha, Set<Perfil> perfis) {
+	public UserSS(Integer id,String login, String senha, Set<Perfil> perfis) {
 		super();
+		this.id = id;
 		this.login = login;
 		this.senha = senha;
 		this.authorities = perfis.stream().map(x -> new SimpleGrantedAuthority(x.getDescricao()))
@@ -44,6 +45,10 @@ public class UserSS implements UserDetails {
 		return authorities;
 	}
 
+	public Integer getId() {
+		return id;
+	}
+	
 	@Override
 	public String getPassword() {
 		return senha;

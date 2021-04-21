@@ -2,10 +2,17 @@ package com.dentalclinic.model;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -25,9 +32,9 @@ public class Paciente implements Serializable {
 	@Column(nullable = false)
 	private String nome;
 	private String email;
-
-	@OneToMany(mappedBy="paciente", cascade=CascadeType.ALL, fetch = FetchType.EAGER)
-	private List<Telefone> telefones = new ArrayList<>();
+	private String telefone1;
+	private String telefone2;
+	private String telefone3;
 
 	@JsonIgnore
 	@ManyToOne()
@@ -60,14 +67,17 @@ public class Paciente implements Serializable {
 	public Paciente() {
 	}
 
-	public Paciente(Long id, String nome, String email, LocalDate nascimento, String responsavel, TipoSexo sexo,
-			TipoCivil estadoCivil, String indicacao, TipoPlano planoSaude, String convenio, String rg, String cpf,
-			String ocupacao, String endereco, String enderecoNum, String bairro, String cidade, String estado,
-			String cep) {
+	public Paciente(Long id, String nome, String email, String telefone1, String telefone2, String telefone3,
+			LocalDate nascimento, String responsavel, TipoSexo sexo, TipoCivil estadoCivil, String indicacao,
+			TipoPlano planoSaude, String convenio, String rg, String cpf, String ocupacao, String endereco,
+			String enderecoNum, String bairro, String cidade, String estado, String cep) {
 		super();
 		this.id = id;
 		this.nome = nome;
 		this.email = email;
+		this.telefone1 = telefone1;
+		this.telefone2 = telefone2;
+		this.telefone3 = telefone3;
 		this.nascimento = nascimento;
 		this.responsavel = responsavel;
 		this.sexo = sexo;
@@ -86,13 +96,16 @@ public class Paciente implements Serializable {
 		this.cep = cep;
 	}
 
-	public Paciente(String nome, String email, LocalDate nascimento,
-			String responsavel, TipoSexo sexo, TipoCivil estadoCivil, String indicacao, TipoPlano planoSaude,
-			String convenio, String rg, String cpf, String ocupacao, String endereco, String enderecoNum, String bairro,
-			String cidade, String estado, String cep) {
+	public Paciente(String nome, String email, String telefone1, String telefone2, String telefone3,
+			LocalDate nascimento, String responsavel, TipoSexo sexo, TipoCivil estadoCivil, String indicacao,
+			TipoPlano planoSaude, String convenio, String rg, String cpf, String ocupacao, String endereco,
+			String enderecoNum, String bairro, String cidade, String estado, String cep) {
 		super();
 		this.nome = nome;
 		this.email = email;
+		this.telefone1 = telefone1;
+		this.telefone2 = telefone2;
+		this.telefone3 = telefone3;
 		this.nascimento = nascimento;
 		this.responsavel = responsavel;
 		this.sexo = sexo;
@@ -143,12 +156,28 @@ public class Paciente implements Serializable {
 		this.email = email;
 	}
 
-	public List<Telefone> getTelefones() {
-		return telefones;
+	public String getTelefone1() {
+		return telefone1;
 	}
 
-	public void setTelefones(List<Telefone> telefones) {
-		this.telefones = telefones;
+	public void setTelefone1(String telefone1) {
+		this.telefone1 = telefone1;
+	}
+
+	public String getTelefone2() {
+		return telefone2;
+	}
+
+	public void setTelefone2(String telefone2) {
+		this.telefone2 = telefone2;
+	}
+
+	public String getTelefone3() {
+		return telefone3;
+	}
+
+	public void setTelefone3(String telefone3) {
+		this.telefone3 = telefone3;
 	}
 
 	public LocalDate getNascimento() {
@@ -303,7 +332,5 @@ public class Paciente implements Serializable {
 			return false;
 		return true;
 	}
-	
-	
 
 }

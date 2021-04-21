@@ -14,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.dentalclinic.dto.NewPacienteDTO;
 import com.dentalclinic.exceptions.ObjectNotFoundException;
 import com.dentalclinic.model.Paciente;
-import com.dentalclinic.model.Telefone;
 import com.dentalclinic.repository.PacienteRepository;
 import com.dentalclinic.service.exception.DataIntegrityException;
 
@@ -76,6 +75,9 @@ public class PacienteService {
 
 		newObj.setNome(obj.getNome() == null ? newObj.getNome() : obj.getNome());
 		newObj.setEmail(obj.getEmail() == null ? newObj.getEmail() : obj.getEmail());
+		newObj.setTelefone1(obj.getTelefone1() == null ? newObj.getTelefone1() : obj.getTelefone1());
+		newObj.setTelefone2(obj.getTelefone2() == null ? newObj.getTelefone2() : obj.getTelefone2());
+		newObj.setTelefone3(obj.getTelefone3() == null ? newObj.getTelefone3() : obj.getTelefone3());
 		newObj.setNascimento(obj.getNascimento() == null ? newObj.getNascimento() : obj.getNascimento());
 		newObj.setResponsavel(obj.getResponsavel() == null ? newObj.getResponsavel() : obj.getResponsavel());
 		newObj.setSexo(obj.getSexo() == null ? newObj.getSexo() : obj.getSexo());
@@ -97,21 +99,11 @@ public class PacienteService {
 
 	@Transactional
 	public Paciente fromDTO(NewPacienteDTO dto) {
-		Paciente paciente = new Paciente(dto.getNome(), dto.getEmail(), dto.getNascimento(), dto.getResponsavel(),
+		Paciente paciente = new Paciente(dto.getNome(), dto.getEmail(), dto.getTelefone1(), dto.getTelefone2(), dto.getTelefone3(), dto.getNascimento(), dto.getResponsavel(),
 				dto.getSexo(), dto.getEstadoCivil(), dto.getIndicacao(), dto.getPlanoSaude(), dto.getConvenio(),
 				dto.getRg(), dto.getCpf(), dto.getOcupacao(), dto.getEndereco(), dto.getEnderecoNum(), dto.getBairro(),
 				dto.getCidade(), dto.getEstado(), dto.getCep());
 		paciente.setUsuario(usuarioService.getUsuarioWithLogin(dto.getLogin_usuario()));
-		Telefone tel1 = new Telefone(dto.getTelefone1(), paciente);
-		paciente.getTelefones().add(tel1);
-		if (dto.getTelefone2() != null) {
-			Telefone tel2 = new Telefone(dto.getTelefone1(), paciente);
-			paciente.getTelefones().add(tel2);
-		}
-		if (dto.getTelefone3() != null) {
-			Telefone tel3 = new Telefone(dto.getTelefone1(), paciente);
-			paciente.getTelefones().add(tel3);
-		}
 		return paciente;
 	}
 

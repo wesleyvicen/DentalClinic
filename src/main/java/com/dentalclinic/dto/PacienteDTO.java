@@ -2,7 +2,10 @@ package com.dentalclinic.dto;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
+import com.dentalclinic.model.DocumentUrl;
 import com.dentalclinic.model.Paciente;
 
 import enums.TipoCivil;
@@ -40,6 +43,9 @@ public class PacienteDTO implements Serializable {
 	private String cidade;
 	private String estado;
 	private String cep;
+	private List<DocumentUrl> documentsUrl = new ArrayList<>();
+	private String login_usuario;
+	
 
 	public PacienteDTO() {
 	}
@@ -64,6 +70,11 @@ public class PacienteDTO implements Serializable {
 		this.cidade = entity.getCidade();
 		this.estado = entity.getEstado();
 		this.cep = entity.getCep();
+		this.telefone1 = entity.getTelefone1();
+		this.telefone2 = entity.getTelefone2();
+		this.telefone3 = entity.getTelefone3();
+		this.setDocumentsUrl(entity.getDocumentsUrl());
+		this.login_usuario = entity.getUsuario().getLogin();
 	}
 
 	public String getNome() {
@@ -232,6 +243,22 @@ public class PacienteDTO implements Serializable {
 
 	public void setCep(String cep) {
 		this.cep = cep;
+	}
+
+	public List<DocumentUrl> getDocumentsUrl() {
+		return documentsUrl;
+	}
+
+	public void setDocumentsUrl(List<DocumentUrl> documentsUrl) {
+		this.documentsUrl = documentsUrl;
+	}
+
+	public String getLogin_usuario() {
+		return login_usuario;
+	}
+
+	public void setLogin_usuario(String login_usuario) {
+		this.login_usuario = login_usuario;
 	}
 
 }

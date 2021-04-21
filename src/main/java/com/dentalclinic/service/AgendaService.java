@@ -67,9 +67,7 @@ public class AgendaService {
 	}
 
 	public void delete(Long id) {
-		agendaRepository.findById(id);
 		try {
-
 			agendaRepository.deleteById(id);
 		} catch (DataIntegrityViolationException e) {
 			throw new DataIntegrityException("Não é possivel excluir porque existe entidades relacionadas");

@@ -2,6 +2,7 @@ package com.dentalclinic.controller;
 
 import java.net.URI;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -30,9 +31,10 @@ public class PacienteController {
 	private PacienteService pacienteService;
 
 	@RequestMapping(method = RequestMethod.GET, params = { "login" })
-	public ResponseEntity<List<Paciente>> findAll(@RequestParam(name = "login") String login) {
+	public ResponseEntity<List<PacienteDTO>> findAll(@RequestParam(name = "login") String login) {
 		List<Paciente> list = pacienteService.getPacientesWithLogin(login);
-		return ResponseEntity.ok().body(list);
+		List<PacienteDTO> listDto = list.stream().map(obj -> new PacienteDTO(obj)).collect(Collectors.toList());
+		return ResponseEntity.ok().body(listDto);
 	}
 
 	@GetMapping("/{id}")
@@ -72,9 +74,10 @@ public class PacienteController {
 		pacienteService.delete(id);
 		return ResponseEntity.noContent().build();
 	}
-	
-	@RequestMapping(value = "/picture/{id}", method=RequestMethod.POST)
-	public ResponseEntity<Void> uploadProfilePicture(@PathVariable Long id, @RequestParam(name="file") MultipartFile file) {
+
+	@RequestMapping(value = "/picture/{id}", method = RequestMethod.POST)
+	public ResponseEntity<Void> uploadProfilePicture(@PathVariable Long id,
+			@RequestParam(name = "file") MultipartFile file) {
 		URI uri = pacienteService.uploadProfilePicture(id, file);
 		return ResponseEntity.created(uri).build();
 	}

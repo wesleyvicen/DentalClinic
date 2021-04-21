@@ -19,10 +19,10 @@ public class AgendaService {
 
 	@Autowired
 	private AgendaRepository agendaRepository;
-	
+
 	@Autowired
 	private PacienteService pacienteService;
-	
+
 	@Autowired
 	private UsuarioService usuarioService;
 
@@ -31,19 +31,19 @@ public class AgendaService {
 		List<Agenda> list = agendaRepository.findAll();
 		return list;
 	}
-	
+
 	public Agenda find(Long id) {
 		Optional<Agenda> obj = agendaRepository.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException(
 				"Objeto Não encontrado! ID: " + id + ", Tipo: " + Agenda.class.getName()));
 	}
-	
+
 	@Transactional
 	public List<Agenda> getAgendasWithLogin(String login) {
 		List<Agenda> list = agendaRepository.getAgendasWithLogin(login);
 		return list;
 	}
-	
+
 	public Agenda update(Agenda obj) {
 		Agenda newObj = find(obj.getId());
 		updateData(newObj, obj);
@@ -59,13 +59,13 @@ public class AgendaService {
 		agenda.setEnd(obj.getEnd());
 		agenda.setAllDay(obj.getAllDay());
 		agenda.setStatus(obj.getStatus());
-		agenda.setUsuario(usuarioService.getUsuarioWithLogin(obj.getLogin_usuario()));	
+		agenda.setUsuario(usuarioService.getUsuarioWithLogin(obj.getLogin_usuario()));
 		agenda.setPaciente(pacienteService.getById(obj.getPaciente_id()));
 
 		agenda = agendaRepository.save(agenda);
 		return agenda;
 	}
-	
+
 	public void delete(Long id) {
 		agendaRepository.findById(id);
 		try {
@@ -75,19 +75,21 @@ public class AgendaService {
 			throw new DataIntegrityException("Não é possivel excluir porque existe entidades relacionadas");
 		}
 	}
-	
-	private void updateData(Agenda newObj, Agenda obj) {
 
+	private void updateData(Agenda newObj, Agenda obj) {
+		newObj.setPaciente(obj.getPaciente() == null ? newObj.getPaciente() : obj.getPaciente());
 		newObj.setTitle(obj.getTitle() == null ? newObj.getTitle() : obj.getTitle());
 		newObj.setStart(obj.getStart() == null ? newObj.getStart() : obj.getStart());
 		newObj.setEnd(obj.getEnd() == null ? newObj.getEnd() : obj.getEnd());
 		newObj.setAllDay(obj.getAllDay() == null ? newObj.getAllDay() : obj.getAllDay());
 		newObj.setStatus(obj.getStatus() == null ? newObj.getStatus() : obj.getStatus());
 	}
-	
-	public Agenda fromDTO(AgendaDTO objDto) {
-		return new Agenda(objDto.getId(), objDto.getTitle(), objDto.getStart(), objDto.getEnd(), objDto.getAllDay(), objDto.getStatus());
-	}
 
+	public Agenda fromDTO(AgendaDTO objDto) {
+		Agenda agenda = new Agenda(objDto.getId(), objDto.getTitle(), objDto.getStart(), objDto.getEnd(),
+				objDto.getAllDay(), objDto.getStatus());
+		agenda.setPaciente(pacienteService.getById(objDto.getPaciente_id()));
+		return agenda;
+	}
 
 }

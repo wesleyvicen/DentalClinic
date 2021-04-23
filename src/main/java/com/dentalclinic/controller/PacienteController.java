@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.dentalclinic.controller.exception.DataIntegrityException;
 import com.dentalclinic.dto.NewPacienteDTO;
 import com.dentalclinic.dto.PacienteDTO;
 import com.dentalclinic.model.Paciente;
@@ -70,7 +71,7 @@ public class PacienteController {
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<Void> delete(@PathVariable Long id) {
+	public ResponseEntity<?> delete(@PathVariable Long id) {
 		pacienteService.delete(id);
 		return ResponseEntity.noContent().build();
 	}

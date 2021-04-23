@@ -14,7 +14,7 @@ import enums.TipoSexo;
 
 public class PacienteDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
-
+	private Long id;
 	private String nome;
 	private String email;
 
@@ -45,13 +45,12 @@ public class PacienteDTO implements Serializable {
 	private String cep;
 	private List<DocumentUrl> documentsUrl = new ArrayList<>();
 	private String login_usuario;
-	
 
 	public PacienteDTO() {
 	}
 
 	public PacienteDTO(Paciente entity) {
-
+		this.setId(entity.getId());
 		this.nome = entity.getNome();
 		this.email = entity.getEmail();
 		this.nascimento = entity.getNascimento();
@@ -259,6 +258,14 @@ public class PacienteDTO implements Serializable {
 
 	public void setLogin_usuario(String login_usuario) {
 		this.login_usuario = login_usuario;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 }

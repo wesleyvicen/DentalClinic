@@ -47,7 +47,6 @@ public class Paciente implements Serializable {
 	@OneToMany(mappedBy="paciente", cascade=CascadeType.ALL)
 	private List<DocumentUrl> documentsUrl = new ArrayList<>();
 
-	@JsonIgnore
 	@ManyToOne()
 	@JoinColumn(name = "login_usuario", referencedColumnName = "login")
 	private Usuario usuario;

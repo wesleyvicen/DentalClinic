@@ -47,7 +47,7 @@ public class PacienteService {
 	public List<Paciente> getPacientesWithLogin(String login) {
 		List<Paciente> list = pacienteRepository.getPacientesWithLogin(login);
 		return list;
-	}
+	}	
 	
 	public Paciente getById(Long id) {
 		Optional<Paciente> obj = pacienteRepository.findById(id);

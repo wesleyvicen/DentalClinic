@@ -31,6 +31,14 @@ public class AgendaController {
 		List<AgendaDTO> listDto = list.stream().map(obj -> new AgendaDTO(obj)).collect(Collectors.toList());  
 		return ResponseEntity.ok().body(listDto);
 	}
+	
+	@RequestMapping(method = RequestMethod.GET, params = { "id" })
+	public ResponseEntity<List<AgendaDTO>> findAll(@RequestParam(name = "id") Long id) {
+		List<Agenda> list = agendaService.getAgendasWithPaciente(id);
+		List<AgendaDTO> listDto = list.stream().map(obj -> new AgendaDTO(obj)).collect(Collectors.toList());  
+		return ResponseEntity.ok().body(listDto);
+	}
+
 
 	@PostMapping
 	public ResponseEntity<Agenda> insert(@RequestBody AgendaDTO dto) {

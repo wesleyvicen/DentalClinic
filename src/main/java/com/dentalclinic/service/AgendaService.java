@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.dentalclinic.dto.AgendaDTO;
 import com.dentalclinic.exceptions.ObjectNotFoundException;
 import com.dentalclinic.model.Agenda;
+import com.dentalclinic.model.Paciente;
 import com.dentalclinic.repository.AgendaRepository;
 import com.dentalclinic.service.exception.DataIntegrityException;
 
@@ -41,6 +42,11 @@ public class AgendaService {
 	@Transactional
 	public List<Agenda> getAgendasWithLogin(String login) {
 		List<Agenda> list = agendaRepository.getAgendasWithLogin(login);
+		return list;
+	}
+	
+	public List<Agenda> getAgendasWithPaciente(Long id) {
+		List<Agenda> list = agendaRepository.getAgendasWithPaciente(id);
 		return list;
 	}
 

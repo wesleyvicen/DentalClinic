@@ -1,6 +1,7 @@
 package com.dentalclinic.repository;
 
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -18,4 +19,8 @@ public interface AgendaRepository extends JpaRepository<Agenda, Long> {
 	
 	@Query(value = "Select agenda from Agenda agenda Left Join Fetch agenda.paciente paciente where agenda.paciente.id = :paciente_id")	
 	List<Agenda> getAgendasWithPaciente(@Param("paciente_id") Long pacienteId);
+	
+//	@Query(value = "select allDay, sum(valor) from Agenda where (allDay >= :allDayStart and data <= :allDayEnd) group by allDay")
+//	String getSomaValores(LocalDate allDayStart, LocalDate allDayEnd);
+	
 }

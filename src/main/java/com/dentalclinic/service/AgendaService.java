@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.dentalclinic.dto.AgendaDTO;
 import com.dentalclinic.exceptions.ObjectNotFoundException;
 import com.dentalclinic.model.Agenda;
-import com.dentalclinic.model.Paciente;
 import com.dentalclinic.repository.AgendaRepository;
 import com.dentalclinic.service.exception.DataIntegrityException;
 
@@ -64,6 +63,7 @@ public class AgendaService {
 		agenda.setStart(obj.getStart());
 		agenda.setEnd(obj.getEnd());
 		agenda.setAllDay(obj.getAllDay());
+		agenda.setValor(obj.getValor());
 		agenda.setStatus(obj.getStatus());
 		agenda.setUsuario(usuarioService.getUsuarioWithLogin(obj.getLogin_usuario()));
 		agenda.setPaciente(pacienteService.getById(obj.getPaciente_id()));
@@ -86,12 +86,13 @@ public class AgendaService {
 		newObj.setStart(obj.getStart() == null ? newObj.getStart() : obj.getStart());
 		newObj.setEnd(obj.getEnd() == null ? newObj.getEnd() : obj.getEnd());
 		newObj.setAllDay(obj.getAllDay() == null ? newObj.getAllDay() : obj.getAllDay());
+		newObj.setValor(obj.getValor() == null ? newObj.getValor() : obj.getValor());
 		newObj.setStatus(obj.getStatus() == null ? newObj.getStatus() : obj.getStatus());
 	}
 
 	public Agenda fromDTO(AgendaDTO objDto) {
 		Agenda agenda = new Agenda(objDto.getId(), objDto.getTitle(), objDto.getStart(), objDto.getEnd(),
-				objDto.getAllDay(), objDto.getStatus());
+				objDto.getAllDay(), objDto.getValor(), objDto.getStatus());
 		agenda.setPaciente(pacienteService.getById(objDto.getPaciente_id()));
 		return agenda;
 	}

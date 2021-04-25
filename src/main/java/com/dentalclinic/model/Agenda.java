@@ -45,13 +45,14 @@ public class Agenda implements Serializable {
 	@ManyToOne()
 	@JoinColumn(name = "login_usuario", referencedColumnName = "login")
 	private Usuario usuario;
+	private Double valor;
 	@Column(nullable = false, precision = 9, scale = 3)
 	private Boolean status;
 
 	public Agenda() {
 	}
 
-	public Agenda(Long id, String title, LocalDateTime start, LocalDateTime end, LocalDate allDay, Paciente paciente,
+	public Agenda(Long id, String title, LocalDateTime start, LocalDateTime end, LocalDate allDay, Paciente paciente, Double valor,
 			Boolean status) {
 		super();
 		this.id = id;
@@ -60,10 +61,11 @@ public class Agenda implements Serializable {
 		this.end = end;
 		this.allDay = allDay;
 		this.paciente = paciente;
+		this.setValor(valor);
 		this.status = (status == null) ? true : status;
 	}
 
-	public Agenda(String title, LocalDateTime start, LocalDateTime end, LocalDate allDay, Paciente paciente,
+	public Agenda(String title, LocalDateTime start, LocalDateTime end, LocalDate allDay, Paciente paciente, Double valor,
 			Boolean status) {
 		super();
 		this.title = title;
@@ -71,15 +73,17 @@ public class Agenda implements Serializable {
 		this.end = end;
 		this.allDay = allDay;
 		this.paciente = paciente;
+		this.setValor(valor);
 		this.status = (status == null) ? true : status;
 	}
 	
-	public Agenda(Long id, String title, LocalDateTime start, LocalDateTime end, LocalDate allDay, Boolean status) {
+	public Agenda(Long id, String title, LocalDateTime start, LocalDateTime end, LocalDate allDay, Double valor, Boolean status) {
 		super();
 		this.title = title;
 		this.start = start;
 		this.end = end;
 		this.allDay = allDay;
+		this.setValor(valor);
 		this.status = (status == null) ? true : status;
 	}
 
@@ -176,6 +180,14 @@ public class Agenda implements Serializable {
 		} else if (!paciente.equals(other.paciente))
 			return false;
 		return true;
+	}
+
+	public Double getValor() {
+		return valor;
+	}
+
+	public void setValor(Double valor) {
+		this.valor = valor;
 	}
 
 }

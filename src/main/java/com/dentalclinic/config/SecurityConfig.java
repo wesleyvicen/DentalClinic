@@ -103,7 +103,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200", "http://localhost:4200/**", "https://sysmei.netlify.app", "https://sysmei.netlify.app/**", "https://dev-sysmei.netlify.app", "https://dev-sysmei.netlify.app/**"));
+
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200", "http://localhost:4200/**", "https://sysmei.netlify.app", "https://sysmei.netlify.app/**", "https://sysmei.com", "https://www.sysmei.com", "https://sysmei.com/**", "https://www.sysmei.com/**", "https://dev-sysmei.netlify.app", "https://dev-sysmei.netlify.app/**"));
         configuration.setAllowedMethods(Arrays.asList("GET","POST", "PUT", "OPTIONS", "DELETE", "HEAD"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration.applyPermitDefaultValues());

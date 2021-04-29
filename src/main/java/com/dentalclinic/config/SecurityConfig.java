@@ -36,27 +36,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	private JWTUtil jwtUtil;
-	
+
 	/***
 	 * Array com os endpoints liberação sem precisar de autenticação
 	 */
 	private static final String[] PUBLIC_MATCHERS = { "/h2-console/**" };
-	
-	private static final String[] SWAGGER_WHITELIST = {
-            "/v2/api-docs",
-            "/swagger-resources",
-            "/swagger-resources/**",
-            "/configuration/ui",
-            "/configuration/security",
-            "/swagger-ui.html",
-            "/webjars/**"
-	};
+
+	private static final String[] SWAGGER_WHITELIST = { "/v2/api-docs", "/swagger-resources", "/swagger-resources/**",
+			"/configuration/ui", "/configuration/security", "/swagger-ui.html", "/webjars/**" };
 
 	/***
 	 * Array com os endpoints liberação para recuperar dados sem autenticação
 	 */
-	private static final String[] PUBLIC_MATCHERS_GET = {  };
-	
+	private static final String[] PUBLIC_MATCHERS_GET = {};
+
 	private static final String[] PUBLIC_MATCHERS_POST = { "/user", "/user/login/**" };
 
 	// Basic Auth com usuario em memoria e sem criptografia
@@ -76,14 +69,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			http.headers().frameOptions().disable();
 		}
 		http.csrf().disable();
-		http.cors().and().authorizeRequests()
-				.antMatchers(HttpMethod.GET, PUBLIC_MATCHERS_GET).permitAll()
-				.antMatchers(HttpMethod.POST, PUBLIC_MATCHERS_POST).permitAll()
-				.antMatchers(PUBLIC_MATCHERS).permitAll()
-				.antMatchers(SWAGGER_WHITELIST).permitAll()
-				.anyRequest().authenticated();
+		http.cors().and().authorizeRequests().antMatchers(HttpMethod.GET, PUBLIC_MATCHERS_GET).permitAll()
+				.antMatchers(HttpMethod.POST, PUBLIC_MATCHERS_POST).permitAll().antMatchers(PUBLIC_MATCHERS).permitAll()
+				.antMatchers(SWAGGER_WHITELIST).permitAll().anyRequest().authenticated();
 //				.antMatchers(HttpMethod.POST, "/palavrashome/**").hasAnyRole("ADMIN");
-				
+
 		http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil));
 		http.addFilter(new JWTAuthorizationFilter(authenticationManager(), jwtUtil, userDetailsService));
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
@@ -99,34 +89,36 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	 * 
 	 * @return
 	 */
-	
-	@Bean
-    CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200", "http://localhost:4200/**", "https://sysmei.netlify.app", "https://sysmei.netlify.app/**", "https://sysmei.com", "https://www.sysmei.com", "https://sysmei.com/**", "https://www.sysmei.com/**", "https://dev-sysmei.netlify.app", "https://dev-sysmei.netlify.app/**"));
-        configuration.setAllowedMethods(Arrays.asList("GET","POST", "PUT", "OPTIONS", "DELETE", "HEAD"));
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration.applyPermitDefaultValues());
-        return source;
-    }
-	/*@Bean
+	@Bean
 	CorsConfigurationSource corsConfigurationSource() {
-		final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-		CorsConfiguration corsConfiguration = new CorsConfiguration();
-		corsConfiguration.addAllowedMethod(HttpMethod.GET);
-		corsConfiguration.addAllowedMethod(HttpMethod.POST);
-		corsConfiguration.addAllowedMethod(HttpMethod.PUT);
-		corsConfiguration.addAllowedMethod(HttpMethod.DELETE);
-		corsConfiguration.addAllowedMethod(HttpMethod.OPTIONS);
-		corsConfiguration.addAllowedMethod(HttpMethod.HEAD);	
-		corsConfiguration.addAllowedOrigin("**");
-		corsConfiguration.addAllowedOrigin("/**");
-		source.registerCorsConfiguration("/**", corsConfiguration.applyPermitDefaultValues());		
+		CorsConfiguration configuration = new CorsConfiguration();
+
+		configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200", "http://localhost:4200/**",
+				"https://sysmei.netlify.app", "https://sysmei.netlify.app/**", "https://sysmei.com",
+				"https://www.sysmei.com", "https://sysmei.com/**", "https://www.sysmei.com/**",
+				"https://dev-sysmei.netlify.app", "https://dev-sysmei.netlify.app/**"));
+		configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "OPTIONS", "DELETE", "HEAD"));
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", configuration.applyPermitDefaultValues());
 		return source;
-	}*/
-	
-	
+	}
+	/*
+	 * @Bean CorsConfigurationSource corsConfigurationSource() { final
+	 * UrlBasedCorsConfigurationSource source = new
+	 * UrlBasedCorsConfigurationSource(); CorsConfiguration corsConfiguration = new
+	 * CorsConfiguration(); corsConfiguration.addAllowedMethod(HttpMethod.GET);
+	 * corsConfiguration.addAllowedMethod(HttpMethod.POST);
+	 * corsConfiguration.addAllowedMethod(HttpMethod.PUT);
+	 * corsConfiguration.addAllowedMethod(HttpMethod.DELETE);
+	 * corsConfiguration.addAllowedMethod(HttpMethod.OPTIONS);
+	 * corsConfiguration.addAllowedMethod(HttpMethod.HEAD);
+	 * corsConfiguration.addAllowedOrigin("**");
+	 * corsConfiguration.addAllowedOrigin("/**");
+	 * source.registerCorsConfiguration("/**",
+	 * corsConfiguration.applyPermitDefaultValues()); return source; }
+	 */
+
 	/***
 	 * Método que encripta a senha
 	 * 
@@ -134,6 +126,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	 */
 	@Bean
 	public BCryptPasswordEncoder bCryptPasswordEncoder() {
-		return new BCryptPasswordEncoder();		
+		return new BCryptPasswordEncoder();
 	}
 }

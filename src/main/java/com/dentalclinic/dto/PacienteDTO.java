@@ -16,6 +16,7 @@ public class PacienteDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private Long id;
 	private String nome;
+	private String socialName;
 	private String email;
 
 	private String telefone1;
@@ -52,6 +53,7 @@ public class PacienteDTO implements Serializable {
 	public PacienteDTO(Paciente entity) {
 		this.setId(entity.getId());
 		this.nome = entity.getNome();
+		this.setSocialName(entity.getSocialName());
 		this.email = entity.getEmail();
 		this.nascimento = entity.getNascimento();
 		this.responsavel = entity.getResponsavel();
@@ -266,6 +268,14 @@ public class PacienteDTO implements Serializable {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public String getSocialName() {
+		return socialName;
+	}
+
+	public void setSocialName(String socialName) {
+		this.socialName = socialName;
 	}
 
 }

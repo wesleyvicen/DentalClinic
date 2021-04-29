@@ -21,8 +21,6 @@ import javax.persistence.Table;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import enums.TipoCivil;
 import enums.TipoPlano;
 import enums.TipoSexo;
@@ -38,13 +36,14 @@ public class Paciente implements Serializable {
 	private Long id;
 	@Column(nullable = false)
 	private String nome;
+	private String socialName;
 	private String email;
 	private String telefone1;
 	private String telefone2;
 	private String telefone3;
-	
+
 	@LazyCollection(LazyCollectionOption.FALSE)
-	@OneToMany(mappedBy="paciente", cascade=CascadeType.ALL)
+	@OneToMany(mappedBy = "paciente", cascade = CascadeType.ALL)
 	private List<DocumentUrl> documentsUrl = new ArrayList<>();
 
 	@ManyToOne()
@@ -77,13 +76,14 @@ public class Paciente implements Serializable {
 	public Paciente() {
 	}
 
-	public Paciente(Long id, String nome, String email, String telefone1, String telefone2, String telefone3,
-			LocalDate nascimento, String responsavel, TipoSexo sexo, TipoCivil estadoCivil, String indicacao,
-			TipoPlano planoSaude, String convenio, String rg, String cpf, String ocupacao, String endereco,
-			String enderecoNum, String bairro, String cidade, String estado, String cep) {
+	public Paciente(Long id, String nome, String socialName, String email, String telefone1, String telefone2,
+			String telefone3, LocalDate nascimento, String responsavel, TipoSexo sexo, TipoCivil estadoCivil,
+			String indicacao, TipoPlano planoSaude, String convenio, String rg, String cpf, String ocupacao,
+			String endereco, String enderecoNum, String bairro, String cidade, String estado, String cep) {
 		super();
 		this.id = id;
 		this.nome = nome;
+		this.setSocialName(socialName);
 		this.email = email;
 		this.telefone1 = telefone1;
 		this.telefone2 = telefone2;
@@ -106,12 +106,13 @@ public class Paciente implements Serializable {
 		this.cep = cep;
 	}
 
-	public Paciente(String nome, String email, String telefone1, String telefone2, String telefone3,
+	public Paciente(String nome, String socialName, String email, String telefone1, String telefone2, String telefone3,
 			LocalDate nascimento, String responsavel, TipoSexo sexo, TipoCivil estadoCivil, String indicacao,
 			TipoPlano planoSaude, String convenio, String rg, String cpf, String ocupacao, String endereco,
 			String enderecoNum, String bairro, String cidade, String estado, String cep) {
 		super();
 		this.nome = nome;
+		this.setSocialName(socialName);
 		this.email = email;
 		this.telefone1 = telefone1;
 		this.telefone2 = telefone2;
@@ -349,6 +350,14 @@ public class Paciente implements Serializable {
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
+	}
+
+	public String getSocialName() {
+		return socialName;
+	}
+
+	public void setSocialName(String socialName) {
+		this.socialName = socialName;
 	}
 
 }

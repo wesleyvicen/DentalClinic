@@ -43,7 +43,7 @@ public class AgendaService {
 		List<Agenda> list = agendaRepository.getAgendasWithLogin(login);
 		return list;
 	}
-	
+
 	public List<Agenda> getAgendasWithPaciente(Long id) {
 		List<Agenda> list = agendaRepository.getAgendasWithPaciente(id);
 		return list;
@@ -65,6 +65,8 @@ public class AgendaService {
 		agenda.setAllDay(obj.getAllDay());
 		agenda.setValor(obj.getValor());
 		agenda.setStatus(obj.getStatus());
+		agenda.setPagamento(obj.getPagamento());
+		agenda.setDetalhes(obj.getDetalhes());
 		agenda.setUsuario(usuarioService.getUsuarioWithLogin(obj.getLogin_usuario()));
 		agenda.setPaciente(pacienteService.getById(obj.getPaciente_id()));
 
@@ -88,11 +90,13 @@ public class AgendaService {
 		newObj.setAllDay(obj.getAllDay() == null ? newObj.getAllDay() : obj.getAllDay());
 		newObj.setValor(obj.getValor() == null ? newObj.getValor() : obj.getValor());
 		newObj.setStatus(obj.getStatus() == null ? newObj.getStatus() : obj.getStatus());
+		newObj.setPagamento(obj.getPagamento() == null ? newObj.getPagamento() : obj.getPagamento());
+		newObj.setDetalhes(obj.getDetalhes() == null ? newObj.getDetalhes() : obj.getDetalhes());
 	}
 
 	public Agenda fromDTO(AgendaDTO objDto) {
 		Agenda agenda = new Agenda(objDto.getId(), objDto.getTitle(), objDto.getStart(), objDto.getEnd(),
-				objDto.getAllDay(), objDto.getValor(), objDto.getStatus());
+				objDto.getAllDay(), objDto.getValor(), objDto.getStatus(), objDto.getPagamento(), objDto.getDetalhes());
 		agenda.setPaciente(pacienteService.getById(objDto.getPaciente_id()));
 		return agenda;
 	}

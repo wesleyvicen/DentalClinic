@@ -9,11 +9,11 @@ import enums.TipoCivil;
 import enums.TipoPlano;
 import enums.TipoSexo;
 
-
 public class NewPacienteDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private String nome;
+	private String socialName;
 	private String email;
 
 	private String telefone1;
@@ -45,10 +45,11 @@ public class NewPacienteDTO implements Serializable {
 
 	public NewPacienteDTO() {
 	}
-	
+
 	public NewPacienteDTO(Paciente entity) {
-		
+
 		this.nome = entity.getNome();
+		this.socialName = entity.getSocialName();
 		this.email = entity.getEmail();
 		this.nascimento = entity.getNascimento();
 		this.responsavel = entity.getResponsavel();
@@ -68,7 +69,7 @@ public class NewPacienteDTO implements Serializable {
 		this.cep = entity.getCep();
 		this.login_usuario = entity.getUsuario().getLogin();
 	}
-	
+
 	public String getLogin_usuario() {
 		return login_usuario;
 	}
@@ -243,6 +244,14 @@ public class NewPacienteDTO implements Serializable {
 
 	public void setCep(String cep) {
 		this.cep = cep;
+	}
+
+	public String getSocialName() {
+		return socialName;
+	}
+
+	public void setSocialName(String socialName) {
+		this.socialName = socialName;
 	}
 
 }

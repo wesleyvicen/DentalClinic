@@ -48,12 +48,14 @@ public class Agenda implements Serializable {
 	private Double valor;
 	@Column(nullable = false, precision = 9, scale = 3)
 	private Boolean status;
+	private String pagamento;
+	private String detalhes;
 
 	public Agenda() {
 	}
 
-	public Agenda(Long id, String title, LocalDateTime start, LocalDateTime end, LocalDate allDay, Paciente paciente, Double valor,
-			Boolean status) {
+	public Agenda(Long id, String title, LocalDateTime start, LocalDateTime end, LocalDate allDay, Paciente paciente,
+			Double valor, Boolean status, String pagamento, String detalhes) {
 		super();
 		this.id = id;
 		this.title = title;
@@ -63,10 +65,12 @@ public class Agenda implements Serializable {
 		this.paciente = paciente;
 		this.setValor(valor);
 		this.status = (status == null) ? true : status;
+		this.setPagamento(pagamento);
+		this.setDetalhes(detalhes);
 	}
 
-	public Agenda(String title, LocalDateTime start, LocalDateTime end, LocalDate allDay, Paciente paciente, Double valor,
-			Boolean status) {
+	public Agenda(String title, LocalDateTime start, LocalDateTime end, LocalDate allDay, Paciente paciente,
+			Double valor, Boolean status, String pagamento, String detalhes) {
 		super();
 		this.title = title;
 		this.start = start;
@@ -75,9 +79,12 @@ public class Agenda implements Serializable {
 		this.paciente = paciente;
 		this.setValor(valor);
 		this.status = (status == null) ? true : status;
+		this.setPagamento(pagamento);
+		this.setDetalhes(detalhes);
 	}
-	
-	public Agenda(Long id, String title, LocalDateTime start, LocalDateTime end, LocalDate allDay, Double valor, Boolean status) {
+
+	public Agenda(Long id, String title, LocalDateTime start, LocalDateTime end, LocalDate allDay, Double valor,
+			Boolean status, String pagamento, String detalhes) {
 		super();
 		this.title = title;
 		this.start = start;
@@ -85,6 +92,8 @@ public class Agenda implements Serializable {
 		this.allDay = allDay;
 		this.setValor(valor);
 		this.status = (status == null) ? true : status;
+		this.setPagamento(pagamento);
+		this.setDetalhes(detalhes);
 	}
 
 	public Usuario getUsuario() {
@@ -188,6 +197,22 @@ public class Agenda implements Serializable {
 
 	public void setValor(Double valor) {
 		this.valor = valor;
+	}
+
+	public String getPagamento() {
+		return pagamento;
+	}
+
+	public void setPagamento(String pagamento) {
+		this.pagamento = pagamento;
+	}
+
+	public String getDetalhes() {
+		return detalhes;
+	}
+
+	public void setDetalhes(String detalhes) {
+		this.detalhes = detalhes;
 	}
 
 }

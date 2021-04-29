@@ -86,6 +86,7 @@ public class PacienteService {
 	private void updateData(Paciente newObj, Paciente obj) {
 
 		newObj.setNome(obj.getNome() == null ? newObj.getNome() : obj.getNome());
+		newObj.setSocialName(obj.getSocialName() == null ? newObj.getSocialName() : obj.getSocialName());
 		newObj.setEmail(obj.getEmail() == null ? newObj.getEmail() : obj.getEmail());
 		newObj.setTelefone1(obj.getTelefone1() == null ? newObj.getTelefone1() : obj.getTelefone1());
 		newObj.setTelefone2(obj.getTelefone2() == null ? newObj.getTelefone2() : obj.getTelefone2());
@@ -111,7 +112,7 @@ public class PacienteService {
 
 	@Transactional
 	public Paciente fromDTO(NewPacienteDTO dto) {
-		Paciente paciente = new Paciente(dto.getNome(), dto.getEmail(), dto.getTelefone1(), dto.getTelefone2(), dto.getTelefone3(), dto.getNascimento(), dto.getResponsavel(),
+		Paciente paciente = new Paciente(dto.getNome(), dto.getSocialName(), dto.getEmail(), dto.getTelefone1(), dto.getTelefone2(), dto.getTelefone3(), dto.getNascimento(), dto.getResponsavel(),
 				dto.getSexo(), dto.getEstadoCivil(), dto.getIndicacao(), dto.getPlanoSaude(), dto.getConvenio(),
 				dto.getRg(), dto.getCpf(), dto.getOcupacao(), dto.getEndereco(), dto.getEnderecoNum(), dto.getBairro(),
 				dto.getCidade(), dto.getEstado(), dto.getCep());

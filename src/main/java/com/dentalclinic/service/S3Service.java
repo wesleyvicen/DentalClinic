@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.dentalclinic.service.exception.FileException;
 
@@ -54,4 +55,12 @@ public class S3Service {
 			throw new FileException("Erro ao converter URL para URI");
 		}
 	}
+	
+
+	    public void deleteFile(final String keyName) {
+	        LOG.info("Deleting file with name= " + keyName);
+	        final DeleteObjectRequest deleteObjectRequest = new DeleteObjectRequest(bucketName, keyName);
+	        s3client.deleteObject(deleteObjectRequest);
+	        LOG.info("File deleted successfully.");
+	    }
 }

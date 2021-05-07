@@ -17,11 +17,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
 import com.dentalclinic.security.JWTAuthenticationFilter;
 import com.dentalclinic.security.JWTAuthorizationFilter;
 import com.dentalclinic.security.JWTUtil;
+import com.dentalclinic.service.EmailService;
+import com.dentalclinic.service.SmtpEmailService;
 
 @Configuration
 @EnableWebSecurity
@@ -127,5 +128,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Bean
 	public BCryptPasswordEncoder bCryptPasswordEncoder() {
 		return new BCryptPasswordEncoder();
+	}
+	
+	@Bean
+	public EmailService emailService() {
+		return new SmtpEmailService();
 	}
 }

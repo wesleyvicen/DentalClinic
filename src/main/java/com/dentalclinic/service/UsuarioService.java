@@ -29,11 +29,6 @@ import com.dentalclinic.security.JWTUtil;
 import com.dentalclinic.security.UserSS;
 import com.dentalclinic.service.exception.AuthorizationException;
 
-/**
- * @author B�rbara Rodrigues, Gabriel Botelho, Guilherme Cruz, Lucas Caputo,
- *         Renan Alencar, Wesley Vicente
- *
- */
 @Service
 public class UsuarioService {
 	@Autowired
@@ -69,6 +64,7 @@ public class UsuarioService {
 		if (!existsUsuarioWithLogin(usuario.getLogin())) {
 			usuarioRepository.save(usuario);
 			incluirUsuarioConta(usuario);
+			emailService.sendConfirmationEmail(usuario);
 			return usuarioDto;
 		} else {
 			throw new IllegalStateException();

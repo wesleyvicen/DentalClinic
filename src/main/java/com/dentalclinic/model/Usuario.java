@@ -4,7 +4,11 @@
 package com.dentalclinic.model;
 
 import java.io.Serializable;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -140,10 +144,21 @@ public class Usuario implements Serializable {
 	public void setStatus(Boolean status) {
 		this.status = status;
 	}
-
+	
 	@Override
 	public String toString() {
-		return "Usuario [login=" + login + ", senha=" + senha + ", nome=" + nome + ", telefone=" + telefone + "]";
+		NumberFormat nf = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+		StringBuilder builder = new StringBuilder();
+		builder.append("Olá, ");
+		builder.append(getNome()+"! \n");
+		builder.append("\n");
+		builder.append("Parabéns! você acabou de se registrar no nosso sistema. \n");
+		builder.append("Use seu Email para entrar: ");
+		builder.append(getLogin()+"\n");
+		builder.append("Situação no Sistema: ");
+		builder.append(status == true ? "Ativo": "Desativado");
+		return builder.toString();
 	}
 
 	public String getImageUrl() {

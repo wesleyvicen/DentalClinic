@@ -48,7 +48,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	/***
 	 * Array com os endpoints liberação para recuperar dados sem autenticação
 	 */
-	private static final String[] PUBLIC_MATCHERS_GET = {};
+	private static final String[] PUBLIC_MATCHERS_GET = {"/agenda/public"};
 
 	private static final String[] PUBLIC_MATCHERS_POST = { "/user", "/user/login/**" };
 

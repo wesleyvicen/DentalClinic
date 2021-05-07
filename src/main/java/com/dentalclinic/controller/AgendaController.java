@@ -1,5 +1,7 @@
 package com.dentalclinic.controller;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,6 +30,18 @@ public class AgendaController {
 	@RequestMapping(method = RequestMethod.GET, params = { "login" })
 	public ResponseEntity<List<AgendaDTO>> findAll(@RequestParam(name = "login") String login) {
 		List<Agenda> list = agendaService.getAgendasWithLogin(login);
+		List<AgendaDTO> listDto = list.stream().map(obj -> new AgendaDTO(obj)).collect(Collectors.toList());  
+		return ResponseEntity.ok().body(listDto);
+	}
+	
+	@RequestMapping(value = "/public", method = RequestMethod.GET, params = { "login" })
+	public ResponseEntity<List<AgendaDTO>> findAllPublic(@RequestParam(name = "login") String login, @RequestParam(name = "dataInicio") String stringDataInicio, @RequestParam(name = "dataFim") String stringDataFim) {
+		String inicioDate = stringDataInicio;
+        LocalDate dataInicio = LocalDate.parse(inicioDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        String fimDate = stringDataFim;
+        LocalDate dataFim = LocalDate.parse(fimDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+		
+		List<Agenda> list = agendaService.getAgendasWithDateBetween(login, dataInicio, dataFim);
 		List<AgendaDTO> listDto = list.stream().map(obj -> new AgendaDTO(obj)).collect(Collectors.toList());  
 		return ResponseEntity.ok().body(listDto);
 	}

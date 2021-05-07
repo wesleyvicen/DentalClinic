@@ -1,5 +1,6 @@
 package com.dentalclinic.service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,6 +42,12 @@ public class AgendaService {
 	@Transactional
 	public List<Agenda> getAgendasWithLogin(String login) {
 		List<Agenda> list = agendaRepository.getAgendasWithLogin(login);
+		return list;
+	}
+	
+	@Transactional
+	public List<Agenda> getAgendasWithDateBetween(String login, LocalDate dataInicio, LocalDate dataFim) {
+		List<Agenda> list = agendaRepository.getAgendasWithDateBetween(login, dataInicio, dataFim);
 		return list;
 	}
 

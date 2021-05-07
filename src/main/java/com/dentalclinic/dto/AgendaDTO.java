@@ -22,7 +22,12 @@ public class AgendaDTO implements Serializable {
 	@DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private LocalDate allDay;
+	private Double valor;
 	private Boolean status;
+	private Long paciente_id;
+	private String login_usuario;
+	private String pagamento;
+	private String detalhes;
 
 	public AgendaDTO() {
 
@@ -34,7 +39,13 @@ public class AgendaDTO implements Serializable {
 		this.start = obj.getStart();
 		this.end = obj.getEnd();
 		this.allDay = obj.getAllDay();
+		this.valor = obj.getValor();
 		this.status = obj.getStatus();
+		this.login_usuario = obj.getUsuario().getLogin();
+		this.paciente_id = obj.getPaciente().getId();
+		this.setPagamento(obj.getPagamento());
+		this.setDetalhes(obj.getDetalhes());
+
 	}
 
 	public Long getId() {
@@ -83,6 +94,46 @@ public class AgendaDTO implements Serializable {
 
 	public void setStatus(Boolean status) {
 		this.status = status;
+	}
+
+	public Long getPaciente_id() {
+		return paciente_id;
+	}
+
+	public void setPaciente_id(Long paciente_id) {
+		this.paciente_id = paciente_id;
+	}
+
+	public String getLogin_usuario() {
+		return login_usuario;
+	}
+
+	public void setLogin_usuario(String login_usuario) {
+		this.login_usuario = login_usuario;
+	}
+
+	public Double getValor() {
+		return valor;
+	}
+
+	public void setValor(Double valor) {
+		this.valor = valor;
+	}
+
+	public String getPagamento() {
+		return pagamento;
+	}
+
+	public void setPagamento(String pagamento) {
+		this.pagamento = pagamento;
+	}
+
+	public String getDetalhes() {
+		return detalhes;
+	}
+
+	public void setDetalhes(String detalhes) {
+		this.detalhes = detalhes;
 	}
 
 }

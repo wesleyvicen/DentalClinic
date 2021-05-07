@@ -6,41 +6,41 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-public class Telefone implements Serializable {
+public class DocumentUrl implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private Integer id;
-    private String numero;
+    private Long id;
+    private String url;
 
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name="paciente_id")
     private Paciente paciente;
 
-    public Telefone(String numero, Paciente paciente) {
-        this.numero = numero;
+    public DocumentUrl(String url, Paciente paciente) {
+        this.url = url;
         this.paciente = paciente;
     }
 
-    public Telefone() {
+    public DocumentUrl() {
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public String getNumero() {
-        return numero;
+    public String getUrl() {
+        return url;
     }
 
-    public void setNumero(String numero) {
-        this.numero = numero;
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public Paciente getPaciente() {
@@ -67,7 +67,7 @@ public class Telefone implements Serializable {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        Telefone other = (Telefone) obj;
+        DocumentUrl other = (DocumentUrl) obj;
         if (id == null) {
             if (other.id != null)
                 return false;

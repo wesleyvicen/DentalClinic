@@ -1,13 +1,14 @@
 package com.dentalclinic.controller;
 
+import java.net.URI;
 import java.util.List;
+import java.util.stream.Collectors;
 
-import com.dentalclinic.dto.AgendaDTO;
-import com.dentalclinic.model.Agenda;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,11 +17,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.dentalclinic.dto.NewPacienteDTO;
 import com.dentalclinic.dto.PacienteDTO;
 import com.dentalclinic.model.Paciente;
+import com.dentalclinic.service.DocumentsService;
 import com.dentalclinic.service.PacienteService;
+import com.dentalclinic.service.S3Service;
 
 @RestController
 @RequestMapping(value = "/paciente")
@@ -28,11 +32,18 @@ public class PacienteController {
 
 	@Autowired
 	private PacienteService pacienteService;
+	
+	@Autowired
+	private S3Service s3Service;
+	
+	@Autowired
+	private DocumentsService documentsService;
 
 	@RequestMapping(method = RequestMethod.GET, params = { "login" })
-	public ResponseEntity<List<Paciente>> findAll(@RequestParam(name = "login") String login) {
+	public ResponseEntity<List<PacienteDTO>> findAll(@RequestParam(name = "login") String login) {
 		List<Paciente> list = pacienteService.getPacientesWithLogin(login);
-		return ResponseEntity.ok().body(list);
+		List<PacienteDTO> listDto = list.stream().map(obj -> new PacienteDTO(obj)).collect(Collectors.toList());
+		return ResponseEntity.ok().body(listDto);
 	}
 
 	@GetMapping("/{id}")
@@ -68,8 +79,22 @@ public class PacienteController {
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<Void> delete(@PathVariable Long id) {
+	public ResponseEntity<?> delete(@PathVariable Long id) {
 		pacienteService.delete(id);
 		return ResponseEntity.noContent().build();
 	}
+
+	@RequestMapping(value = "/picture/{id}", method = RequestMethod.POST)
+	public ResponseEntity<Void> uploadProfilePicture(@PathVariable Long id,
+			@RequestParam(name = "file") MultipartFile file) {
+		URI uri = pacienteService.uploadProfilePicture(id, file);
+		return ResponseEntity.created(uri).build();
+	}
+	@RequestMapping(value = "/delete", method = RequestMethod.DELETE)
+	    public ResponseEntity<String> deleteFile(@RequestParam(value= "fileName") String keyName, @RequestParam(value= "fileId") Long fileId) {
+	        s3Service.deleteFile(keyName);
+	        documentsService.delete(fileId);
+	        final String response = "[" + keyName + "] detelado com sucesso.";
+	        return new ResponseEntity<>(response, HttpStatus.OK);
+	    }
 }

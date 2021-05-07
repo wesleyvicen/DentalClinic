@@ -1,6 +1,9 @@
 package com.dentalclinic.controller;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,13 +28,34 @@ public class AgendaController {
 	private AgendaService agendaService;
 
 	@RequestMapping(method = RequestMethod.GET, params = { "login" })
-	public ResponseEntity<List<Agenda>> findAll(@RequestParam(name = "login") String login) {
+	public ResponseEntity<List<AgendaDTO>> findAll(@RequestParam(name = "login") String login) {
 		List<Agenda> list = agendaService.getAgendasWithLogin(login);
-		return ResponseEntity.ok().body(list);
+		List<AgendaDTO> listDto = list.stream().map(obj -> new AgendaDTO(obj)).collect(Collectors.toList());  
+		return ResponseEntity.ok().body(listDto);
+	}
+	
+	@RequestMapping(value = "/public", method = RequestMethod.GET, params = { "login" })
+	public ResponseEntity<List<AgendaDTO>> findAllPublic(@RequestParam(name = "login") String login, @RequestParam(name = "dataInicio") String stringDataInicio, @RequestParam(name = "dataFim") String stringDataFim) {
+		String inicioDate = stringDataInicio;
+        LocalDate dataInicio = LocalDate.parse(inicioDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        String fimDate = stringDataFim;
+        LocalDate dataFim = LocalDate.parse(fimDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+		
+		List<Agenda> list = agendaService.getAgendasWithDateBetween(login, dataInicio, dataFim);
+		List<AgendaDTO> listDto = list.stream().map(obj -> new AgendaDTO(obj)).collect(Collectors.toList());  
+		return ResponseEntity.ok().body(listDto);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, params = { "id" })
+	public ResponseEntity<List<AgendaDTO>> findAll(@RequestParam(name = "id") Long id) {
+		List<Agenda> list = agendaService.getAgendasWithPaciente(id);
+		List<AgendaDTO> listDto = list.stream().map(obj -> new AgendaDTO(obj)).collect(Collectors.toList());  
+		return ResponseEntity.ok().body(listDto);
 	}
 
+
 	@PostMapping
-	public ResponseEntity<Agenda> insert(@RequestBody Agenda dto) {
+	public ResponseEntity<Agenda> insert(@RequestBody AgendaDTO dto) {
 		return new ResponseEntity<>(agendaService.insert(dto), HttpStatus.CREATED);
 	}
 

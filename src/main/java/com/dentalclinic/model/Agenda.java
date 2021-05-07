@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,6 +16,7 @@ import javax.persistence.OneToOne;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Agenda implements Serializable {
@@ -38,20 +38,24 @@ public class Agenda implements Serializable {
 	@DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private LocalDate allDay;
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne
 	@JoinColumn(name = "paciente_id", referencedColumnName = "id")
 	private Paciente paciente;
+	@JsonIgnore
 	@ManyToOne()
 	@JoinColumn(name = "login_usuario", referencedColumnName = "login")
 	private Usuario usuario;
+	private Double valor;
 	@Column(nullable = false, precision = 9, scale = 3)
 	private Boolean status;
+	private String pagamento;
+	private String detalhes;
 
 	public Agenda() {
 	}
 
 	public Agenda(Long id, String title, LocalDateTime start, LocalDateTime end, LocalDate allDay, Paciente paciente,
-			Boolean status) {
+			Double valor, Boolean status, String pagamento, String detalhes) {
 		super();
 		this.id = id;
 		this.title = title;
@@ -59,27 +63,37 @@ public class Agenda implements Serializable {
 		this.end = end;
 		this.allDay = allDay;
 		this.paciente = paciente;
+		this.setValor(valor);
 		this.status = (status == null) ? true : status;
+		this.setPagamento(pagamento);
+		this.setDetalhes(detalhes);
 	}
 
 	public Agenda(String title, LocalDateTime start, LocalDateTime end, LocalDate allDay, Paciente paciente,
-			Boolean status) {
+			Double valor, Boolean status, String pagamento, String detalhes) {
 		super();
 		this.title = title;
 		this.start = start;
 		this.end = end;
 		this.allDay = allDay;
 		this.paciente = paciente;
+		this.setValor(valor);
 		this.status = (status == null) ? true : status;
+		this.setPagamento(pagamento);
+		this.setDetalhes(detalhes);
 	}
-	
-	public Agenda(Long id, String title, LocalDateTime start, LocalDateTime end, LocalDate allDay, Boolean status) {
+
+	public Agenda(Long id, String title, LocalDateTime start, LocalDateTime end, LocalDate allDay, Double valor,
+			Boolean status, String pagamento, String detalhes) {
 		super();
 		this.title = title;
 		this.start = start;
 		this.end = end;
 		this.allDay = allDay;
+		this.setValor(valor);
 		this.status = (status == null) ? true : status;
+		this.setPagamento(pagamento);
+		this.setDetalhes(detalhes);
 	}
 
 	public Usuario getUsuario() {
@@ -175,6 +189,30 @@ public class Agenda implements Serializable {
 		} else if (!paciente.equals(other.paciente))
 			return false;
 		return true;
+	}
+
+	public Double getValor() {
+		return valor;
+	}
+
+	public void setValor(Double valor) {
+		this.valor = valor;
+	}
+
+	public String getPagamento() {
+		return pagamento;
+	}
+
+	public void setPagamento(String pagamento) {
+		this.pagamento = pagamento;
+	}
+
+	public String getDetalhes() {
+		return detalhes;
+	}
+
+	public void setDetalhes(String detalhes) {
+		this.detalhes = detalhes;
 	}
 
 }

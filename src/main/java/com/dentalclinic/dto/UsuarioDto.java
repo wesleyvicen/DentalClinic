@@ -1,5 +1,7 @@
 package com.dentalclinic.dto;
 
+import javax.persistence.Column;
+
 import com.dentalclinic.model.Usuario;
 
 /**
@@ -12,6 +14,8 @@ public class UsuarioDto {
 	private String nome;
 	private String senha;
 	private Boolean status;
+    private String verificationCode;
+    private boolean enabled;
 	
 	public UsuarioDto(Usuario usuario) {
 		this.telefone = usuario.getTelefone();
@@ -19,6 +23,8 @@ public class UsuarioDto {
 		this.nome = usuario.getNome();
 		this.senha = usuario.getSenha();
 		this.status = usuario.getStatus();
+		this.verificationCode = usuario.getVerificationCode();
+		this.enabled = usuario.isEnabled();
 	}
 	
 	public UsuarioDto(String telefone, String login, String nome, String senha) {
@@ -75,6 +81,22 @@ public class UsuarioDto {
 	@Override
 	public String toString() {
 		return "UsuarioDto [telefone=" + telefone + ", login=" + login + ", nome=" + nome + ", senha=" + senha + "]";
+	}
+
+	public String getVerificationCode() {
+		return verificationCode;
+	}
+
+	public void setVerificationCode(String verificationCode) {
+		this.verificationCode = verificationCode;
+	}
+
+	public boolean isEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
 	}
 	
 	

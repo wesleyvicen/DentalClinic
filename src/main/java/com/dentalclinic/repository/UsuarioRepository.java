@@ -21,4 +21,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer>{
 			+ "INNER JOIN CONTA\r\n"
 			+ "ON (USUARIO.LOGIN = CONTA.LOGIN_USUARIO) WHERE usuario.id= :id")
 	List<Usuario> findUsuarioAndConta(@Param("id") Integer id);	
+	
+	@Query("SELECT u FROM Usuario u WHERE u.verificationCode = ?1")
+    public Usuario findByVerificationCode(String code);
 }

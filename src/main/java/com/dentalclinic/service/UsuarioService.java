@@ -14,6 +14,7 @@ import javax.mail.internet.MimeMessage;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -59,6 +60,9 @@ public class UsuarioService {
 	
 	 @Autowired
 	    private JavaMailSender mailSender;
+	 
+	 @Value("${spring.mail.username}")
+		private String mail;
 //
 //	@Value("${img.prefix.client.profile}")
 //	private String prefix;
@@ -197,7 +201,7 @@ public class UsuarioService {
 	private void sendVerificationEmail(Usuario user, String siteURL)
 	        throws MessagingException, UnsupportedEncodingException {
 	    String toAddress = user.getLogin();
-	    String fromAddress = "contato@sysmei.com";
+	    String fromAddress = mail;
 	    String senderName = "Sysmei";
 	    String subject = "Por favor, verifique o seu registro";
 	    String content = "Olá, [[name]],<br>"

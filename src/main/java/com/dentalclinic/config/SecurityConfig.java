@@ -17,7 +17,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
 import com.dentalclinic.security.JWTAuthenticationFilter;
 import com.dentalclinic.security.JWTAuthorizationFilter;
@@ -40,7 +39,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	/***
 	 * Array com os endpoints liberação sem precisar de autenticação
 	 */
-	private static final String[] PUBLIC_MATCHERS = { "/h2-console/**" };
+	private static final String[] PUBLIC_MATCHERS = { "/h2-console/**" , "/user/token"};
 
 	private static final String[] SWAGGER_WHITELIST = { "/v2/api-docs", "/swagger-resources", "/swagger-resources/**",
 			"/configuration/ui", "/configuration/security", "/swagger-ui.html", "/webjars/**" };

@@ -54,28 +54,34 @@ public class UsuarioController {
 					"Usuario %s já existe no sistema e não pode ser criado, por favor tente um login diferente.",
 					usuarioDto.getLogin()), HttpStatus.NOT_ACCEPTABLE);
 		} catch (Exception e) {
-			return new ResponseEntity<>((String.format(
-					"Houve algum erro intento no cadasto e usuario %s não pode ser criado, por favor tente mais tarde.",
-					usuarioDto.getLogin())), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(("Houve algum erro intento, por favor tente mais tarde."),
+					HttpStatus.BAD_REQUEST);
 		}
 	}
-	
-	@PostMapping(value="/login")
+
+	@PostMapping(value = "/login")
 	public ResponseEntity<?> logar(@RequestBody LoginDto loginDto) {
 		try {
 			return new ResponseEntity<>(usuarioService.logar(loginDto), HttpStatus.OK);
 
 		} catch (IllegalArgumentException ex) {
-			return new ResponseEntity<>(String.format(
-					"Erro: %s",
-					ex.getMessage()), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(String.format("Erro: %s", ex.getMessage()), HttpStatus.BAD_REQUEST);
 		}
 	}
-	
-	@RequestMapping(value = "/picture", method=RequestMethod.POST)
-	public ResponseEntity<Void> uploadProfilePicture(@RequestParam(name="file") MultipartFile file) {
+
+	@RequestMapping(value = "/picture", method = RequestMethod.POST)
+	public ResponseEntity<Void> uploadProfilePicture(@RequestParam(name = "file") MultipartFile file) {
 		URI uri = usuarioService.uploadProfilePicture(file);
 		return ResponseEntity.created(uri).build();
+	}
+
+	@RequestMapping(value = "/token", method = RequestMethod.GET)
+	public String verificarUser(@RequestParam(name = "code") String code) {
+		if (usuarioService.verificarUser(code)) {
+			return "verify_success";
+		} else {
+			return "verify_fail";
+		}
 	}
 
 }

@@ -56,6 +56,11 @@ public class Usuario implements Serializable {
 	private Set<Integer> perfis = new HashSet<>();
 	
 	private String imageUrl;
+	
+	@Column(name = "verification_code", length = 64)
+    private String verificationCode;
+     
+    private boolean enabled;
 
 	public Usuario() {
 
@@ -153,5 +158,23 @@ public class Usuario implements Serializable {
 	public void setImageUrl(String imageUrl) {
 		this.imageUrl = imageUrl;
 	}
+
+	public boolean isEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
+
+	public String getVerificationCode() {
+		return verificationCode;
+	}
+
+	public void setVerificationCode(String verificationCode) {
+		this.verificationCode = verificationCode;
+	}
+	
+	
 
 }

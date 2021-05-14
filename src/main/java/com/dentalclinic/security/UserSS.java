@@ -11,6 +11,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.dentalclinic.model.Usuario;
+
 import enums.Perfil;
 
 /**
@@ -44,6 +46,8 @@ public class UserSS implements UserDetails {
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return authorities;
 	}
+	
+
 
 	public Integer getId() {
 		return id;
@@ -77,6 +81,10 @@ public class UserSS implements UserDetails {
 		return true;
 	}
 
+    public boolean isEnabled(Usuario user) {
+        return user.isEnabled();
+    }
+	
 	@Override
 	public boolean isEnabled() {
 		return true;

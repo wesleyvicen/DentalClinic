@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dentalclinic.dto.AgendaDTO;
+import com.dentalclinic.dto.AgendaSoma;
 import com.dentalclinic.model.Agenda;
 import com.dentalclinic.service.AgendaService;
 
@@ -30,29 +31,30 @@ public class AgendaController {
 	@RequestMapping(method = RequestMethod.GET, params = { "login" })
 	public ResponseEntity<List<AgendaDTO>> findAll(@RequestParam(name = "login") String login) {
 		List<Agenda> list = agendaService.getAgendasWithLogin(login);
-		List<AgendaDTO> listDto = list.stream().map(obj -> new AgendaDTO(obj)).collect(Collectors.toList());  
-		return ResponseEntity.ok().body(listDto);
-	}
-	
-	@RequestMapping(value = "/public", method = RequestMethod.GET, params = { "login" })
-	public ResponseEntity<List<AgendaDTO>> findAllPublic(@RequestParam(name = "login") String login, @RequestParam(name = "dataInicio") String stringDataInicio, @RequestParam(name = "dataFim") String stringDataFim) {
-		String inicioDate = stringDataInicio;
-        LocalDate dataInicio = LocalDate.parse(inicioDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-        String fimDate = stringDataFim;
-        LocalDate dataFim = LocalDate.parse(fimDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-		
-		List<Agenda> list = agendaService.getAgendasWithDateBetween(login, dataInicio, dataFim);
-		List<AgendaDTO> listDto = list.stream().map(obj -> new AgendaDTO(obj)).collect(Collectors.toList());  
-		return ResponseEntity.ok().body(listDto);
-	}
-	
-	@RequestMapping(method = RequestMethod.GET, params = { "id" })
-	public ResponseEntity<List<AgendaDTO>> findAll(@RequestParam(name = "id") Long id) {
-		List<Agenda> list = agendaService.getAgendasWithPaciente(id);
-		List<AgendaDTO> listDto = list.stream().map(obj -> new AgendaDTO(obj)).collect(Collectors.toList());  
+		List<AgendaDTO> listDto = list.stream().map(obj -> new AgendaDTO(obj)).collect(Collectors.toList());
 		return ResponseEntity.ok().body(listDto);
 	}
 
+	@RequestMapping(value = "/public", method = RequestMethod.GET, params = { "login" })
+	public ResponseEntity<List<AgendaDTO>> findAllPublic(@RequestParam(name = "login") String login,
+			@RequestParam(name = "dataInicio") String stringDataInicio,
+			@RequestParam(name = "dataFim") String stringDataFim) {
+		String inicioDate = stringDataInicio;
+		LocalDate dataInicio = LocalDate.parse(inicioDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+		String fimDate = stringDataFim;
+		LocalDate dataFim = LocalDate.parse(fimDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
+		List<Agenda> list = agendaService.getAgendasWithDateBetween(login, dataInicio, dataFim);
+		List<AgendaDTO> listDto = list.stream().map(obj -> new AgendaDTO(obj)).collect(Collectors.toList());
+		return ResponseEntity.ok().body(listDto);
+	}
+
+	@RequestMapping(method = RequestMethod.GET, params = { "id" })
+	public ResponseEntity<List<AgendaDTO>> findAll(@RequestParam(name = "id") Long id) {
+		List<Agenda> list = agendaService.getAgendasWithPaciente(id);
+		List<AgendaDTO> listDto = list.stream().map(obj -> new AgendaDTO(obj)).collect(Collectors.toList());
+		return ResponseEntity.ok().body(listDto);
+	}
 
 	@PostMapping
 	public ResponseEntity<Agenda> insert(@RequestBody AgendaDTO dto) {
@@ -71,5 +73,19 @@ public class AgendaController {
 	public ResponseEntity<Void> delete(@PathVariable Long id) {
 		agendaService.delete(id);
 		return ResponseEntity.noContent().build();
+	}
+
+	@RequestMapping(value = "/soma", method = RequestMethod.GET, params = { "login" })
+	public ResponseEntity<AgendaSoma> getSomaAgendamentos(@RequestParam(name = "login") String login,
+			@RequestParam(name = "dataInicio") String stringDataInicio,
+			@RequestParam(name = "dataFim") String stringDataFim) {
+		String inicioDate = stringDataInicio;
+		LocalDate dataInicio = LocalDate.parse(inicioDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+		String fimDate = stringDataFim;
+		LocalDate dataFim = LocalDate.parse(fimDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
+		AgendaSoma agendaSoma = agendaService.getSomaAgendamentosBetween(login, dataInicio, dataFim);
+
+		return ResponseEntity.ok().body(agendaSoma);
 	}
 }

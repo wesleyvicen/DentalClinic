@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.dentalclinic.dto.AgendaDTO;
+import com.dentalclinic.dto.AgendaSoma;
 import com.dentalclinic.exceptions.ObjectNotFoundException;
 import com.dentalclinic.model.Agenda;
 import com.dentalclinic.repository.AgendaRepository;
@@ -44,7 +45,7 @@ public class AgendaService {
 		List<Agenda> list = agendaRepository.getAgendasWithLogin(login);
 		return list;
 	}
-	
+
 	@Transactional
 	public List<Agenda> getAgendasWithDateBetween(String login, LocalDate dataInicio, LocalDate dataFim) {
 		List<Agenda> list = agendaRepository.getAgendasWithDateBetween(login, dataInicio, dataFim);
@@ -106,6 +107,15 @@ public class AgendaService {
 				objDto.getAllDay(), objDto.getValor(), objDto.getStatus(), objDto.getPagamento(), objDto.getDetalhes());
 		agenda.setPaciente(pacienteService.getById(objDto.getPaciente_id()));
 		return agenda;
+	}
+
+	public AgendaSoma getSomaAgendamentosBetween(String login, LocalDate dataInicio, LocalDate dataFim) {
+		Double soma = agendaRepository.getSomaAgendamentosBetween(login, dataInicio, dataFim);
+		if(soma == null) {
+			soma = 0.0;
+		}
+		AgendaSoma agendaSoma = new AgendaSoma(login,dataInicio, dataFim, soma);
+		return agendaSoma;
 	}
 
 }

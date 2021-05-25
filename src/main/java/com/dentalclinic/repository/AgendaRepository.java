@@ -21,10 +21,12 @@ public interface AgendaRepository extends JpaRepository<Agenda, Long> {
 	List<Agenda> getAgendasWithPaciente(@Param("paciente_id") Long pacienteId);
 	
 	//@Query(value = "Select agenda from Agenda agenda where agenda.allDay between :dataInicio and :dataFim a")
-	@Query(value = "Select agenda from Agenda agenda where agenda.usuario.login = :loginUsuario and agenda.allDay between :dataInicio and :dataFim ")
+	@Query(value = "Select agenda from Agenda agenda where agenda.usuario.login = :loginUsuario and agenda.allDay between :dataInicio and :dataFim")
 	public List<Agenda> getAgendasWithDateBetween(@Param("loginUsuario") String loginUsuario,@Param("dataInicio") LocalDate dataInicio, @Param("dataFim") LocalDate dataFim);
 
 	
+	@Query(value = "Select sum(agenda.valor) from Agenda agenda where agenda.usuario.login = :loginUsuario and agenda.allDay between :dataInicio and :dataFim")
+	public Double getSomaAgendamentosBetween(@Param("loginUsuario") String loginUsuario, @Param("dataInicio") LocalDate dataInicio, @Param("dataFim") LocalDate dataFim);
 //	@Query(value = "Select agenda from Agenda agenda where agenda.allDay between :dataInicio and :dataFim a")
 //	public List<Agenda> getAgendasWithDateBetween(@Param("dataInicio") LocalDate dataInicio, @Param("dataFim") LocalDate dataFim);
 

@@ -22,6 +22,6 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer>{
 			+ "ON (USUARIO.LOGIN = CONTA.LOGIN_USUARIO) WHERE usuario.id= :id")
 	List<Usuario> findUsuarioAndConta(@Param("id") Integer id);	
 	
-	@Query("SELECT u FROM Usuario u WHERE u.verificationCode = ?1")
+	@Query("Select usuario from Usuario usuario where usuario.verificationCode = :code")
     public Usuario findByVerificationCode(String code);
 }

@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,17 +18,18 @@ import org.springframework.web.multipart.MultipartFile;
 import com.dentalclinic.dto.LoginDto;
 import com.dentalclinic.dto.UsuarioDto;
 import com.dentalclinic.exceptions.ObjectNotFoundException;
+import com.dentalclinic.keys.Keys;
 import com.dentalclinic.model.Usuario;
 import com.dentalclinic.service.UsuarioService;
 
 @RestController
-@RequestMapping(value = "/user")
+@RequestMapping(value = Keys.USER)
 public class UsuarioController {
 
 	@Autowired
 	private UsuarioService usuarioService;
 
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = Keys.ID, method = RequestMethod.GET)
 	public ResponseEntity<?> find(@PathVariable Integer id) {
 		try {
 			Usuario obj = usuarioService.search(id);
@@ -59,7 +61,7 @@ public class UsuarioController {
 		}
 	}
 
-	@PostMapping(value = "/login")
+	@PostMapping(value = Keys.LOGIN)
 	public ResponseEntity<?> logar(@RequestBody LoginDto loginDto) {
 		try {
 			return new ResponseEntity<>(usuarioService.logar(loginDto), HttpStatus.OK);
@@ -69,14 +71,14 @@ public class UsuarioController {
 		}
 	}
 
-	@RequestMapping(value = "/picture", method = RequestMethod.POST)
-	public ResponseEntity<Void> uploadProfilePicture(@RequestParam(name = "file") MultipartFile file) {
+	@RequestMapping(value = Keys.PICTURE, method = RequestMethod.POST)
+	public ResponseEntity<Void> uploadProfilePicture(@RequestParam(name = Keys.PARAM_FILE) MultipartFile file) {
 		URI uri = usuarioService.uploadProfilePicture(file);
 		return ResponseEntity.created(uri).build();
 	}
 
-	@RequestMapping(value = "/token", method = RequestMethod.GET)
-	public String verificarUser(@RequestParam(name = "code") String code) {
+	@RequestMapping(value = Keys.TOKEN, method = RequestMethod.GET)
+	public String verificarUser(@RequestHeader(name = Keys.code) String code) {
 		if (usuarioService.verificarUser(code)) {
 			return "verify_success";
 		} else {

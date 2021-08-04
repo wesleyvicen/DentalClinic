@@ -42,7 +42,7 @@ public class PacienteController {
 	@RequestMapping(method = RequestMethod.GET, params = { Keys.PARAM_LOGIN })
 	public ResponseEntity<List<PacienteDTO>> findAll(@RequestParam(name = Keys.PARAM_LOGIN) String login) {
 		List<Paciente> list = pacienteService.getPacientesWithLogin(login);
-		List<PacienteDTO> listDto = list.stream().map(obj -> new PacienteDTO(obj)).collect(Collectors.toList());
+		List<PacienteDTO> listDto = list.stream().map(PacienteDTO::new).collect(Collectors.toList());
 		return ResponseEntity.ok().body(listDto);
 	}
 
@@ -58,7 +58,7 @@ public class PacienteController {
 			@RequestParam(value = Keys.PARAM_ORDER_BY, defaultValue = "nome") String orderBy,
 			@RequestParam(value = Keys.PARAM_DIRECTION, defaultValue = "ASC") String direction) {
 		Page<Paciente> list = pacienteService.findPage(page, linesPerPage, orderBy, direction);
-		Page<PacienteDTO> listDto = list.map(obj -> new PacienteDTO(obj));
+		Page<PacienteDTO> listDto = list.map(PacienteDTO::new);
 		return ResponseEntity.ok().body(listDto);
 	}
 

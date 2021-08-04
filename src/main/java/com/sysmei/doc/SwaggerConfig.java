@@ -34,7 +34,7 @@ public class SwaggerConfig {
 		Docket docket = new Docket(DocumentationType.SWAGGER_2);
 
 		docket.globalOperationParameters(params).select()
-				.apis(RequestHandlerSelectors.basePackage("com.dentalclinic.controller")).paths(PathSelectors.any())
+				.apis(RequestHandlerSelectors.basePackage("com.sysmei.controller")).paths(PathSelectors.any())
 				.build().apiInfo(this.informacoesApi().build())
 				.consumes(new HashSet<String>(Arrays.asList("application/json")))
 				.produces(new HashSet<String>(Arrays.asList("application/json")));

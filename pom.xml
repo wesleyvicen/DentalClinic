@@ -9,11 +9,11 @@
 		<version>2.4.2</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>dental.clinic</groupId>
-	<artifactId>desafio-java</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>desafio-java</name>
-	<description>Java challenge</description>
+	<groupId>sysmei.com</groupId>
+	<artifactId>sysmei</artifactId>
+	<version>0.0.1</version>
+	<name>Sysmei - Sistema para MEI</name>
+	<description>Sistema de agendamento para microempreendedor individual!</description>
 	<properties>
 		<java.version>1.8</java.version>
 	</properties>

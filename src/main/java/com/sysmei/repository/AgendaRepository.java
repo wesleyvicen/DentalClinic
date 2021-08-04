@@ -34,4 +34,8 @@ public interface AgendaRepository extends JpaRepository<Agenda, Long> {
 //	@Query(value = "select allDay, sum(valor) from Agenda where (allDay >= :allDayStart and data <= :allDayEnd) group by allDay")
 //	String getSomaValores(LocalDate allDayStart, LocalDate allDayEnd);
 
+	//	List<Agenda> findByDateBetween(final LocalDateTime start, final LocalDateTime end);
+	@Query(value = "Select agenda from Agenda agenda where agenda.status = :status")
+	List<Agenda> getAgendasWithStatus(@Param("status") Integer status);
+
 }

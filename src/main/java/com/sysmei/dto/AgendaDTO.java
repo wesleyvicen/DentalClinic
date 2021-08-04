@@ -23,7 +23,7 @@ public class AgendaDTO implements Serializable {
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private LocalDate allDay;
 	private Double valor;
-	private Boolean status;
+	private Integer status;
 	private Long paciente_id;
 	private String login_usuario;
 	private String pagamento;
@@ -88,11 +88,11 @@ public class AgendaDTO implements Serializable {
 		this.allDay = allDay;
 	}
 
-	public Boolean getStatus() {
+	public Integer getStatus() {
 		return status;
 	}
 
-	public void setStatus(Boolean status) {
+	public void setStatus(Integer status) {
 		this.status = status;
 	}
 

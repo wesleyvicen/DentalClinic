@@ -47,7 +47,7 @@ public class Agenda implements Serializable {
 	private Usuario usuario;
 	private Double valor;
 	@Column(nullable = false, precision = 9, scale = 3)
-	private Boolean status;
+	private Integer status;
 	private String pagamento;
 	private String detalhes;
 
@@ -55,7 +55,7 @@ public class Agenda implements Serializable {
 	}
 
 	public Agenda(Long id, String title, LocalDateTime start, LocalDateTime end, LocalDate allDay, Paciente paciente,
-			Double valor, Boolean status, String pagamento, String detalhes) {
+			Double valor, int status, String pagamento, String detalhes) {
 		super();
 		this.id = id;
 		this.title = title;
@@ -64,13 +64,13 @@ public class Agenda implements Serializable {
 		this.allDay = allDay;
 		this.paciente = paciente;
 		this.setValor(valor);
-		this.status = (status == null) ? true : status;
+		this.status = (status == 0) ? 1 : status;
 		this.setPagamento(pagamento);
 		this.setDetalhes(detalhes);
 	}
 
 	public Agenda(String title, LocalDateTime start, LocalDateTime end, LocalDate allDay, Paciente paciente,
-			Double valor, Boolean status, String pagamento, String detalhes) {
+			Double valor, int status, String pagamento, String detalhes) {
 		super();
 		this.title = title;
 		this.start = start;
@@ -78,20 +78,20 @@ public class Agenda implements Serializable {
 		this.allDay = allDay;
 		this.paciente = paciente;
 		this.setValor(valor);
-		this.status = (status == null) ? true : status;
+		this.status = (status == 0) ? 1 : status;
 		this.setPagamento(pagamento);
 		this.setDetalhes(detalhes);
 	}
 
 	public Agenda(Long id, String title, LocalDateTime start, LocalDateTime end, LocalDate allDay, Double valor,
-			Boolean status, String pagamento, String detalhes) {
+			int status, String pagamento, String detalhes) {
 		super();
 		this.title = title;
 		this.start = start;
 		this.end = end;
 		this.allDay = allDay;
 		this.setValor(valor);
-		this.status = (status == null) ? true : status;
+		this.status = (status == 0) ? 1 : status;
 		this.setPagamento(pagamento);
 		this.setDetalhes(detalhes);
 	}
@@ -152,11 +152,11 @@ public class Agenda implements Serializable {
 		this.paciente = paciente;
 	}
 
-	public Boolean getStatus() {
+	public Integer getStatus() {
 		return status;
 	}
 
-	public void setStatus(Boolean status) {
+	public void setStatus(Integer status) {
 		this.status = status;
 	}
 

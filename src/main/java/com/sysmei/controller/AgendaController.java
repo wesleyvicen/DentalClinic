@@ -90,4 +90,12 @@ public class AgendaController {
 
 		return ResponseEntity.ok().body(agendaSoma);
 	}
+
+	@RequestMapping(method = RequestMethod.GET, params = { Keys.PARAM_STATUS })
+	public ResponseEntity<List<AgendaDTO>> findAllStatus(@RequestParam(name = Keys.PARAM_STATUS) Integer status) {
+		List<Agenda> list = agendaService.getAgendasWithStatus(status);
+		List<AgendaDTO> listDto = list.stream().map(obj -> new AgendaDTO(obj)).collect(Collectors.toList());
+		return ResponseEntity.ok().body(listDto);
+	}
+
 }

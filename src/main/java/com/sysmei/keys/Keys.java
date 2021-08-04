@@ -15,6 +15,7 @@ public class Keys {
 	public static final String PARAM_DIRECTION = "direction";
 	public static final String PARAM_FILE_NAME = "fileName";
 	public static final String PARAM_FILE_ID = "fileId";
+	public static final String PARAM_STATUS = "status";
 
 	// Rotas Agenda
 	public static final String AGENDA = "/agenda";

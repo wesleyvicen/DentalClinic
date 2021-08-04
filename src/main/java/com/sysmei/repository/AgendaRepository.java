@@ -38,4 +38,6 @@ public interface AgendaRepository extends JpaRepository<Agenda, Long> {
 	@Query(value = "Select agenda from Agenda agenda where agenda.status = :status")
 	List<Agenda> getAgendasWithStatus(@Param("status") Integer status);
 
+	@Query(value = "Select agenda from Agenda agenda Left Join Fetch agenda.usuario usuario where agenda.usuario.login = :loginUsuario and agenda.status =:status")
+	List<Agenda> getAgendasWithLoginAndStatus(@Param("loginUsuario") String login, @Param("status") Integer status);
 }

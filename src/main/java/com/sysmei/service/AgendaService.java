@@ -124,4 +124,10 @@ public class AgendaService {
 		return list;
 	}
 
+	@Transactional
+	public List<Agenda> getAgendasWithLoginAndStatus(String login, Integer status) {
+		List<Agenda> list = agendaRepository.getAgendasWithLoginAndStatus(login, status);
+		return list;
+	}
+
 }

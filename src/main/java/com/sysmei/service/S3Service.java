@@ -55,7 +55,7 @@ public class S3Service {
 			throw new FileException("Erro ao converter URL para URI");
 		}
 	}
-	
+
 
 	    public void deleteFile(final String keyName) {
 	        LOG.info("Deleting file with name= " + keyName);

@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.sysmei.security;
 
@@ -46,13 +46,13 @@ public class UserSS implements UserDetails {
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return authorities;
 	}
-	
+
 
 
 	public Integer getId() {
 		return id;
 	}
-	
+
 	@Override
 	public String getPassword() {
 		return senha;
@@ -84,7 +84,7 @@ public class UserSS implements UserDetails {
     public boolean isEnabled(Usuario user) {
         return user.isEnabled();
     }
-	
+
 	@Override
 	public boolean isEnabled() {
 		return true;

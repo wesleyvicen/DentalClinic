@@ -4,7 +4,7 @@ public class TokenDto {
 	private String token;
 	private String horaInicio;
 	private String horaFim;
-	
+
 	public String getToken() {
 		return token;
 	}
@@ -23,6 +23,6 @@ public class TokenDto {
 	public void setHoraFim(String horaFim) {
 		this.horaFim = horaFim;
 	}
-	
-	
+
+
 }

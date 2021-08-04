@@ -29,26 +29,26 @@ public class PacienteService {
 
 	@Autowired
 	private PacienteRepository pacienteRepository;
-	
+
 	@Autowired
 	private UsuarioService usuarioService;
-	
+
 	@Autowired
 	private S3Service s3Service;
-	
+
 	@Autowired
 	private ImageService imageService;
-	
+
 //	@Transactional(readOnly = true)
 //	public List<Paciente> findAll() {
 //		return pacienteRepository.findAll();
 //	}
-	
+
 	public List<Paciente> getPacientesWithLogin(String login) {
 		List<Paciente> list = pacienteRepository.getPacientesWithLogin(login);
 		return list;
-	}	
-	
+	}
+
 	public Paciente getById(Long id) {
 		Optional<Paciente> obj = pacienteRepository.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException(
@@ -66,7 +66,7 @@ public class PacienteService {
 		paciente = pacienteRepository.save(paciente);
 		return paciente;
 	}
-	
+
 	@Transactional
 	public Page<Paciente> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
@@ -119,7 +119,7 @@ public class PacienteService {
 		paciente.setUsuario(usuarioService.getUsuarioWithLogin(dto.getLogin_usuario()));
 		return paciente;
 	}
-	
+
 	@Transactional
 	public URI uploadProfilePicture(Long id, MultipartFile multipartFile) {
 		UserSS user =  UsuarioService.authenticated();
@@ -139,7 +139,7 @@ public class PacienteService {
 
 		return uri;
 	}
-	
+
 
 
 }

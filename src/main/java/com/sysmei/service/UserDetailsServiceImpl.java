@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.sysmei.service;
 
@@ -18,14 +18,14 @@ import com.sysmei.security.UserSS;
  */
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
-	
+
 	@Autowired
 	UsuarioService usuarioService;
 
 	@Override
 	public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
 		Usuario usuario = usuarioService.getUsuarioWithLogin(login);
-		
+
 		if (usuario == null) {
 			throw new UsernameNotFoundException(login);
 		}

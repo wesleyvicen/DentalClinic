@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.sysmei.security;
 
@@ -27,7 +27,7 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 	UserDetailsService userDetailsService;
 
 	/***
-	 * 
+	 *
 	 * @param authenticationManager
 	 * @param jwtUtil
 	 * @param userDetailsService
@@ -59,7 +59,7 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
 	/***
 	 * Gera autorização a partir do token
-	 * 
+	 *
 	 * @param request
 	 * @param substring
 	 * @return

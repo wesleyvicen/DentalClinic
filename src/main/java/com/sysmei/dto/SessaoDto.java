@@ -5,7 +5,7 @@ public class SessaoDto {
 	public String dataFim;
 	public String token;
 	public UsuarioDto usuario;
-	
+
 	public String getDataFim() {
 		return dataFim;
 	}
@@ -30,12 +30,12 @@ public class SessaoDto {
 	public void setUsuario(UsuarioDto usuarioDto) {
 		this.usuario = usuarioDto;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "SessaoDto [dataFim=" + dataFim
 				+ ", dataInicio=" + dataInicio + ", token=" + token + ", usuario=" + usuario + "]";
 	}
-	
-	
+
+
 }

@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.sysmei.security;
 
@@ -32,9 +32,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
 	private AuthenticationManager authenticationManager;
-	
+
 	private JWTUtil jwtUtil;
-	
+
 	public JWTAuthenticationFilter(AuthenticationManager authenticationManager, JWTUtil jwtUtil) {
 		setAuthenticationFailureHandler(new JWTAuthenticationFailureHandler());
 		this.authenticationManager = authenticationManager;

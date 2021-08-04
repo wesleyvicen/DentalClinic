@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.sysmei.model;
 
@@ -30,7 +30,7 @@ import enums.Perfil;
 @Entity
 public class Usuario implements Serializable {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	@Id
@@ -54,12 +54,12 @@ public class Usuario implements Serializable {
 	@ElementCollection(fetch = FetchType.EAGER)
 	@CollectionTable(name = "PERFIS")
 	private Set<Integer> perfis = new HashSet<>();
-	
+
 	private String imageUrl;
-	
+
 	@Column(name = "verification_code", length = 64)
     private String verificationCode;
-     
+
     private boolean enabled;
 
 	public Usuario() {
@@ -133,7 +133,7 @@ public class Usuario implements Serializable {
 	public Set<Perfil> getPerfis() {
 		return perfis.stream().map(x -> Perfil.toEnum(x)).collect(Collectors.toSet());
 	}
-	
+
 	public void addPerfil(Perfil perfil) {
 		perfis.add(perfil.getCod());
 	}
@@ -174,7 +174,7 @@ public class Usuario implements Serializable {
 	public void setVerificationCode(String verificationCode) {
 		this.verificationCode = verificationCode;
 	}
-	
-	
+
+
 
 }

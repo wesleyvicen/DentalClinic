@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.sysmei.security;
 
@@ -38,19 +38,19 @@ public class JWTUtil {
 		tokenDto.setToken("Bearer " + token);
 		return tokenDto;
 	}
-	
+
 	public String generateToken(String login) {
 		return Jwts.builder().setSubject(login).setExpiration(new Date(System.currentTimeMillis() + expiration))
 				.signWith(SignatureAlgorithm.HS512, secret.getBytes()).compact();
 	}
-	
+
 	public String generateToken(String login, long currentTimeMillis) {
 		return Jwts.builder().setSubject(login).setExpiration(new Date(currentTimeMillis + expiration))
 				.signWith(SignatureAlgorithm.HS512, secret.getBytes()).compact();
 	}
 
 	/***
-	 * 
+	 *
 	 * @param token
 	 * @return
 	 */
@@ -69,7 +69,7 @@ public class JWTUtil {
 
 	/***
 	 * Recupera as revindicações através do token passado
-	 * 
+	 *
 	 * @param token
 	 * @return
 	 */
@@ -84,7 +84,7 @@ public class JWTUtil {
 
 	/***
 	 * Retorna o usuário de acordo com token
-	 * 
+	 *
 	 * @param token
 	 * @return
 	 */

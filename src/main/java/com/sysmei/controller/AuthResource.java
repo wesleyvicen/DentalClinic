@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.sysmei.controller;
 
@@ -22,7 +22,7 @@ public class AuthResource {
 
 	@Autowired
 	private JWTUtil jwtUtil;
-	
+
 	@RequestMapping(value = Keys.REFRESH_TOKEN, method = RequestMethod.POST)
 	public ResponseEntity<Void> refreshToken(HttpServletResponse response) {
 		UserSS user = UsuarioService.authenticated();

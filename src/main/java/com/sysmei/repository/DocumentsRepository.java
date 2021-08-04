@@ -10,5 +10,5 @@ import com.sysmei.model.DocumentUrl;
 public interface DocumentsRepository extends JpaRepository<DocumentUrl, Long> {
 
 	List<DocumentUrl> findAll();
-		
+
 }

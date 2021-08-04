@@ -13,7 +13,7 @@ public class UsuarioDto {
 	private String senha;
 	private Boolean status;
     private boolean enabled;
-	
+
 	public UsuarioDto(Usuario usuario) {
 		this.telefone = usuario.getTelefone();
 		this.login = usuario.getLogin();
@@ -22,7 +22,7 @@ public class UsuarioDto {
 		this.status = usuario.getStatus();
 		this.enabled = usuario.isEnabled();
 	}
-	
+
 	public UsuarioDto(String telefone, String login, String nome, String senha) {
 		super();
 		this.telefone = telefone;
@@ -39,7 +39,7 @@ public class UsuarioDto {
 		this.senha = senha;
 		this.status = status;
 	}
-	
+
 	public UsuarioDto() {
 		// TODO Auto-generated constructor stub
 	}
@@ -86,7 +86,7 @@ public class UsuarioDto {
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
 	}
-	
-	
-	
+
+
+
 }

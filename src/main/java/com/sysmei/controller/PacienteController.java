@@ -32,10 +32,10 @@ public class PacienteController {
 
 	@Autowired
 	private PacienteService pacienteService;
-	
+
 	@Autowired
 	private S3Service s3Service;
-	
+
 	@Autowired
 	private DocumentsService documentsService;
 

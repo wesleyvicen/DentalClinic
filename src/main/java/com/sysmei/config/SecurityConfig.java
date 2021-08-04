@@ -85,7 +85,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	/***
 	 * Método que configura as restrições de CORS com restrições básicas
-	 * 
+	 *
 	 * @return
 	 */
 
@@ -96,7 +96,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200", "http://localhost:4200/**",
 				"https://sysmei.netlify.app", "https://sysmei.netlify.app/**", "https://sysmei.com",
 				"https://www.sysmei.com", "https://sysmei.com/**", "https://www.sysmei.com/**",
-				"https://dev-sysmei.netlify.app", "https://dev-sysmei.netlify.app/**", "https://dev.sysmei.com/**", 
+				"https://dev-sysmei.netlify.app", "https://dev-sysmei.netlify.app/**", "https://dev.sysmei.com/**",
 				"https://dev.sysmei.com", "https://api2.sysmei.com/**", "https://api2.sysmei.com"));
 		configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "OPTIONS", "DELETE", "HEAD"));
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
@@ -121,7 +121,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	/***
 	 * Método que encripta a senha
-	 * 
+	 *
 	 * @return
 	 */
 	@Bean

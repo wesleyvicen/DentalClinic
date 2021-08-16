@@ -19,6 +19,7 @@ public class Prestador implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String nome;
+	private String telefone;
 	@JsonIgnore
 	@ManyToOne()
 	@JoinColumn(name = "login_usuario", referencedColumnName = "login")
@@ -26,10 +27,19 @@ public class Prestador implements Serializable {
 
 	public Prestador() {
 	}
-	
-	public Prestador( String nome) {
+
+	public Prestador(String nome, String telefone) {
 		super();
 		this.nome = nome;
+		this.telefone = telefone;
+	}
+
+	public String getTelefone() {
+		return telefone;
+	}
+
+	public void setTelefone(String telefone) {
+		this.telefone = telefone;
 	}
 
 	public Long getId() {

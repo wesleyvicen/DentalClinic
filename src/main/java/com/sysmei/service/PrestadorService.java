@@ -63,7 +63,7 @@ public class PrestadorService {
 
 	@Transactional
 	public Prestador fromDTO(PrestadorDTO dto) {
-		Prestador prestador = new Prestador(dto.getNome());
+		Prestador prestador = new Prestador(dto.getNome(), dto.getTelefone());
 		prestador.setUsuario(usuarioService.getUsuarioWithLogin(dto.getLogin_usuario()));
 		return prestador;
 	}

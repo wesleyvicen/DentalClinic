@@ -46,5 +46,9 @@ public class Keys {
 
 	// Params Usuário
 	public static final String code = "code";
+	
+	// Rotas Prestador
+	public static final String PRESTADOR = "/prestador";
+	
 
 }

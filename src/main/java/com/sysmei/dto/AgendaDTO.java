@@ -28,6 +28,7 @@ public class AgendaDTO implements Serializable {
 	private String login_usuario;
 	private String pagamento;
 	private String detalhes;
+	private Long prestador_id;
 
 	public AgendaDTO() {
 
@@ -45,6 +46,7 @@ public class AgendaDTO implements Serializable {
 		this.paciente_id = obj.getPaciente().getId();
 		this.setPagamento(obj.getPagamento());
 		this.setDetalhes(obj.getDetalhes());
+		this.prestador_id = obj.getPrestador().getId() == null ? 1 : obj.getPrestador().getId();
 
 	}
 
@@ -134,6 +136,14 @@ public class AgendaDTO implements Serializable {
 
 	public void setDetalhes(String detalhes) {
 		this.detalhes = detalhes;
+	}
+	
+	public Long getPrestador_id() {
+		return prestador_id;
+	}
+
+	public void setPrestador_id(Long prestador_id) {
+		this.prestador_id = prestador_id;
 	}
 
 }

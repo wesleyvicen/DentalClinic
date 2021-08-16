@@ -50,6 +50,9 @@ public class Agenda implements Serializable {
 	private Integer status;
 	private String pagamento;
 	private String detalhes;
+	@ManyToOne()
+	@JoinColumn(name = "prestador_id", referencedColumnName = "id")
+	private Prestador prestador;
 
 	public Agenda() {
 	}
@@ -214,5 +217,15 @@ public class Agenda implements Serializable {
 	public void setDetalhes(String detalhes) {
 		this.detalhes = detalhes;
 	}
+
+	public Prestador getPrestador() {
+		return prestador;
+	}
+
+	public void setPrestador(Prestador prestador) {
+		this.prestador = prestador;
+	}
+	
+	
 
 }

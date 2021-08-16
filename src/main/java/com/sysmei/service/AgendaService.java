@@ -27,6 +27,9 @@ public class AgendaService {
 
 	@Autowired
 	private UsuarioService usuarioService;
+	
+	@Autowired
+	private PrestadorService prestadorService;
 
 	@Transactional(readOnly = true)
 	public List<Agenda> findAll() {
@@ -77,7 +80,7 @@ public class AgendaService {
 		agenda.setDetalhes(obj.getDetalhes());
 		agenda.setUsuario(usuarioService.getUsuarioWithLogin(obj.getLogin_usuario()));
 		agenda.setPaciente(pacienteService.getById(obj.getPaciente_id()));
-
+		agenda.setPrestador(prestadorService.getById(obj.getPrestador_id()));
 		agenda = agendaRepository.save(agenda);
 		return agenda;
 	}
@@ -106,6 +109,7 @@ public class AgendaService {
 		Agenda agenda = new Agenda(objDto.getId(), objDto.getTitle(), objDto.getStart(), objDto.getEnd(),
 				objDto.getAllDay(), objDto.getValor(), objDto.getStatus(), objDto.getPagamento(), objDto.getDetalhes());
 		agenda.setPaciente(pacienteService.getById(objDto.getPaciente_id()));
+		agenda.setPrestador(prestadorService.getById(objDto.getPrestador_id()));
 		return agenda;
 	}
 

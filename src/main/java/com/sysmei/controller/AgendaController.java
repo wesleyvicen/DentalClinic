@@ -28,7 +28,6 @@ public class AgendaController {
 
 	@Autowired
 	private AgendaService agendaService;
-	
 
 	@RequestMapping(method = RequestMethod.GET, params = { Keys.PARAM_LOGIN })
 	public ResponseEntity<List<AgendaDTO>> findAll(@RequestParam(name = Keys.PARAM_LOGIN) String login) {
@@ -99,10 +98,11 @@ public class AgendaController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, params = { Keys.PARAM_LOGIN, Keys.PARAM_STATUS })
-	public ResponseEntity<List<AgendaDTO>> findAllStatus(@RequestParam(name = Keys.PARAM_LOGIN) String login, @RequestParam(name = Keys.PARAM_STATUS) Integer status) {
+	public ResponseEntity<List<AgendaDTO>> findAllStatus(@RequestParam(name = Keys.PARAM_LOGIN) String login,
+			@RequestParam(name = Keys.PARAM_STATUS) Integer status) {
 		List<Agenda> list = agendaService.getAgendasWithLoginAndStatus(login, status);
 		List<AgendaDTO> listDto = list.stream().map(AgendaDTO::new).collect(Collectors.toList());
 		return ResponseEntity.ok().body(listDto);
 	}
-
+	
 }

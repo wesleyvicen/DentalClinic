@@ -46,10 +46,10 @@ public class SwaggerConfig {
 
 		ApiInfoBuilder apiInfoBuilder = new ApiInfoBuilder();
 
-		apiInfoBuilder.title("Dental Clinic");
-		apiInfoBuilder.description("API DentalClinic");
+		apiInfoBuilder.title("Sysmei - Sistema para Micro-Empreendedor Invidual");
+		apiInfoBuilder.description("API Sysmei");
 		apiInfoBuilder.version("1.0");
-		apiInfoBuilder.termsOfServiceUrl("Termo de uso: Uso Dental Clinic");
+		apiInfoBuilder.termsOfServiceUrl("Termo de uso: Uso Sysmei");
 		apiInfoBuilder.license("Licença - Wesley Vicente");
 		apiInfoBuilder.licenseUrl("https://github.com/wesleyvicen");
 		apiInfoBuilder.contact(this.contato());

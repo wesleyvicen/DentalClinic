@@ -105,4 +105,19 @@ public class AgendaController {
 		return ResponseEntity.ok().body(listDto);
 	}
 	
+	@RequestMapping(value = "/prestador", method = RequestMethod.GET, params = { Keys.PARAM_LOGIN, "prestadorId" })
+	public ResponseEntity<List<AgendaDTO>> findAgendasWithPrestador(@RequestParam(name = Keys.PARAM_LOGIN) String login,
+			@RequestParam(name = Keys.PARAM_DATA_INICIO) String stringDataInicio,
+			@RequestParam(name = Keys.PARAM_DATA_FIM) String stringDataFim,
+			@RequestParam(name = "prestadorId") Long prestadorId) {
+		String inicioDate = stringDataInicio;
+		LocalDate dataInicio = LocalDate.parse(inicioDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+		String fimDate = stringDataFim;
+		LocalDate dataFim = LocalDate.parse(fimDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
+		List<Agenda> list = agendaService.getAgendasWithDateBetweenWithPrestador(login, dataInicio, dataFim, prestadorId);
+		List<AgendaDTO> listDto = list.stream().map(AgendaDTO::new).collect(Collectors.toList());
+		return ResponseEntity.ok().body(listDto);
+	}
+	
 }

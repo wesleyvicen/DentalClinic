@@ -54,6 +54,12 @@ public class AgendaService {
 		List<Agenda> list = agendaRepository.getAgendasWithDateBetween(login, dataInicio, dataFim);
 		return list;
 	}
+	
+	@Transactional
+	public List<Agenda> getAgendasWithDateBetweenWithPrestador(String login, LocalDate dataInicio, LocalDate dataFim, Long prestadorId) {
+		List<Agenda> list = agendaRepository.getAgendasWithDateBetweenWithPrestador(login, dataInicio, dataFim, prestadorId);
+		return list;
+	}
 
 	public List<Agenda> getAgendasWithPaciente(Long id) {
 		List<Agenda> list = agendaRepository.getAgendasWithPaciente(id);

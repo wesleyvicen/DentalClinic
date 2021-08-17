@@ -40,6 +40,12 @@ public class PrestadorController {
 		Prestador dto = prestadorService.getById(id);
 		return ResponseEntity.ok().body(dto);
 	}
+	
+	@GetMapping("/busca/{telefone}")
+	public ResponseEntity<Prestador> getByTelefone(@PathVariable String telefone) {
+		Prestador dto = prestadorService.getByTelefone(telefone);
+		return ResponseEntity.ok().body(dto);
+	}
 
 	@PostMapping
 	public ResponseEntity<?> insert(@RequestBody PrestadorDTO dto) {

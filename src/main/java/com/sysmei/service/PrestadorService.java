@@ -33,6 +33,12 @@ public class PrestadorService {
 		return obj.orElseThrow(() -> new ObjectNotFoundException(
 				"Objeto Não encontrado! ID: " + id + ", Tipo: " + Prestador.class.getName()));
 	}
+	
+	public Prestador getByTelefone(String telefone) {
+		Optional<Prestador> obj = prestadorRepository.findByTelefone(telefone);
+		return obj.orElseThrow(() -> new ObjectNotFoundException(
+				"Objeto Não encontrado! ID: " + telefone + ", Tipo: " + Prestador.class.getName()));
+	}
 
 	public Prestador update(Prestador obj) {
 		Prestador newObj = getById(obj.getId());

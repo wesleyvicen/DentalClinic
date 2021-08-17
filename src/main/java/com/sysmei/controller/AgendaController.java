@@ -29,12 +29,26 @@ public class AgendaController {
 	@Autowired
 	private AgendaService agendaService;
 
+	/**
+	 * 
+	 * @param login 	Login do usuário, podendo ser o email.
+	 * @return 			Retorna uma lista de AgendaDTO
+	 */
+	
 	@RequestMapping(method = RequestMethod.GET, params = { Keys.PARAM_LOGIN })
 	public ResponseEntity<List<AgendaDTO>> findAll(@RequestParam(name = Keys.PARAM_LOGIN) String login) {
 		List<Agenda> list = agendaService.getAgendasWithLogin(login);
 		List<AgendaDTO> listDto = list.stream().map(AgendaDTO::new).collect(Collectors.toList());
 		return ResponseEntity.ok().body(listDto);
 	}
+	
+	/**
+	 * 
+	 * @param login				Enviar o Login do usuário, podendo ser o email
+	 * @param stringDataInicio	Enviar a Data de inicio de pesquisa
+	 * @param stringDataFim		Enviar a data fim de pesquisa
+	 * @return 					Retorna uma lista de AgendaDTO 
+	 */
 
 	@RequestMapping(value = Keys.PUBLIC, method = RequestMethod.GET, params = { Keys.PARAM_LOGIN })
 	public ResponseEntity<List<AgendaDTO>> findAllPublic(@RequestParam(name = Keys.PARAM_LOGIN) String login,
@@ -49,33 +63,28 @@ public class AgendaController {
 		List<AgendaDTO> listDto = list.stream().map(AgendaDTO::new).collect(Collectors.toList());
 		return ResponseEntity.ok().body(listDto);
 	}
-
+	
+	/**
+	 * 
+	 * @param id	Enviar o ID da agenda
+	 * @return 		Retorna uma lista de AgendaDTO
+	 */
+	
 	@RequestMapping(method = RequestMethod.GET, params = { Keys.ID })
 	public ResponseEntity<List<AgendaDTO>> findAll(@RequestParam(name = Keys.ID) Long id) {
 		List<Agenda> list = agendaService.getAgendasWithPaciente(id);
 		List<AgendaDTO> listDto = list.stream().map(AgendaDTO::new).collect(Collectors.toList());
 		return ResponseEntity.ok().body(listDto);
 	}
-
-	@PostMapping
-	public ResponseEntity<Agenda> insert(@RequestBody AgendaDTO dto) {
-		return new ResponseEntity<>(agendaService.insert(dto), HttpStatus.CREATED);
-	}
-
-	@RequestMapping(value = Keys.ID, method = RequestMethod.PUT)
-	public ResponseEntity<Void> update(@RequestBody AgendaDTO objDto, @PathVariable Long id) {
-		Agenda obj = agendaService.fromDTO(objDto);
-		obj.setId(id);
-		obj = agendaService.update(obj);
-		return ResponseEntity.noContent().build();
-	}
-
-	@RequestMapping(value = Keys.ID, method = RequestMethod.DELETE)
-	public ResponseEntity<Void> delete(@PathVariable Long id) {
-		agendaService.delete(id);
-		return ResponseEntity.noContent().build();
-	}
-
+	
+	/**
+	 * 
+	 * @param login				Enviar o Login do usuário, podendo ser o email
+	 * @param stringDataInicio	Enviar a Data de inicio de pesquisa
+	 * @param stringDataFim		Enviar a data fim de pesquisa
+	 * @return 					Retorna o Objeto com a soma baseado no valor de cada agendamento
+	 */
+	
 	@RequestMapping(value = "/soma", method = RequestMethod.GET, params = { Keys.PARAM_LOGIN })
 	public ResponseEntity<AgendaSoma> getSomaAgendamentos(@RequestParam(name = Keys.PARAM_LOGIN) String login,
 			@RequestParam(name = "dataInicio") String stringDataInicio,
@@ -89,14 +98,27 @@ public class AgendaController {
 
 		return ResponseEntity.ok().body(agendaSoma);
 	}
-
+	
+	/**
+	 * 
+	 * @param status	Enviar 0 para Não confirmado, 1 para confirmado 1x e 2 para confirmado 24h antes
+	 * @return 			Retorna uma lista de AgendaDTO
+	 */
+	
 	@RequestMapping(method = RequestMethod.GET, params = { Keys.PARAM_STATUS })
 	public ResponseEntity<List<AgendaDTO>> findAllStatus(@RequestParam(name = Keys.PARAM_STATUS) Integer status) {
 		List<Agenda> list = agendaService.getAgendasWithStatus(status);
 		List<AgendaDTO> listDto = list.stream().map(AgendaDTO::new).collect(Collectors.toList());
 		return ResponseEntity.ok().body(listDto);
 	}
-
+	
+	/**
+	 * 
+	 * @param login		Enviar o Login do usuário, podendo ser o Email
+	 * @param status	Enviar 0 para Não confirmado, 1 para confirmado 1x e 2 para confirmado 24h antes
+	 * @return			Retorna uma lista de AgendaDTO
+	 */
+	
 	@RequestMapping(method = RequestMethod.GET, params = { Keys.PARAM_LOGIN, Keys.PARAM_STATUS })
 	public ResponseEntity<List<AgendaDTO>> findAllStatus(@RequestParam(name = Keys.PARAM_LOGIN) String login,
 			@RequestParam(name = Keys.PARAM_STATUS) Integer status) {
@@ -104,6 +126,14 @@ public class AgendaController {
 		List<AgendaDTO> listDto = list.stream().map(AgendaDTO::new).collect(Collectors.toList());
 		return ResponseEntity.ok().body(listDto);
 	}
+	/**
+	 * 
+	 * @param login				Enviar o Login do usuário, podendo ser o Email
+	 * @param stringDataInicio	Enviar a Data de inicio de pesquisa
+	 * @param stringDataFim		Enviar a data fim de pesquisa
+	 * @param prestadorId		Enviar o ID do prestador
+	 * @return					Retorna uma lista de AgendaDTO
+	 */
 	
 	@RequestMapping(value = "/prestador", method = RequestMethod.GET, params = { Keys.PARAM_LOGIN, "prestadorId" })
 	public ResponseEntity<List<AgendaDTO>> findAgendasWithPrestador(@RequestParam(name = Keys.PARAM_LOGIN) String login,
@@ -118,6 +148,58 @@ public class AgendaController {
 		List<Agenda> list = agendaService.getAgendasWithDateBetweenWithPrestador(login, dataInicio, dataFim, prestadorId);
 		List<AgendaDTO> listDto = list.stream().map(AgendaDTO::new).collect(Collectors.toList());
 		return ResponseEntity.ok().body(listDto);
+	}
+
+	/**
+	 * 
+	 * @param dto		Enviar o corpo da requisição o AgendaDTO formatado
+	 * @return			Retorna o corpo montado com o status 201 CREATED
+	 */
+	@PostMapping
+	public ResponseEntity<Agenda> insert(@RequestBody AgendaDTO dto) {
+		return new ResponseEntity<>(agendaService.insert(dto), HttpStatus.CREATED);
+	}
+	
+	/**
+	 * 
+	 * @param objDto
+	 * @param id
+	 * @return
+	 */
+
+	@RequestMapping(value = Keys.ID, method = RequestMethod.PUT)
+	public ResponseEntity<Void> update(@RequestBody AgendaDTO objDto, @PathVariable Long id) {
+		Agenda obj = agendaService.fromDTO(objDto);
+		obj.setId(id);
+		obj = agendaService.update(obj);
+		return ResponseEntity.noContent().build();
+	}
+	
+	/**
+	 * 
+	 * @param objDto
+	 * @param id
+	 * @return
+	 */
+	
+	@RequestMapping(value = Keys.ID, method = RequestMethod.PATCH)
+	public ResponseEntity<Void> updatePartes(@RequestBody AgendaDTO objDto, @PathVariable Long id) {
+		Agenda obj = agendaService.fromDTO(objDto);
+		obj.setId(id);
+		obj = agendaService.update(obj);
+		return ResponseEntity.noContent().build();
+	}
+	
+	/**
+	 * 
+	 * @param id
+	 * @return
+	 */
+
+	@RequestMapping(value = Keys.ID, method = RequestMethod.DELETE)
+	public ResponseEntity<Void> delete(@PathVariable Long id) {
+		agendaService.delete(id);
+		return ResponseEntity.noContent().build();
 	}
 	
 }

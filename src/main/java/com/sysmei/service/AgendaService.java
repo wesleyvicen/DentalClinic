@@ -106,7 +106,7 @@ public class AgendaService {
 		newObj.setEnd(obj.getEnd() == null ? newObj.getEnd() : obj.getEnd());
 		newObj.setAllDay(obj.getAllDay() == null ? newObj.getAllDay() : obj.getAllDay());
 		newObj.setValor(obj.getValor() == null ? newObj.getValor() : obj.getValor());
-		newObj.setStatus(obj.getStatus() == 0 ? newObj.getStatus() : obj.getStatus());
+		newObj.setStatus(obj.getStatus() == null ? newObj.getStatus() : obj.getStatus());
 		newObj.setPagamento(obj.getPagamento() == null ? newObj.getPagamento() : obj.getPagamento());
 		newObj.setDetalhes(obj.getDetalhes() == null ? newObj.getDetalhes() : obj.getDetalhes());
 	}

@@ -39,6 +39,12 @@ public class PacienteController {
 	@Autowired
 	private DocumentsService documentsService;
 
+	/**
+	 * 
+	 * @param login
+	 * @return
+	 */
+
 	@RequestMapping(method = RequestMethod.GET, params = { Keys.PARAM_LOGIN })
 	public ResponseEntity<List<PacienteDTO>> findAll(@RequestParam(name = Keys.PARAM_LOGIN) String login) {
 		List<Paciente> list = pacienteService.getPacientesWithLogin(login);
@@ -46,14 +52,29 @@ public class PacienteController {
 		return ResponseEntity.ok().body(listDto);
 	}
 
+	/**
+	 * 
+	 * @param id
+	 * @return
+	 */
+
 	@GetMapping(Keys.ID)
 	public ResponseEntity<Paciente> getById(@PathVariable Long id) {
 		Paciente dto = pacienteService.getById(id);
 		return ResponseEntity.ok().body(dto);
 	}
 
+	/**
+	 * 
+	 * @param page
+	 * @param linesPerPage
+	 * @param orderBy
+	 * @param direction
+	 * @return
+	 */
 	@RequestMapping(value = Keys.PAGE, method = RequestMethod.GET)
-	public ResponseEntity<Page<PacienteDTO>> findPage(@RequestParam(value = Keys.PARAM_PAGE, defaultValue = "0") Integer page,
+	public ResponseEntity<Page<PacienteDTO>> findPage(
+			@RequestParam(value = Keys.PARAM_PAGE, defaultValue = "0") Integer page,
 			@RequestParam(value = Keys.PARAM_LINES_PER_PAGE, defaultValue = "24") Integer linesPerPage,
 			@RequestParam(value = Keys.PARAM_ORDER_BY, defaultValue = "nome") String orderBy,
 			@RequestParam(value = Keys.PARAM_DIRECTION, defaultValue = "ASC") String direction) {
@@ -62,12 +83,39 @@ public class PacienteController {
 		return ResponseEntity.ok().body(listDto);
 	}
 
+	/**
+	 * 
+	 * @param id
+	 * @param file
+	 * @return
+	 */
+
+	@RequestMapping(value = Keys.PACIENTE_ID, method = RequestMethod.POST)
+	public ResponseEntity<Void> uploadProfilePicture(@PathVariable Long id,
+			@RequestParam(name = Keys.PARAM_FILE) MultipartFile file) {
+		URI uri = pacienteService.uploadProfilePicture(id, file);
+		return ResponseEntity.created(uri).build();
+	}
+
+	/**
+	 * 
+	 * @param dto
+	 * @return
+	 */
+
 	@PostMapping
 	public ResponseEntity<?> insert(@RequestBody NewPacienteDTO dto) {
 		Paciente paciente = pacienteService.fromDTO(dto);
 
 		return new ResponseEntity<>(pacienteService.insert(paciente), HttpStatus.CREATED);
 	}
+
+	/**
+	 * 
+	 * @param objDto
+	 * @param id
+	 * @return
+	 */
 
 	@RequestMapping(value = Keys.ID, method = RequestMethod.PUT)
 	public ResponseEntity<Void> update(@RequestBody NewPacienteDTO objDto, @PathVariable Long id) {
@@ -77,6 +125,12 @@ public class PacienteController {
 		return ResponseEntity.noContent().build();
 
 	}
+	
+	/**
+	 * 
+	 * @param id
+	 * @return
+	 */
 
 	@RequestMapping(value = Keys.ID, method = RequestMethod.DELETE)
 	public ResponseEntity<?> delete(@PathVariable Long id) {
@@ -84,17 +138,19 @@ public class PacienteController {
 		return ResponseEntity.noContent().build();
 	}
 
-	@RequestMapping(value = Keys.PACIENTE_ID, method = RequestMethod.POST)
-	public ResponseEntity<Void> uploadProfilePicture(@PathVariable Long id,
-			@RequestParam(name = Keys.PARAM_FILE) MultipartFile file) {
-		URI uri = pacienteService.uploadProfilePicture(id, file);
-		return ResponseEntity.created(uri).build();
-	}
+	/**
+	 * 
+	 * @param keyName
+	 * @param fileId
+	 * @return
+	 */
+	
 	@RequestMapping(value = Keys.DELETE, method = RequestMethod.DELETE)
-	    public ResponseEntity<String> deleteFile(@RequestParam(value= Keys.PARAM_FILE_NAME) String keyName, @RequestParam(value= Keys.PARAM_FILE_ID) Long fileId) {
-	        s3Service.deleteFile(keyName);
-	        documentsService.delete(fileId);
-	        final String response = "[" + keyName + "] detelado com sucesso.";
-	        return new ResponseEntity<>(response, HttpStatus.OK);
-	    }
+	public ResponseEntity<String> deleteFile(@RequestParam(value = Keys.PARAM_FILE_NAME) String keyName,
+			@RequestParam(value = Keys.PARAM_FILE_ID) Long fileId) {
+		s3Service.deleteFile(keyName);
+		documentsService.delete(fileId);
+		final String response = "[" + keyName + "] detelado com sucesso.";
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
 }

@@ -27,6 +27,11 @@ public class PrestadorController {
 	@Autowired
 	private PrestadorService prestadorService;
 
+	/**
+	 * 
+	 * @param login
+	 * @return
+	 */
 
 	@RequestMapping(method = RequestMethod.GET, params = { Keys.PARAM_LOGIN })
 	public ResponseEntity<List<PrestadorDTO>> findAll(@RequestParam(name = Keys.PARAM_LOGIN) String login) {
@@ -35,17 +40,35 @@ public class PrestadorController {
 		return ResponseEntity.ok().body(listDto);
 	}
 
+	/**
+	 * 
+	 * @param id
+	 * @return
+	 */
+
 	@GetMapping(Keys.ID)
 	public ResponseEntity<Prestador> getById(@PathVariable Long id) {
 		Prestador dto = prestadorService.getById(id);
 		return ResponseEntity.ok().body(dto);
 	}
-	
+
+	/**
+	 * 
+	 * @param telefone
+	 * @return
+	 */
+
 	@GetMapping("/busca/{telefone}")
 	public ResponseEntity<Prestador> getByTelefone(@PathVariable String telefone) {
 		Prestador dto = prestadorService.getByTelefone(telefone);
 		return ResponseEntity.ok().body(dto);
 	}
+
+	/**
+	 * 
+	 * @param dto
+	 * @return
+	 */
 
 	@PostMapping
 	public ResponseEntity<?> insert(@RequestBody PrestadorDTO dto) {
@@ -53,6 +76,13 @@ public class PrestadorController {
 
 		return new ResponseEntity<>(prestadorService.insert(prestador), HttpStatus.CREATED);
 	}
+
+	/**
+	 * 
+	 * @param objDto
+	 * @param id
+	 * @return
+	 */
 
 	@RequestMapping(value = Keys.ID, method = RequestMethod.PUT)
 	public ResponseEntity<Void> update(@RequestBody PrestadorDTO objDto, @PathVariable Long id) {
@@ -62,6 +92,12 @@ public class PrestadorController {
 		return ResponseEntity.noContent().build();
 
 	}
+
+	/**
+	 * 
+	 * @param id
+	 * @return
+	 */
 
 	@RequestMapping(value = Keys.ID, method = RequestMethod.DELETE)
 	public ResponseEntity<?> delete(@PathVariable Long id) {

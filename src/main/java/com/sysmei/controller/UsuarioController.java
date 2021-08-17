@@ -29,6 +29,12 @@ public class UsuarioController {
 	@Autowired
 	private UsuarioService usuarioService;
 
+	/**
+	 * 
+	 * @param id
+	 * @return
+	 */
+
 	@RequestMapping(value = Keys.ID, method = RequestMethod.GET)
 	public ResponseEntity<?> find(@PathVariable Integer id) {
 		try {
@@ -45,6 +51,26 @@ public class UsuarioController {
 
 	}
 
+	/**
+	 * 
+	 * @param code
+	 * @return
+	 */
+
+	@RequestMapping(value = Keys.TOKEN, method = RequestMethod.GET)
+	public String verificarUser(@RequestHeader(name = Keys.code) String code) {
+		if (usuarioService.verificarUser(code)) {
+			return "verify_success";
+		} else {
+			return "verify_fail";
+		}
+	}
+
+	/**
+	 * 
+	 * @param usuarioDto
+	 * @return
+	 */
 	@PostMapping()
 	public ResponseEntity<?> addConta(@RequestBody UsuarioDto usuarioDto) {
 		try {
@@ -61,6 +87,12 @@ public class UsuarioController {
 		}
 	}
 
+	/**
+	 * 
+	 * @param loginDto
+	 * @return
+	 */
+
 	@PostMapping(value = Keys.LOGIN)
 	public ResponseEntity<?> logar(@RequestBody LoginDto loginDto) {
 		try {
@@ -71,19 +103,16 @@ public class UsuarioController {
 		}
 	}
 
+	/**
+	 * 
+	 * @param file
+	 * @return
+	 */
+
 	@RequestMapping(value = Keys.PICTURE, method = RequestMethod.POST)
 	public ResponseEntity<Void> uploadProfilePicture(@RequestParam(name = Keys.PARAM_FILE) MultipartFile file) {
 		URI uri = usuarioService.uploadProfilePicture(file);
 		return ResponseEntity.created(uri).build();
-	}
-
-	@RequestMapping(value = Keys.TOKEN, method = RequestMethod.GET)
-	public String verificarUser(@RequestHeader(name = Keys.code) String code) {
-		if (usuarioService.verificarUser(code)) {
-			return "verify_success";
-		} else {
-			return "verify_fail";
-		}
 	}
 
 }

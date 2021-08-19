@@ -2,10 +2,6 @@ package com.sysmei.dto;
 
 import com.sysmei.model.Usuario;
 
-/**
- * @author B�rbara Rodrigues, Gabriel Botelho, Guilherme Cruz, Lucas Caputo, Renan Alencar, Wesley Vicente
- *
- */
 public class UsuarioDto {
 	private String telefone;
 	private String login;

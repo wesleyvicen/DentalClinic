@@ -1,12 +1,8 @@
 /**
  *
  */
-package enums;
+package com.sysmei.enums;
 
-/**
- * @author renan
- *
- */
 public enum Perfil {
 
 	ADMIN(1, "ROLE_ADMIN"), CLIENTE(2, "ROLE_CLIENT");

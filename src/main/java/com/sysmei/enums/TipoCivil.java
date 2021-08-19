@@ -1,4 +1,4 @@
-package enums;
+package com.sysmei.enums;
 
 public enum TipoCivil {
 	S("Solteiro"),

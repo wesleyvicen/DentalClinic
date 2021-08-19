@@ -18,20 +18,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import com.sysmei.dto.UsuarioDto;
+import com.sysmei.enums.Perfil;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import enums.Perfil;
-
-/**
- * @author B�rbara Rodrigues, Gabriel Botelho, Guilherme Cruz, Lucas Caputo,
- *         Renan Alencar, Wesley Vicente
- *
- */
 @Entity
 public class Usuario implements Serializable {
-	/**
-	 *
-	 */
+
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -23,22 +23,22 @@ import com.sysmei.dto.PacienteDTO;
 import com.sysmei.keys.ParamsKeys;
 import com.sysmei.keys.RotasKeys;
 import com.sysmei.model.Paciente;
-import com.sysmei.service.DocumentsService;
-import com.sysmei.service.PacienteService;
-import com.sysmei.service.S3Service;
+import com.sysmei.service.impl.DocumentsServiceImpl;
+import com.sysmei.service.impl.PacienteServiceImpl;
+import com.sysmei.service.impl.S3ServiceImpl;
 
 @RestController
 @RequestMapping(value = RotasKeys.PACIENTE)
 public class PacienteController {
 
 	@Autowired
-	private PacienteService pacienteService;
+	private PacienteServiceImpl pacienteService;
 
 	@Autowired
-	private S3Service s3Service;
+	private S3ServiceImpl s3Service;
 
 	@Autowired
-	private DocumentsService documentsService;
+	private DocumentsServiceImpl documentsService;
 
 	/**
 	 * 

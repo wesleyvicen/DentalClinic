@@ -5,9 +5,6 @@ package com.sysmei.dto;
 
 import java.io.Serializable;
 
-/**
- * @author renan Classe auxiliar para autenticação do JWT
- */
 public class CredenciaisDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;

@@ -2,7 +2,7 @@ package com.sysmei.keys;
 
 public class ParamsKeys {
 
-	// Params Comum
+	// Comum
 	public static final String LOGIN = "login";
 	public static final String PAGE = "page";
 	public static final String LINES_PER_PAGE = "linesPerPage";
@@ -13,14 +13,14 @@ public class ParamsKeys {
 	public static final String STATUS = "status";
 	public static final String LOGIN_STATUS = "login_status";
 
-	// Params Agenda
+	// Agenda
 	public static final String DATA_INICIO = "dataInicio";
 	public static final String DATA_FIM = "dataFim";
 	public static final String ID = "id";
 
-	// Params Paciente
+	// Paciente
 	public static final String FILE = "file";
 
-	// Params Usuário
+	// Usuário
 	public static final String code = "code";
 }

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.sysmei.keys.RotasKeys;
 import com.sysmei.security.JWTUtil;
 import com.sysmei.security.UserSS;
-import com.sysmei.service.UsuarioService;
+import com.sysmei.service.impl.UsuarioServiceImpl;
 
 @RestController
 @RequestMapping(value = RotasKeys.AUTH)
@@ -31,7 +31,7 @@ public class AuthResource {
 	 */
 	@RequestMapping(value = RotasKeys.REFRESH_TOKEN, method = RequestMethod.POST)
 	public ResponseEntity<Void> refreshToken(HttpServletResponse response) {
-		UserSS user = UsuarioService.authenticated();
+		UserSS user = UsuarioServiceImpl.authenticated();
 		String token = jwtUtil.generateToken(user.getUsername());
 		response.addHeader("Authorization", "Bearer " + token);
 		response.addHeader("access-control-expose-headers", "Authorization");

@@ -5,12 +5,11 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.sysmei.enums.TipoCivil;
+import com.sysmei.enums.TipoPlano;
+import com.sysmei.enums.TipoSexo;
 import com.sysmei.model.DocumentUrl;
 import com.sysmei.model.Paciente;
-
-import enums.TipoCivil;
-import enums.TipoPlano;
-import enums.TipoSexo;
 
 public class PacienteDTO implements Serializable {
 	private static final long serialVersionUID = 1L;

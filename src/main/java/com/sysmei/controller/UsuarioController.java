@@ -21,14 +21,14 @@ import com.sysmei.exceptions.ObjectNotFoundException;
 import com.sysmei.keys.ParamsKeys;
 import com.sysmei.keys.RotasKeys;
 import com.sysmei.model.Usuario;
-import com.sysmei.service.UsuarioService;
+import com.sysmei.service.impl.UsuarioServiceImpl;
 
 @RestController
 @RequestMapping(value = RotasKeys.USER)
 public class UsuarioController {
 
 	@Autowired
-	private UsuarioService usuarioService;
+	private UsuarioServiceImpl usuarioService;
 
 	/**
 	 * 

@@ -3,11 +3,10 @@ package com.sysmei.dto;
 import java.io.Serializable;
 import java.time.LocalDate;
 
+import com.sysmei.enums.TipoCivil;
+import com.sysmei.enums.TipoPlano;
+import com.sysmei.enums.TipoSexo;
 import com.sysmei.model.Paciente;
-
-import enums.TipoCivil;
-import enums.TipoPlano;
-import enums.TipoSexo;
 
 public class NewPacienteDTO implements Serializable {
 	private static final long serialVersionUID = 1L;

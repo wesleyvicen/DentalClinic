@@ -18,14 +18,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.sysmei.dto.PrestadorDTO;
 import com.sysmei.keys.RotasKeys;
 import com.sysmei.model.Prestador;
-import com.sysmei.service.PrestadorService;
+import com.sysmei.service.impl.PrestadorServiceImpl;
 
 @RestController
 @RequestMapping(value = RotasKeys.PRESTADOR)
 public class PrestadorController {
 
 	@Autowired
-	private PrestadorService prestadorService;
+	private PrestadorServiceImpl prestadorService;
 
 	/**
 	 * 

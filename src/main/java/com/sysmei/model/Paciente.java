@@ -21,9 +21,9 @@ import javax.persistence.Table;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
-import enums.TipoCivil;
-import enums.TipoPlano;
-import enums.TipoSexo;
+import com.sysmei.enums.TipoCivil;
+import com.sysmei.enums.TipoPlano;
+import com.sysmei.enums.TipoSexo;
 
 @Entity
 @Table(name = "Paciente")

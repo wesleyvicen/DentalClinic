@@ -1,6 +1,5 @@
 package com.sysmei.repository;
 
-
 import java.util.List;
 import java.util.Optional;
 
@@ -13,10 +12,11 @@ import com.sysmei.model.Prestador;
 
 public interface PrestadorRepository extends JpaRepository<Prestador, Long> {
 
-    List<Prestador> findAll();
+	List<Prestador> findAll();
 
 	@Query(value = "Select prestador from Prestador prestador Left Join Fetch prestador.usuario usuario where prestador.usuario.login = :loginUsuario")
 	List<Prestador> getPrestadorWithLogin(@Param("loginUsuario") String login);
+
 	@Query(value = "Select prestador from Prestador prestador where prestador.telefone = :telefone")
-	Optional<Prestador> findByTelefone(@PathVariable("loginUsuario") String telefone);
+	Optional<Prestador> findByTelefone(@PathVariable("telefone") String telefone);
 }

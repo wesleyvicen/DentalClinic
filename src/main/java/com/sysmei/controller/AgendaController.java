@@ -21,14 +21,14 @@ import com.sysmei.dto.AgendaSomaDTO;
 import com.sysmei.keys.ParamsKeys;
 import com.sysmei.keys.RotasKeys;
 import com.sysmei.model.Agenda;
-import com.sysmei.service.AgendaService;
+import com.sysmei.service.impl.AgendaServiceImpl;
 
 @RestController
 @RequestMapping(value = RotasKeys.AGENDA)
 public class AgendaController {
 
 	@Autowired
-	private AgendaService agendaService;
+	private AgendaServiceImpl agendaService;
 
 	/**
 	 * 

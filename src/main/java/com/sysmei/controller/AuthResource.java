@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sysmei.keys.Keys;
+import com.sysmei.keys.RotasKeys;
 import com.sysmei.security.JWTUtil;
 import com.sysmei.security.UserSS;
 import com.sysmei.service.UsuarioService;
 
 @RestController
-@RequestMapping(value = Keys.AUTH)
+@RequestMapping(value = RotasKeys.AUTH)
 public class AuthResource {
 
 	@Autowired
@@ -29,7 +29,7 @@ public class AuthResource {
 	 * @param response
 	 * @return
 	 */
-	@RequestMapping(value = Keys.REFRESH_TOKEN, method = RequestMethod.POST)
+	@RequestMapping(value = RotasKeys.REFRESH_TOKEN, method = RequestMethod.POST)
 	public ResponseEntity<Void> refreshToken(HttpServletResponse response) {
 		UserSS user = UsuarioService.authenticated();
 		String token = jwtUtil.generateToken(user.getUsername());

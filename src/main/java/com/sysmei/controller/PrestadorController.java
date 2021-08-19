@@ -16,12 +16,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sysmei.dto.PrestadorDTO;
-import com.sysmei.keys.Keys;
+import com.sysmei.keys.RotasKeys;
 import com.sysmei.model.Prestador;
 import com.sysmei.service.PrestadorService;
 
 @RestController
-@RequestMapping(value = Keys.PRESTADOR)
+@RequestMapping(value = RotasKeys.PRESTADOR)
 public class PrestadorController {
 
 	@Autowired
@@ -33,8 +33,8 @@ public class PrestadorController {
 	 * @return
 	 */
 
-	@RequestMapping(method = RequestMethod.GET, params = { Keys.PARAM_LOGIN })
-	public ResponseEntity<List<PrestadorDTO>> findAll(@RequestParam(name = Keys.PARAM_LOGIN) String login) {
+	@RequestMapping(method = RequestMethod.GET, params = { RotasKeys.LOGIN })
+	public ResponseEntity<List<PrestadorDTO>> findAll(@RequestParam(name = RotasKeys.LOGIN) String login) {
 		List<Prestador> list = prestadorService.getPrestadorWithLogin(login);
 		List<PrestadorDTO> listDto = list.stream().map(PrestadorDTO::new).collect(Collectors.toList());
 		return ResponseEntity.ok().body(listDto);
@@ -46,7 +46,7 @@ public class PrestadorController {
 	 * @return
 	 */
 
-	@GetMapping(Keys.ID)
+	@GetMapping(RotasKeys.ID)
 	public ResponseEntity<Prestador> getById(@PathVariable Long id) {
 		Prestador dto = prestadorService.getById(id);
 		return ResponseEntity.ok().body(dto);
@@ -84,7 +84,7 @@ public class PrestadorController {
 	 * @return
 	 */
 
-	@RequestMapping(value = Keys.ID, method = RequestMethod.PUT)
+	@RequestMapping(value = RotasKeys.ID, method = RequestMethod.PUT)
 	public ResponseEntity<Void> update(@RequestBody PrestadorDTO objDto, @PathVariable Long id) {
 		Prestador obj = prestadorService.fromDTO(objDto);
 		obj.setId(id);
@@ -99,7 +99,7 @@ public class PrestadorController {
 	 * @return
 	 */
 
-	@RequestMapping(value = Keys.ID, method = RequestMethod.DELETE)
+	@RequestMapping(value = RotasKeys.ID, method = RequestMethod.DELETE)
 	public ResponseEntity<?> delete(@PathVariable Long id) {
 		prestadorService.delete(id);
 		return ResponseEntity.noContent().build();

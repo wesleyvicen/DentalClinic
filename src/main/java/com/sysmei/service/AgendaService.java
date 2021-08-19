@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sysmei.dto.AgendaDTO;
-import com.sysmei.dto.AgendaSoma;
+import com.sysmei.dto.AgendaSomaDTO;
 import com.sysmei.exceptions.ObjectNotFoundException;
 import com.sysmei.model.Agenda;
 import com.sysmei.repository.AgendaRepository;
@@ -119,12 +119,12 @@ public class AgendaService {
 		return agenda;
 	}
 
-	public AgendaSoma getSomaAgendamentosBetween(String login, LocalDate dataInicio, LocalDate dataFim) {
+	public AgendaSomaDTO getSomaAgendamentosBetween(String login, LocalDate dataInicio, LocalDate dataFim) {
 		Double soma = agendaRepository.getSomaAgendamentosBetween(login, dataInicio, dataFim);
 		if(soma == null) {
 			soma = 0.0;
 		}
-		AgendaSoma agendaSoma = new AgendaSoma(login,dataInicio, dataFim, soma);
+		AgendaSomaDTO agendaSoma = new AgendaSomaDTO(login,dataInicio, dataFim, soma);
 		return agendaSoma;
 	}
 

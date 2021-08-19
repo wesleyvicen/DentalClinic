@@ -2,13 +2,13 @@ package com.sysmei.dto;
 
 import java.time.LocalDate;
 
-public class AgendaSoma {
+public class AgendaSomaDTO {
 	private String login;
 	private LocalDate dataInicio;
 	private LocalDate dataFim;
 	private Double soma;
 
-	public AgendaSoma(String login, LocalDate dataInicio, LocalDate dataFim, Double soma) {
+	public AgendaSomaDTO(String login, LocalDate dataInicio, LocalDate dataFim, Double soma) {
 		super();
 		this.login = login;
 		this.dataInicio = dataInicio;
@@ -16,7 +16,7 @@ public class AgendaSoma {
 		this.soma = soma;
 	}
 
-	public AgendaSoma() {
+	public AgendaSomaDTO() {
 		super();
 	}
 

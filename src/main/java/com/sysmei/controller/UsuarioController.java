@@ -18,12 +18,13 @@ import org.springframework.web.multipart.MultipartFile;
 import com.sysmei.dto.LoginDto;
 import com.sysmei.dto.UsuarioDto;
 import com.sysmei.exceptions.ObjectNotFoundException;
-import com.sysmei.keys.Keys;
+import com.sysmei.keys.ParamsKeys;
+import com.sysmei.keys.RotasKeys;
 import com.sysmei.model.Usuario;
 import com.sysmei.service.UsuarioService;
 
 @RestController
-@RequestMapping(value = Keys.USER)
+@RequestMapping(value = RotasKeys.USER)
 public class UsuarioController {
 
 	@Autowired
@@ -35,7 +36,7 @@ public class UsuarioController {
 	 * @return
 	 */
 
-	@RequestMapping(value = Keys.ID, method = RequestMethod.GET)
+	@RequestMapping(value = RotasKeys.ID, method = RequestMethod.GET)
 	public ResponseEntity<?> find(@PathVariable Integer id) {
 		try {
 			Usuario obj = usuarioService.search(id);
@@ -57,8 +58,8 @@ public class UsuarioController {
 	 * @return
 	 */
 
-	@RequestMapping(value = Keys.TOKEN, method = RequestMethod.GET)
-	public String verificarUser(@RequestHeader(name = Keys.code) String code) {
+	@RequestMapping(value = RotasKeys.TOKEN, method = RequestMethod.GET)
+	public String verificarUser(@RequestHeader(name = ParamsKeys.code) String code) {
 		if (usuarioService.verificarUser(code)) {
 			return "verify_success";
 		} else {
@@ -93,7 +94,7 @@ public class UsuarioController {
 	 * @return
 	 */
 
-	@PostMapping(value = Keys.LOGIN)
+	@PostMapping(value = RotasKeys.LOGIN)
 	public ResponseEntity<?> logar(@RequestBody LoginDto loginDto) {
 		try {
 			return new ResponseEntity<>(usuarioService.logar(loginDto), HttpStatus.OK);
@@ -109,8 +110,8 @@ public class UsuarioController {
 	 * @return
 	 */
 
-	@RequestMapping(value = Keys.PICTURE, method = RequestMethod.POST)
-	public ResponseEntity<Void> uploadProfilePicture(@RequestParam(name = Keys.PARAM_FILE) MultipartFile file) {
+	@RequestMapping(value = RotasKeys.PICTURE, method = RequestMethod.POST)
+	public ResponseEntity<Void> uploadProfilePicture(@RequestParam(name = ParamsKeys.FILE) MultipartFile file) {
 		URI uri = usuarioService.uploadProfilePicture(file);
 		return ResponseEntity.created(uri).build();
 	}

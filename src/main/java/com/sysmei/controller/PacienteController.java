@@ -20,14 +20,15 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.sysmei.dto.NewPacienteDTO;
 import com.sysmei.dto.PacienteDTO;
-import com.sysmei.keys.Keys;
+import com.sysmei.keys.ParamsKeys;
+import com.sysmei.keys.RotasKeys;
 import com.sysmei.model.Paciente;
 import com.sysmei.service.DocumentsService;
 import com.sysmei.service.PacienteService;
 import com.sysmei.service.S3Service;
 
 @RestController
-@RequestMapping(value = Keys.PACIENTE)
+@RequestMapping(value = RotasKeys.PACIENTE)
 public class PacienteController {
 
 	@Autowired
@@ -45,8 +46,8 @@ public class PacienteController {
 	 * @return
 	 */
 
-	@RequestMapping(method = RequestMethod.GET, params = { Keys.PARAM_LOGIN })
-	public ResponseEntity<List<PacienteDTO>> findAll(@RequestParam(name = Keys.PARAM_LOGIN) String login) {
+	@RequestMapping(method = RequestMethod.GET, params = { RotasKeys.LOGIN })
+	public ResponseEntity<List<PacienteDTO>> findAll(@RequestParam(name = RotasKeys.LOGIN) String login) {
 		List<Paciente> list = pacienteService.getPacientesWithLogin(login);
 		List<PacienteDTO> listDto = list.stream().map(PacienteDTO::new).collect(Collectors.toList());
 		return ResponseEntity.ok().body(listDto);
@@ -58,7 +59,7 @@ public class PacienteController {
 	 * @return
 	 */
 
-	@GetMapping(Keys.ID)
+	@GetMapping(RotasKeys.ID)
 	public ResponseEntity<Paciente> getById(@PathVariable Long id) {
 		Paciente dto = pacienteService.getById(id);
 		return ResponseEntity.ok().body(dto);
@@ -72,12 +73,12 @@ public class PacienteController {
 	 * @param direction
 	 * @return
 	 */
-	@RequestMapping(value = Keys.PAGE, method = RequestMethod.GET)
+	@RequestMapping(value = RotasKeys.PAGE, method = RequestMethod.GET)
 	public ResponseEntity<Page<PacienteDTO>> findPage(
-			@RequestParam(value = Keys.PARAM_PAGE, defaultValue = "0") Integer page,
-			@RequestParam(value = Keys.PARAM_LINES_PER_PAGE, defaultValue = "24") Integer linesPerPage,
-			@RequestParam(value = Keys.PARAM_ORDER_BY, defaultValue = "nome") String orderBy,
-			@RequestParam(value = Keys.PARAM_DIRECTION, defaultValue = "ASC") String direction) {
+			@RequestParam(value = RotasKeys.PAGE, defaultValue = "0") Integer page,
+			@RequestParam(value = ParamsKeys.LINES_PER_PAGE, defaultValue = "24") Integer linesPerPage,
+			@RequestParam(value = ParamsKeys.ORDER_BY, defaultValue = "nome") String orderBy,
+			@RequestParam(value = ParamsKeys.DIRECTION, defaultValue = "ASC") String direction) {
 		Page<Paciente> list = pacienteService.findPage(page, linesPerPage, orderBy, direction);
 		Page<PacienteDTO> listDto = list.map(PacienteDTO::new);
 		return ResponseEntity.ok().body(listDto);
@@ -90,9 +91,9 @@ public class PacienteController {
 	 * @return
 	 */
 
-	@RequestMapping(value = Keys.PACIENTE_ID, method = RequestMethod.POST)
+	@RequestMapping(value = RotasKeys.PACIENTE_ID, method = RequestMethod.POST)
 	public ResponseEntity<Void> uploadProfilePicture(@PathVariable Long id,
-			@RequestParam(name = Keys.PARAM_FILE) MultipartFile file) {
+			@RequestParam(name = ParamsKeys.FILE) MultipartFile file) {
 		URI uri = pacienteService.uploadProfilePicture(id, file);
 		return ResponseEntity.created(uri).build();
 	}
@@ -117,7 +118,7 @@ public class PacienteController {
 	 * @return
 	 */
 
-	@RequestMapping(value = Keys.ID, method = RequestMethod.PUT)
+	@RequestMapping(value = RotasKeys.ID, method = RequestMethod.PUT)
 	public ResponseEntity<Void> update(@RequestBody NewPacienteDTO objDto, @PathVariable Long id) {
 		Paciente obj = pacienteService.fromDTO(objDto);
 		obj.setId(id);
@@ -125,14 +126,14 @@ public class PacienteController {
 		return ResponseEntity.noContent().build();
 
 	}
-	
+
 	/**
 	 * 
 	 * @param id
 	 * @return
 	 */
 
-	@RequestMapping(value = Keys.ID, method = RequestMethod.DELETE)
+	@RequestMapping(value = RotasKeys.ID, method = RequestMethod.DELETE)
 	public ResponseEntity<?> delete(@PathVariable Long id) {
 		pacienteService.delete(id);
 		return ResponseEntity.noContent().build();
@@ -144,10 +145,10 @@ public class PacienteController {
 	 * @param fileId
 	 * @return
 	 */
-	
-	@RequestMapping(value = Keys.DELETE, method = RequestMethod.DELETE)
-	public ResponseEntity<String> deleteFile(@RequestParam(value = Keys.PARAM_FILE_NAME) String keyName,
-			@RequestParam(value = Keys.PARAM_FILE_ID) Long fileId) {
+
+	@RequestMapping(value = RotasKeys.DELETE, method = RequestMethod.DELETE)
+	public ResponseEntity<String> deleteFile(@RequestParam(value = ParamsKeys.FILE_NAME) String keyName,
+			@RequestParam(value = ParamsKeys.FILE_ID) Long fileId) {
 		s3Service.deleteFile(keyName);
 		documentsService.delete(fileId);
 		final String response = "[" + keyName + "] detelado com sucesso.";

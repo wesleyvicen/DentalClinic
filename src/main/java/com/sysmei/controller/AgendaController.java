@@ -17,13 +17,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sysmei.dto.AgendaDTO;
-import com.sysmei.dto.AgendaSoma;
-import com.sysmei.keys.Keys;
+import com.sysmei.dto.AgendaSomaDTO;
+import com.sysmei.keys.ParamsKeys;
+import com.sysmei.keys.RotasKeys;
 import com.sysmei.model.Agenda;
 import com.sysmei.service.AgendaService;
 
 @RestController
-@RequestMapping(value = Keys.AGENDA)
+@RequestMapping(value = RotasKeys.AGENDA)
 public class AgendaController {
 
 	@Autowired
@@ -35,8 +36,8 @@ public class AgendaController {
 	 * @return 			Retorna uma lista de AgendaDTO
 	 */
 	
-	@RequestMapping(method = RequestMethod.GET, params = { Keys.PARAM_LOGIN })
-	public ResponseEntity<List<AgendaDTO>> findAll(@RequestParam(name = Keys.PARAM_LOGIN) String login) {
+	@RequestMapping(method = RequestMethod.GET, params = { ParamsKeys.LOGIN })
+	public ResponseEntity<List<AgendaDTO>> findAll(@RequestParam(name = ParamsKeys.LOGIN) String login) {
 		List<Agenda> list = agendaService.getAgendasWithLogin(login);
 		List<AgendaDTO> listDto = list.stream().map(AgendaDTO::new).collect(Collectors.toList());
 		return ResponseEntity.ok().body(listDto);
@@ -50,10 +51,10 @@ public class AgendaController {
 	 * @return 					Retorna uma lista de AgendaDTO 
 	 */
 
-	@RequestMapping(value = Keys.PUBLIC, method = RequestMethod.GET, params = { Keys.PARAM_LOGIN })
-	public ResponseEntity<List<AgendaDTO>> findAllPublic(@RequestParam(name = Keys.PARAM_LOGIN) String login,
-			@RequestParam(name = Keys.PARAM_DATA_INICIO) String stringDataInicio,
-			@RequestParam(name = Keys.PARAM_DATA_FIM) String stringDataFim) {
+	@RequestMapping(value = RotasKeys.PUBLIC, method = RequestMethod.GET, params = { ParamsKeys.LOGIN })
+	public ResponseEntity<List<AgendaDTO>> findAllPublic(@RequestParam(name = ParamsKeys.LOGIN) String login,
+			@RequestParam(name = ParamsKeys.DATA_INICIO) String stringDataInicio,
+			@RequestParam(name = ParamsKeys.DATA_FIM) String stringDataFim) {
 		String inicioDate = stringDataInicio;
 		LocalDate dataInicio = LocalDate.parse(inicioDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 		String fimDate = stringDataFim;
@@ -70,8 +71,8 @@ public class AgendaController {
 	 * @return 		Retorna uma lista de AgendaDTO
 	 */
 	
-	@RequestMapping(method = RequestMethod.GET, params = { Keys.ID })
-	public ResponseEntity<List<AgendaDTO>> findAll(@RequestParam(name = Keys.ID) Long id) {
+	@RequestMapping(method = RequestMethod.GET, params = { RotasKeys.ID })
+	public ResponseEntity<List<AgendaDTO>> findAll(@RequestParam(name = RotasKeys.ID) Long id) {
 		List<Agenda> list = agendaService.getAgendasWithPaciente(id);
 		List<AgendaDTO> listDto = list.stream().map(AgendaDTO::new).collect(Collectors.toList());
 		return ResponseEntity.ok().body(listDto);
@@ -85,8 +86,8 @@ public class AgendaController {
 	 * @return 					Retorna o Objeto com a soma baseado no valor de cada agendamento
 	 */
 	
-	@RequestMapping(value = "/soma", method = RequestMethod.GET, params = { Keys.PARAM_LOGIN })
-	public ResponseEntity<AgendaSoma> getSomaAgendamentos(@RequestParam(name = Keys.PARAM_LOGIN) String login,
+	@RequestMapping(value = "/soma", method = RequestMethod.GET, params = { ParamsKeys.LOGIN })
+	public ResponseEntity<AgendaSomaDTO> getSomaAgendamentos(@RequestParam(name = ParamsKeys.LOGIN) String login,
 			@RequestParam(name = "dataInicio") String stringDataInicio,
 			@RequestParam(name = "dataFim") String stringDataFim) {
 		String inicioDate = stringDataInicio;
@@ -94,7 +95,7 @@ public class AgendaController {
 		String fimDate = stringDataFim;
 		LocalDate dataFim = LocalDate.parse(fimDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
-		AgendaSoma agendaSoma = agendaService.getSomaAgendamentosBetween(login, dataInicio, dataFim);
+		AgendaSomaDTO agendaSoma = agendaService.getSomaAgendamentosBetween(login, dataInicio, dataFim);
 
 		return ResponseEntity.ok().body(agendaSoma);
 	}
@@ -105,8 +106,8 @@ public class AgendaController {
 	 * @return 			Retorna uma lista de AgendaDTO
 	 */
 	
-	@RequestMapping(method = RequestMethod.GET, params = { Keys.PARAM_STATUS })
-	public ResponseEntity<List<AgendaDTO>> findAllStatus(@RequestParam(name = Keys.PARAM_STATUS) Integer status) {
+	@RequestMapping(method = RequestMethod.GET, params = { ParamsKeys.STATUS })
+	public ResponseEntity<List<AgendaDTO>> findAllStatus(@RequestParam(name = ParamsKeys.STATUS) Integer status) {
 		List<Agenda> list = agendaService.getAgendasWithStatus(status);
 		List<AgendaDTO> listDto = list.stream().map(AgendaDTO::new).collect(Collectors.toList());
 		return ResponseEntity.ok().body(listDto);
@@ -119,9 +120,9 @@ public class AgendaController {
 	 * @return			Retorna uma lista de AgendaDTO
 	 */
 	
-	@RequestMapping(method = RequestMethod.GET, params = { Keys.PARAM_LOGIN, Keys.PARAM_STATUS })
-	public ResponseEntity<List<AgendaDTO>> findAllStatus(@RequestParam(name = Keys.PARAM_LOGIN) String login,
-			@RequestParam(name = Keys.PARAM_STATUS) Integer status) {
+	@RequestMapping(method = RequestMethod.GET, params = { ParamsKeys.LOGIN, ParamsKeys.STATUS })
+	public ResponseEntity<List<AgendaDTO>> findAllStatus(@RequestParam(name = ParamsKeys.LOGIN) String login,
+			@RequestParam(name = ParamsKeys.STATUS) Integer status) {
 		List<Agenda> list = agendaService.getAgendasWithLoginAndStatus(login, status);
 		List<AgendaDTO> listDto = list.stream().map(AgendaDTO::new).collect(Collectors.toList());
 		return ResponseEntity.ok().body(listDto);
@@ -135,10 +136,10 @@ public class AgendaController {
 	 * @return					Retorna uma lista de AgendaDTO
 	 */
 	
-	@RequestMapping(value = "/prestador", method = RequestMethod.GET, params = { Keys.PARAM_LOGIN, "prestadorId" })
-	public ResponseEntity<List<AgendaDTO>> findAgendasWithPrestador(@RequestParam(name = Keys.PARAM_LOGIN) String login,
-			@RequestParam(name = Keys.PARAM_DATA_INICIO) String stringDataInicio,
-			@RequestParam(name = Keys.PARAM_DATA_FIM) String stringDataFim,
+	@RequestMapping(value = "/prestador", method = RequestMethod.GET, params = { ParamsKeys.LOGIN, "prestadorId" })
+	public ResponseEntity<List<AgendaDTO>> findAgendasWithPrestador(@RequestParam(name = ParamsKeys.LOGIN) String login,
+			@RequestParam(name = ParamsKeys.DATA_INICIO) String stringDataInicio,
+			@RequestParam(name = ParamsKeys.DATA_FIM) String stringDataFim,
 			@RequestParam(name = "prestadorId") Long prestadorId) {
 		String inicioDate = stringDataInicio;
 		LocalDate dataInicio = LocalDate.parse(inicioDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
@@ -167,7 +168,7 @@ public class AgendaController {
 	 * @return
 	 */
 
-	@RequestMapping(value = Keys.ID, method = RequestMethod.PUT)
+	@RequestMapping(value = RotasKeys.ID, method = RequestMethod.PUT)
 	public ResponseEntity<Void> update(@RequestBody AgendaDTO objDto, @PathVariable Long id) {
 		Agenda obj = agendaService.fromDTO(objDto);
 		obj.setId(id);
@@ -182,7 +183,7 @@ public class AgendaController {
 	 * @return
 	 */
 	
-	@RequestMapping(value = Keys.ID, method = RequestMethod.PATCH)
+	@RequestMapping(value = RotasKeys.ID, method = RequestMethod.PATCH)
 	public ResponseEntity<Void> updatePartes(@RequestBody AgendaDTO objDto, @PathVariable Long id) {
 		Agenda obj = agendaService.fromDTO(objDto);
 		obj.setId(id);
@@ -196,7 +197,7 @@ public class AgendaController {
 	 * @return
 	 */
 
-	@RequestMapping(value = Keys.ID, method = RequestMethod.DELETE)
+	@RequestMapping(value = RotasKeys.ID, method = RequestMethod.DELETE)
 	public ResponseEntity<Void> delete(@PathVariable Long id) {
 		agendaService.delete(id);
 		return ResponseEntity.noContent().build();

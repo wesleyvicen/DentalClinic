@@ -46,8 +46,8 @@ public class PacienteController {
 	 * @return
 	 */
 
-	@RequestMapping(method = RequestMethod.GET, params = { RotasKeys.LOGIN })
-	public ResponseEntity<List<PacienteDTO>> findAll(@RequestParam(name = RotasKeys.LOGIN) String login) {
+	@RequestMapping(method = RequestMethod.GET, params = { ParamsKeys.LOGIN })
+	public ResponseEntity<List<PacienteDTO>> findAll(@RequestParam(name = ParamsKeys.LOGIN) String login) {
 		List<Paciente> list = pacienteService.getPacientesWithLogin(login);
 		List<PacienteDTO> listDto = list.stream().map(PacienteDTO::new).collect(Collectors.toList());
 		return ResponseEntity.ok().body(listDto);

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sysmei.dto.PrestadorDTO;
+import com.sysmei.keys.ParamsKeys;
 import com.sysmei.keys.RotasKeys;
 import com.sysmei.model.Prestador;
 import com.sysmei.service.impl.PrestadorServiceImpl;
@@ -33,8 +34,8 @@ public class PrestadorController {
 	 * @return
 	 */
 
-	@RequestMapping(method = RequestMethod.GET, params = { RotasKeys.LOGIN })
-	public ResponseEntity<List<PrestadorDTO>> findAll(@RequestParam(name = RotasKeys.LOGIN) String login) {
+	@RequestMapping(method = RequestMethod.GET, params = { ParamsKeys.LOGIN })
+	public ResponseEntity<List<PrestadorDTO>> findAll(@RequestParam(name = ParamsKeys.LOGIN) String login) {
 		List<Prestador> list = prestadorService.getPrestadorWithLogin(login);
 		List<PrestadorDTO> listDto = list.stream().map(PrestadorDTO::new).collect(Collectors.toList());
 		return ResponseEntity.ok().body(listDto);
@@ -58,7 +59,7 @@ public class PrestadorController {
 	 * @return
 	 */
 
-	@GetMapping("/busca/{telefone}")
+	@GetMapping(RotasKeys.BUSCA_TELEFONE)
 	public ResponseEntity<Prestador> getByTelefone(@PathVariable String telefone) {
 		Prestador dto = prestadorService.getByTelefone(telefone);
 		return ResponseEntity.ok().body(dto);

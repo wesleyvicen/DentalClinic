@@ -67,12 +67,12 @@ public class AgendaController {
 	
 	/**
 	 * 
-	 * @param id	Enviar o ID da agenda
+	 * @param id	Enviar o ID do Paciente
 	 * @return 		Retorna uma lista de AgendaDTO
 	 */
 	
-	@RequestMapping(method = RequestMethod.GET, params = { RotasKeys.ID })
-	public ResponseEntity<List<AgendaDTO>> findAll(@RequestParam(name = RotasKeys.ID) Long id) {
+	@RequestMapping(method = RequestMethod.GET, params = { ParamsKeys.ID})
+	public ResponseEntity<List<AgendaDTO>> findAll(@RequestParam(name = ParamsKeys.ID) Long id) {
 		List<Agenda> list = agendaService.getAgendasWithPaciente(id);
 		List<AgendaDTO> listDto = list.stream().map(AgendaDTO::new).collect(Collectors.toList());
 		return ResponseEntity.ok().body(listDto);

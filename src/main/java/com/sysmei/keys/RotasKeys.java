@@ -10,7 +10,6 @@ public class RotasKeys {
 	// Rotas Agenda
 	public static final String AGENDA = "/agenda";
 	public static final String PUBLIC = "/public";
-
 	
 	// Rotas Auth
 	public static final String AUTH = "/auth";
@@ -20,18 +19,15 @@ public class RotasKeys {
 	public static final String PACIENTE = "/paciente";
 	public static final String PACIENTE_ID = "/picture/{id}";
 
-
-
 	// Rotas Usuário
 	public static final String USER = "/user";
 	public static final String LOGIN = "/login";
 	public static final String PICTURE = "/picture";
 	public static final String TOKEN = "/token";
-
-	
 	
 	// Rotas Prestador
 	public static final String PRESTADOR = "/prestador";
+	public static final String BUSCA_TELEFONE = "/busca/{telefone}";
 	
 
 }

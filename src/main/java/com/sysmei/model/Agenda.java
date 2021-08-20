@@ -46,7 +46,6 @@ public class Agenda implements Serializable {
 	@JoinColumn(name = "login_usuario", referencedColumnName = "login")
 	private Usuario usuario;
 	private Double valor;
-	@Column(nullable = false, precision = 9, scale = 3)
 	private Integer status;
 	private String pagamento;
 	private String detalhes;
@@ -58,7 +57,7 @@ public class Agenda implements Serializable {
 	}
 
 	public Agenda(Long id, String title, LocalDateTime start, LocalDateTime end, LocalDate allDay, Paciente paciente,
-			Double valor, int status, String pagamento, String detalhes) {
+			Double valor, Integer status, String pagamento, String detalhes) {
 		super();
 		this.id = id;
 		this.title = title;
@@ -67,13 +66,13 @@ public class Agenda implements Serializable {
 		this.allDay = allDay;
 		this.paciente = paciente;
 		this.setValor(valor);
-		this.status = (status == 0) ? 1 : status;
+		this.status = status;
 		this.setPagamento(pagamento);
 		this.setDetalhes(detalhes);
 	}
 
 	public Agenda(String title, LocalDateTime start, LocalDateTime end, LocalDate allDay, Paciente paciente,
-			Double valor, int status, String pagamento, String detalhes) {
+			Double valor, Integer status, String pagamento, String detalhes) {
 		super();
 		this.title = title;
 		this.start = start;
@@ -81,7 +80,7 @@ public class Agenda implements Serializable {
 		this.allDay = allDay;
 		this.paciente = paciente;
 		this.setValor(valor);
-		this.status = (status == 0) ? 1 : status;
+		this.status = status;
 		this.setPagamento(pagamento);
 		this.setDetalhes(detalhes);
 	}
@@ -94,7 +93,7 @@ public class Agenda implements Serializable {
 		this.end = end;
 		this.allDay = allDay;
 		this.setValor(valor);
-		this.status = (status == 0) ? 1 : status;
+		this.status = status;
 		this.setPagamento(pagamento);
 		this.setDetalhes(detalhes);
 	}

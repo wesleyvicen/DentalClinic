@@ -28,10 +28,12 @@ import com.sysmei.dto.TokenDto;
 import com.sysmei.dto.UsuarioDto;
 import com.sysmei.exceptions.ObjectNotFoundException;
 import com.sysmei.mapper.UsuarioMapper;
+import com.sysmei.model.Prestador;
 import com.sysmei.model.Usuario;
 import com.sysmei.repository.UsuarioRepository;
 import com.sysmei.security.JWTUtil;
 import com.sysmei.security.UserSS;
+import com.sysmei.service.PrestadorService;
 import com.sysmei.service.UsuarioService;
 import com.sysmei.service.exception.AuthorizationException;
 
@@ -67,6 +69,9 @@ public class UsuarioServiceImpl implements UsuarioService {
 	@Autowired
 	private BCryptPasswordEncoder pe;
 
+	@Autowired
+	private PrestadorService prestadorService;
+
 	@Transactional
 	public UsuarioDto addUsuario(UsuarioDto usuarioDto) throws UnsupportedEncodingException, MessagingException {
 		Usuario usuario = new Usuario();
@@ -79,9 +84,13 @@ public class UsuarioServiceImpl implements UsuarioService {
 		String randomCode = RandomString.make(64);
 		usuario.setVerificationCode(randomCode);
 		if (!existsUsuarioWithLogin(usuario.getLogin())) {
-			usuarioRepository.save(usuario);
 			incluirUsuarioConta(usuario);
 			// sendVerificationEmail(usuario, "https://sysmei.com");
+			Prestador prestador = new Prestador();
+			prestador.setNome("Geral");
+			prestador.setTelefone("");
+			prestador.setUsuario(usuario);
+			prestadorService.insert(prestador);
 			return usuarioDto;
 		} else {
 			throw new IllegalStateException();

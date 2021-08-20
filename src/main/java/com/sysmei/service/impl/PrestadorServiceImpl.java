@@ -66,6 +66,7 @@ public class PrestadorServiceImpl implements PrestadorService {
 	private void updateData(Prestador newObj, Prestador obj) {
 
 		newObj.setNome(obj.getNome() == null ? newObj.getNome() : obj.getNome());
+		newObj.setTelefone(obj.getTelefone() == null ? newObj.getTelefone() : obj.getTelefone());
 	}
 
 	@Transactional

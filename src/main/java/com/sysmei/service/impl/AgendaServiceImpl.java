@@ -95,7 +95,7 @@ public class AgendaServiceImpl implements AgendaService {
 		try {
 			agendaRepository.deleteById(id);
 		} catch (DataIntegrityViolationException e) {
-			throw new DataIntegrityException("Não é possivel excluir porque existe entidades relacionadas");
+			throw new DataIntegrityException("Não é possível excluir porque existe entidades relacionadas");
 		}
 	}
 

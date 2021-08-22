@@ -1,7 +1,8 @@
 package com.sysmei.config;
 
-import java.util.Arrays;
-
+import com.sysmei.security.JWTAuthenticationFilter;
+import com.sysmei.security.JWTAuthorizationFilter;
+import com.sysmei.security.JWTUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,9 +19,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import com.sysmei.security.JWTAuthenticationFilter;
-import com.sysmei.security.JWTAuthorizationFilter;
-import com.sysmei.security.JWTUtil;
+import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity

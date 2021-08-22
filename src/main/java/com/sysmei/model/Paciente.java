@@ -1,29 +1,16 @@
 package com.sysmei.model;
 
+import com.sysmei.enums.TipoCivil;
+import com.sysmei.enums.TipoPlano;
+import com.sysmei.enums.TipoSexo;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
-
-import com.sysmei.enums.TipoCivil;
-import com.sysmei.enums.TipoPlano;
-import com.sysmei.enums.TipoSexo;
 
 @Entity
 @Table(name = "Paciente")

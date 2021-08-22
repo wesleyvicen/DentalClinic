@@ -3,16 +3,15 @@
  */
 package com.sysmei.security;
 
-import java.util.Collection;
-import java.util.Set;
-import java.util.stream.Collectors;
-
+import com.sysmei.enums.Perfil;
+import com.sysmei.model.Usuario;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.sysmei.enums.Perfil;
-import com.sysmei.model.Usuario;
+import java.util.Collection;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @author Wesley Vicente

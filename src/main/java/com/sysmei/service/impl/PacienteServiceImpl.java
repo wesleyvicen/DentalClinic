@@ -1,20 +1,5 @@
 package com.sysmei.service.impl;
 
-import java.awt.image.BufferedImage;
-import java.net.URI;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort.Direction;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
-
 import com.sysmei.dto.NewPacienteDTO;
 import com.sysmei.exceptions.ObjectNotFoundException;
 import com.sysmei.model.DocumentUrl;
@@ -24,6 +9,20 @@ import com.sysmei.security.UserSS;
 import com.sysmei.service.PacienteService;
 import com.sysmei.service.exception.AuthorizationException;
 import com.sysmei.service.exception.DataIntegrityException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.awt.image.BufferedImage;
+import java.net.URI;
+import java.util.List;
+import java.util.Optional;
+import java.util.Random;
 
 @Service
 public class PacienteServiceImpl implements PacienteService {

@@ -1,17 +1,15 @@
 package com.sysmei.service;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URI;
-import java.util.List;
-
-import javax.mail.MessagingException;
-
-import org.springframework.web.multipart.MultipartFile;
-
 import com.sysmei.dto.LoginDto;
 import com.sysmei.dto.SessaoDto;
 import com.sysmei.dto.UsuarioDto;
 import com.sysmei.model.Usuario;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.mail.MessagingException;
+import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.util.List;
 
 public interface UsuarioService {
 

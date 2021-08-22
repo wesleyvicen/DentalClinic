@@ -1,26 +1,26 @@
 package com.sysmei.dto;
 
-import java.io.Serializable;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-
 import com.sysmei.enums.TipoCivil;
 import com.sysmei.enums.TipoPlano;
 import com.sysmei.enums.TipoSexo;
 import com.sysmei.model.DocumentUrl;
 import com.sysmei.model.Paciente;
 
+import java.io.Serializable;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
 public class PacienteDTO implements Serializable {
-	private static final long serialVersionUID = 1L;
-	private Long id;
-	private String nome;
-	private String socialName;
-	private String email;
+    private static final long serialVersionUID = 1L;
+    private Long id;
+    private String nome;
+    private String socialName;
+    private String email;
 
-	private String telefone1;
+    private String telefone1;
 
-	private String telefone2;
+    private String telefone2;
 
 	private String telefone3;
 

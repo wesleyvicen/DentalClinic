@@ -1,13 +1,12 @@
 package com.sysmei.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.sysmei.model.Agenda;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-
-import org.springframework.format.annotation.DateTimeFormat;
-
-import com.sysmei.model.Agenda;
-import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class AgendaDTO implements Serializable {
 	private static final long serialVersionUID = 1L;

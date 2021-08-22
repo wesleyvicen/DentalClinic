@@ -3,18 +3,17 @@
  */
 package com.sysmei.controller;
 
-import javax.servlet.http.HttpServletResponse;
-
+import com.sysmei.keys.RotasKeys;
+import com.sysmei.security.JWTUtil;
+import com.sysmei.security.UserSS;
+import com.sysmei.service.impl.UsuarioServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sysmei.keys.RotasKeys;
-import com.sysmei.security.JWTUtil;
-import com.sysmei.security.UserSS;
-import com.sysmei.service.impl.UsuarioServiceImpl;
+import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping(value = RotasKeys.AUTH)

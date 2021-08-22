@@ -1,13 +1,12 @@
 package com.sysmei.service;
 
-import java.net.URI;
-import java.util.List;
-
+import com.sysmei.dto.NewPacienteDTO;
+import com.sysmei.model.Paciente;
 import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.sysmei.dto.NewPacienteDTO;
-import com.sysmei.model.Paciente;
+import java.net.URI;
+import java.util.List;
 
 public interface PacienteService {
 

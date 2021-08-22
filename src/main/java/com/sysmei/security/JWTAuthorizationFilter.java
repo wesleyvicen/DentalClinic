@@ -3,13 +3,6 @@
  */
 package com.sysmei.security;
 
-import java.io.IOException;
-
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,16 +10,21 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
 /**
  * @author Wesley Vicente
- *
  */
 public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
-	private JWTUtil jwtUtil;
-	UserDetailsService userDetailsService;
+    UserDetailsService userDetailsService;
+    private JWTUtil jwtUtil;
 
-	/***
+    /***
 	 *
 	 * @param authenticationManager
 	 * @param jwtUtil

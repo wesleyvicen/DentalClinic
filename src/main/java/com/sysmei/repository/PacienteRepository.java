@@ -1,13 +1,12 @@
 package com.sysmei.repository;
 
 
-import java.util.List;
-
+import com.sysmei.model.Paciente;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.sysmei.model.Paciente;
+import java.util.List;
 
 public interface PacienteRepository extends JpaRepository<Paciente, Long> {
 

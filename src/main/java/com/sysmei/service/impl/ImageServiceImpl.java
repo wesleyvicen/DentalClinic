@@ -1,20 +1,18 @@
 package com.sysmei.service.impl;
 
-import java.awt.Color;
+import com.sysmei.service.ImageService;
+import com.sysmei.service.exception.FileException;
+import org.apache.commons.io.FilenameUtils;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-
-import javax.imageio.ImageIO;
-
-import org.apache.commons.io.FilenameUtils;
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
-import com.sysmei.service.ImageService;
-import com.sysmei.service.exception.FileException;
 
 @Service
 public class ImageServiceImpl implements ImageService {

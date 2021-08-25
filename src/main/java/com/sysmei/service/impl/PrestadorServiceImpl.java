@@ -36,8 +36,21 @@ public class PrestadorServiceImpl implements PrestadorService {
 
 	public Prestador getByTelefone(String telefone) {
 		Optional<Prestador> obj = prestadorRepository.findByTelefone(telefone);
+		if (obj.isEmpty()) {
+			if (telefone.length() == 10) {
+				telefone = telefone.substring(0, 2) + 9 + telefone.substring(2, 10);
+			} else if (telefone.length() == 11) {
+				telefone = telefone.substring(0, 2) + telefone.substring(3, 11);
+			}
+			obj = prestadorRepository.findByTelefone(telefone);
+			String finalTelefone = telefone;
+			return obj.orElseThrow(() -> new ObjectNotFoundException(
+					"Objeto Não encontrado! ID: " + finalTelefone + ", Tipo: " + Prestador.class.getName()));
+		}
+
+		String finalTelefone1 = telefone;
 		return obj.orElseThrow(() -> new ObjectNotFoundException(
-				"Objeto Não encontrado! ID: " + telefone + ", Tipo: " + Prestador.class.getName()));
+				"Objeto Não encontrado! ID: " + finalTelefone1 + ", Tipo: " + Prestador.class.getName()));
 	}
 
 	public Prestador update(Prestador obj) {

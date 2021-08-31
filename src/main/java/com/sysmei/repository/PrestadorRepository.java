@@ -13,7 +13,7 @@ public interface PrestadorRepository extends JpaRepository<Prestador, Long> {
 
 	List<Prestador> findAll();
 
-	@Query(value = "Select prestador from Prestador prestador Left Join Fetch prestador.usuario usuario where prestador.usuario.login = :loginUsuario")
+	@Query(value = "Select prestador from Prestador prestador Left Join Fetch prestador.usuario usuario where prestador.usuario.login = :loginUsuario ORDER BY prestador.nome")
 	List<Prestador> getPrestadorWithLogin(@Param("loginUsuario") String login);
 
 	@Query(value = "Select prestador from Prestador prestador where prestador.telefone = :telefone")

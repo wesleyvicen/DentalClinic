@@ -36,7 +36,7 @@ public class PrestadorServiceImpl implements PrestadorService {
 
 	public Prestador getByTelefone(String telefone) {
 		Optional<Prestador> obj = prestadorRepository.findByTelefone(telefone);
-		if (obj.equals(obj.empty())) {
+		if (obj.isEmpty()) {
 			if (telefone.length() == 10) {
 				telefone = telefone.substring(0, 2) + 9 + telefone.substring(2, 10);
 			} else if (telefone.length() == 11) {

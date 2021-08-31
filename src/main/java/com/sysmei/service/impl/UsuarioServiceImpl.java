@@ -95,8 +95,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 	}
 
 	@Transactional
-	private void incluirUsuarioConta(Usuario usuario) {
-
+	void incluirUsuarioConta(Usuario usuario) {
 		usuarioRepository.save(usuario);
 
 	}

@@ -11,7 +11,7 @@
     </parent>
     <groupId>sysmei.com</groupId>
     <artifactId>sysmei</artifactId>
-    <version>0.0.2</version>
+    <version>0.0.1</version>
     <name>Sysmei - Sistema para MEI</name>
     <description>Sistema de agendamento para microempreendedor individual!</description>
     <properties>
@@ -88,14 +88,6 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>11</source>
-                    <target>11</target>
-                </configuration>
             </plugin>
         </plugins>
     </build>

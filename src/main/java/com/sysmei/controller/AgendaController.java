@@ -8,9 +8,11 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,7 +30,6 @@ public class AgendaController {
 
 	@Autowired
 	private AgendaService agendaService;
-	
 
 	@RequestMapping(method = RequestMethod.GET, params = { Keys.PARAM_LOGIN })
 	public ResponseEntity<List<AgendaDTO>> findAll(@RequestParam(name = Keys.PARAM_LOGIN) String login) {
@@ -51,8 +52,8 @@ public class AgendaController {
 		return ResponseEntity.ok().body(listDto);
 	}
 
-	@RequestMapping(method = RequestMethod.GET, params = { Keys.ID })
-	public ResponseEntity<List<AgendaDTO>> findAll(@RequestParam(name = Keys.ID) Long id) {
+	@GetMapping("/{id}")
+	public ResponseEntity<List<AgendaDTO>> findAll(@PathVariable Long id) {
 		List<Agenda> list = agendaService.getAgendasWithPaciente(id);
 		List<AgendaDTO> listDto = list.stream().map(AgendaDTO::new).collect(Collectors.toList());
 		return ResponseEntity.ok().body(listDto);
@@ -91,16 +92,14 @@ public class AgendaController {
 		return ResponseEntity.ok().body(agendaSoma);
 	}
 
-	@RequestMapping(method = RequestMethod.GET, params = { Keys.PARAM_STATUS })
-	public ResponseEntity<List<AgendaDTO>> findAllStatus(@RequestParam(name = Keys.PARAM_STATUS) Integer status) {
-		List<Agenda> list = agendaService.getAgendasWithStatus(status);
-		List<AgendaDTO> listDto = list.stream().map(AgendaDTO::new).collect(Collectors.toList());
-		return ResponseEntity.ok().body(listDto);
-	}
-
-	@RequestMapping(method = RequestMethod.GET, params = { Keys.PARAM_LOGIN, Keys.PARAM_STATUS })
-	public ResponseEntity<List<AgendaDTO>> findAllStatus(@RequestParam(name = Keys.PARAM_LOGIN) String login, @RequestParam(name = Keys.PARAM_STATUS) Integer status) {
-		List<Agenda> list = agendaService.getAgendasWithLoginAndStatus(login, status);
+	@GetMapping("/status/{tipo}")
+	public ResponseEntity<List<AgendaDTO>> findAllStatus(@PathVariable Integer tipo,
+			@RequestHeader(value = "login", required = false) String login) {
+		List<Agenda> list;
+		if (login == null)
+			list = agendaService.getAgendasWithStatus(tipo);
+		else
+			list = agendaService.getAgendasWithLoginAndStatus(login, tipo);
 		List<AgendaDTO> listDto = list.stream().map(AgendaDTO::new).collect(Collectors.toList());
 		return ResponseEntity.ok().body(listDto);
 	}

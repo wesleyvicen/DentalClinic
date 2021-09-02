@@ -10,6 +10,8 @@ public class RotasKeys {
 	// Rotas Agenda
 	public static final String AGENDA = "/agenda";
 	public static final String PUBLIC = "/public";
+	public static final String SOMA = "/soma";
+	public static final String STATUS = "/status/{tipo}";
 	
 	// Rotas Auth
 	public static final String AUTH = "/auth";

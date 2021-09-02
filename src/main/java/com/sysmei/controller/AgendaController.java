@@ -1,21 +1,34 @@
 package com.sysmei.controller;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.sysmei.dto.AgendaDTO;
 import com.sysmei.dto.AgendaSomaDTO;
 import com.sysmei.keys.HeaderKeys;
 import com.sysmei.keys.ParamsKeys;
 import com.sysmei.keys.RotasKeys;
+import com.sysmei.keys.SysmeiKeys;
 import com.sysmei.model.Agenda;
 import com.sysmei.service.impl.AgendaServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = RotasKeys.AGENDA)
@@ -30,7 +43,7 @@ public class AgendaController {
 	 * @return Retorna uma lista de AgendaDTO
 	 */
 
-	@RequestMapping(method = RequestMethod.GET, params = { ParamsKeys.LOGIN })
+	@GetMapping
 	public ResponseEntity<List<AgendaDTO>> findAll(@RequestParam(name = ParamsKeys.LOGIN) String login) {
 		List<Agenda> list = agendaService.getAgendasWithLogin(login);
 		List<AgendaDTO> listDto = list.stream().map(AgendaDTO::new).collect(Collectors.toList());
@@ -45,14 +58,15 @@ public class AgendaController {
 	 * @return Retorna uma lista de AgendaDTO
 	 */
 
-	@RequestMapping(value = RotasKeys.PUBLIC, method = RequestMethod.GET, params = { ParamsKeys.LOGIN })
-	public ResponseEntity<List<AgendaDTO>> findAllPublic(@RequestParam(name = ParamsKeys.LOGIN) String login,
+	@GetMapping(RotasKeys.PUBLIC)
+	public ResponseEntity<List<AgendaDTO>> findAllPublic(
+			@RequestParam(name = ParamsKeys.LOGIN) String login,
 			@RequestParam(name = ParamsKeys.DATA_INICIO) String stringDataInicio,
 			@RequestParam(name = ParamsKeys.DATA_FIM) String stringDataFim) {
 		String inicioDate = stringDataInicio;
-		LocalDate dataInicio = LocalDate.parse(inicioDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+		LocalDate dataInicio = LocalDate.parse(inicioDate, DateTimeFormatter.ofPattern(SysmeiKeys.DATE_FORMAT));
 		String fimDate = stringDataFim;
-		LocalDate dataFim = LocalDate.parse(fimDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+		LocalDate dataFim = LocalDate.parse(fimDate, DateTimeFormatter.ofPattern(SysmeiKeys.DATE_FORMAT));
 
 		List<Agenda> list = agendaService.getAgendasWithDateBetween(login, dataInicio, dataFim);
 		List<AgendaDTO> listDto = list.stream().map(AgendaDTO::new).collect(Collectors.toList());
@@ -61,12 +75,12 @@ public class AgendaController {
 
 	/**
 	 * 
-	 * @param id Enviar o ID do Paciente
+	 * @path id Enviar o ID do Paciente
 	 * @return Retorna uma lista de AgendaDTO
 	 */
 
-	@RequestMapping(method = RequestMethod.GET, params = { ParamsKeys.ID })
-	public ResponseEntity<List<AgendaDTO>> findAll(@RequestParam(name = ParamsKeys.ID) Long id) {
+	@GetMapping(RotasKeys.ID)
+	public ResponseEntity<List<AgendaDTO>> findAll(@PathVariable Long id) {
 		List<Agenda> list = agendaService.getAgendasWithPaciente(id);
 		List<AgendaDTO> listDto = list.stream().map(AgendaDTO::new).collect(Collectors.toList());
 		return ResponseEntity.ok().body(listDto);
@@ -80,14 +94,15 @@ public class AgendaController {
 	 * @return Retorna o Objeto com a soma baseado no valor de cada agendamento
 	 */
 
-	@RequestMapping(value = "/soma", method = RequestMethod.GET, params = { ParamsKeys.LOGIN })
-	public ResponseEntity<AgendaSomaDTO> getSomaAgendamentos(@RequestParam(name = ParamsKeys.LOGIN) String login,
-			@RequestParam(name = "dataInicio") String stringDataInicio,
-			@RequestParam(name = "dataFim") String stringDataFim) {
+	@GetMapping(RotasKeys.SOMA)
+	public ResponseEntity<AgendaSomaDTO> getSomaAgendamentos(
+			@RequestParam(name = ParamsKeys.LOGIN) String login,
+			@RequestParam(name = ParamsKeys.DATA_INICIO) String stringDataInicio,
+			@RequestParam(name = ParamsKeys.DATA_FIM) String stringDataFim) {
 		String inicioDate = stringDataInicio;
-		LocalDate dataInicio = LocalDate.parse(inicioDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+		LocalDate dataInicio = LocalDate.parse(inicioDate, DateTimeFormatter.ofPattern(SysmeiKeys.DATE_FORMAT));
 		String fimDate = stringDataFim;
-		LocalDate dataFim = LocalDate.parse(fimDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+		LocalDate dataFim = LocalDate.parse(fimDate, DateTimeFormatter.ofPattern(SysmeiKeys.DATE_FORMAT));
 
 		AgendaSomaDTO agendaSoma = agendaService.getSomaAgendamentosBetween(login, dataInicio, dataFim);
 
@@ -96,30 +111,20 @@ public class AgendaController {
 
 	/**
 	 * 
+	 * @Header login Enviar o Login do usuário, podendo ser o Email
 	 * @param status Enviar 0 para Não confirmado, 1 para confirmado 1x e 2 para
 	 *               confirmado 24h antes
 	 * @return Retorna uma lista de AgendaDTO
 	 */
 
-	@RequestMapping(method = RequestMethod.GET, params = { ParamsKeys.STATUS })
-	public ResponseEntity<List<AgendaDTO>> findAllStatus(@RequestParam(name = ParamsKeys.STATUS) Integer status) {
-		List<Agenda> list = agendaService.getAgendasWithStatus(status);
-		List<AgendaDTO> listDto = list.stream().map(AgendaDTO::new).collect(Collectors.toList());
-		return ResponseEntity.ok().body(listDto);
-	}
-
-	/**
-	 * 
-	 * @param login  Enviar o Login do usuário, podendo ser o Email
-	 * @param status Enviar 0 para Não confirmado, 1 para confirmado 1x e 2 para
-	 *               confirmado 24h antes
-	 * @return Retorna uma lista de AgendaDTO
-	 */
-
-	@RequestMapping(method = RequestMethod.GET, params = { ParamsKeys.LOGIN, ParamsKeys.STATUS })
-	public ResponseEntity<List<AgendaDTO>> findAllStatus(@RequestParam(name = ParamsKeys.LOGIN) String login,
-			@RequestParam(name = ParamsKeys.STATUS) Integer status) {
-		List<Agenda> list = agendaService.getAgendasWithLoginAndStatus(login, status);
+	@GetMapping(RotasKeys.STATUS)
+	public ResponseEntity<List<AgendaDTO>> findAllStatus(@PathVariable Integer tipo,
+			@RequestHeader(value = ParamsKeys.LOGIN, required = false) String login) {
+		List<Agenda> list;
+		if (login == null)
+			list = agendaService.getAgendasWithStatus(tipo);
+		else
+			list = agendaService.getAgendasWithLoginAndStatus(login, tipo);
 		List<AgendaDTO> listDto = list.stream().map(AgendaDTO::new).collect(Collectors.toList());
 		return ResponseEntity.ok().body(listDto);
 	}
@@ -133,15 +138,16 @@ public class AgendaController {
 	 * @return Retorna uma lista de AgendaDTO
 	 */
 
-	@RequestMapping(value = "/prestador", method = RequestMethod.GET, params = { ParamsKeys.LOGIN, "prestadorId" })
-	public ResponseEntity<List<AgendaDTO>> findAgendasWithPrestador(@RequestParam(name = ParamsKeys.LOGIN) String login,
+	@GetMapping(RotasKeys.PRESTADOR)
+	public ResponseEntity<List<AgendaDTO>> findAgendasWithPrestador(
+			@RequestParam(name = ParamsKeys.LOGIN) String login,
 			@RequestParam(name = ParamsKeys.DATA_INICIO) String stringDataInicio,
 			@RequestParam(name = ParamsKeys.DATA_FIM) String stringDataFim,
-			@RequestParam(name = "prestadorId") Long prestadorId) {
+			@RequestParam(name = ParamsKeys.PRESTADOR_ID) Long prestadorId) {
 		String inicioDate = stringDataInicio;
-		LocalDate dataInicio = LocalDate.parse(inicioDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+		LocalDate dataInicio = LocalDate.parse(inicioDate, DateTimeFormatter.ofPattern(SysmeiKeys.DATE_FORMAT));
 		String fimDate = stringDataFim;
-		LocalDate dataFim = LocalDate.parse(fimDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+		LocalDate dataFim = LocalDate.parse(fimDate, DateTimeFormatter.ofPattern(SysmeiKeys.DATE_FORMAT));
 
 		List<Agenda> list = agendaService.getAgendasWithDateBetweenWithPrestador(login, dataInicio, dataFim,
 				prestadorId);
@@ -166,7 +172,7 @@ public class AgendaController {
 	 * @return
 	 */
 
-	@RequestMapping(value = RotasKeys.ID, method = RequestMethod.PUT)
+	@PutMapping(RotasKeys.ID)
 	public ResponseEntity<Void> update(@RequestBody AgendaDTO objDto, @PathVariable Long id,
 			@RequestHeader(value = HeaderKeys.PACIENTE_ID) Long pacienteId,
 			@RequestHeader(value = HeaderKeys.PRESTADOR_ID) Long prestadorId) {
@@ -185,8 +191,10 @@ public class AgendaController {
 	 * @return
 	 */
 
-	@RequestMapping(value = RotasKeys.ID, method = RequestMethod.PATCH)
-	public ResponseEntity<Void> updatePartes(@RequestBody AgendaDTO objDto, @PathVariable Long id,
+	@PatchMapping(RotasKeys.ID)
+	public ResponseEntity<Void> updatePartes(
+			@RequestBody AgendaDTO objDto, 
+			@PathVariable Long id,
 			@RequestHeader(value = HeaderKeys.PACIENTE_ID) Long pacienteId,
 			@RequestHeader(value = HeaderKeys.PRESTADOR_ID) Long prestadorId) {
 		objDto.setPaciente_id(pacienteId);
@@ -199,11 +207,11 @@ public class AgendaController {
 
 	/**
 	 * 
-	 * @param id
+	 * @path id
 	 * @return
 	 */
 
-	@RequestMapping(value = RotasKeys.ID, method = RequestMethod.DELETE)
+	@DeleteMapping(RotasKeys.ID)
 	public ResponseEntity<Void> delete(@PathVariable Long id) {
 		agendaService.delete(id);
 		return ResponseEntity.noContent().build();

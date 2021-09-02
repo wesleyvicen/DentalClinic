@@ -38,8 +38,9 @@ public class PacienteController {
 	 * @return
 	 */
 
-	@RequestMapping(method = RequestMethod.GET, params = { ParamsKeys.LOGIN })
-	public ResponseEntity<List<PacienteDTO>> findAll(@RequestParam(name = ParamsKeys.LOGIN) String login) {
+	@GetMapping
+	public ResponseEntity<List<PacienteDTO>> findAll(
+			@RequestParam(name = ParamsKeys.LOGIN) String login) {
 		List<Paciente> list = pacienteService.getPacientesWithLogin(login);
 		List<PacienteDTO> listDto = list.stream().map(PacienteDTO::new).collect(Collectors.toList());
 		return ResponseEntity.ok().body(listDto);
@@ -65,7 +66,8 @@ public class PacienteController {
 	 * @param direction
 	 * @return
 	 */
-	@RequestMapping(value = RotasKeys.PAGE, method = RequestMethod.GET)
+	
+	@GetMapping(RotasKeys.PAGE)
 	public ResponseEntity<Page<PacienteDTO>> findPage(
 			@RequestParam(value = RotasKeys.PAGE, defaultValue = "0") Integer page,
 			@RequestParam(value = ParamsKeys.LINES_PER_PAGE, defaultValue = "24") Integer linesPerPage,
@@ -83,7 +85,7 @@ public class PacienteController {
 	 * @return
 	 */
 
-	@RequestMapping(value = RotasKeys.PACIENTE_ID, method = RequestMethod.POST)
+	@PostMapping(RotasKeys.PACIENTE_ID)
 	public ResponseEntity<Void> uploadProfilePicture(@PathVariable Long id,
 			@RequestParam(name = ParamsKeys.FILE) MultipartFile file) {
 		URI uri = pacienteService.uploadProfilePicture(id, file);
@@ -110,7 +112,7 @@ public class PacienteController {
 	 * @return
 	 */
 
-	@RequestMapping(value = RotasKeys.ID, method = RequestMethod.PUT)
+	@PutMapping(RotasKeys.ID)
 	public ResponseEntity<Void> update(@RequestBody NewPacienteDTO objDto, @PathVariable Long id) {
 		Paciente obj = pacienteService.fromDTO(objDto);
 		obj.setId(id);
@@ -125,7 +127,7 @@ public class PacienteController {
 	 * @return
 	 */
 
-	@RequestMapping(value = RotasKeys.ID, method = RequestMethod.DELETE)
+	@DeleteMapping(RotasKeys.ID)
 	public ResponseEntity<?> delete(@PathVariable Long id) {
 		pacienteService.delete(id);
 		return ResponseEntity.noContent().build();
@@ -138,7 +140,7 @@ public class PacienteController {
 	 * @return
 	 */
 
-	@RequestMapping(value = RotasKeys.DELETE, method = RequestMethod.DELETE)
+	@DeleteMapping(RotasKeys.DELETE)
 	public ResponseEntity<String> deleteFile(@RequestParam(value = ParamsKeys.FILE_NAME) String keyName,
 			@RequestParam(value = ParamsKeys.FILE_ID) Long fileId) {
 		s3Service.deleteFile(keyName);

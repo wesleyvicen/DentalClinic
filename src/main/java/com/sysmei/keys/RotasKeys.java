@@ -19,7 +19,7 @@ public class RotasKeys {
 
 	// Rotas Paciente
 	public static final String PACIENTE = "/paciente";
-	public static final String PACIENTE_ID = "/picture/{id}";
+	public static final String PACIENTE_ID = "/picture" + ID;
 
 	// Rotas Usuário
 	public static final String USER = "/user";

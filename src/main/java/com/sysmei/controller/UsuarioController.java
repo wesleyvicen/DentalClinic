@@ -28,7 +28,7 @@ public class UsuarioController {
 	 * @return
 	 */
 
-	@RequestMapping(value = RotasKeys.ID, method = RequestMethod.GET)
+	@GetMapping(RotasKeys.ID)
 	public ResponseEntity<?> find(@PathVariable Integer id) {
 		try {
 			Usuario obj = usuarioService.search(id);
@@ -50,7 +50,7 @@ public class UsuarioController {
 	 * @return
 	 */
 
-	@RequestMapping(value = RotasKeys.TOKEN, method = RequestMethod.GET)
+	@GetMapping(RotasKeys.TOKEN)
 	public String verificarUser(@RequestHeader(name = ParamsKeys.code) String code) {
 		if (usuarioService.verificarUser(code)) {
 			return "verify_success";
@@ -86,7 +86,7 @@ public class UsuarioController {
 	 * @return
 	 */
 
-	@PostMapping(value = RotasKeys.LOGIN)
+	@PostMapping(RotasKeys.LOGIN)
 	public ResponseEntity<?> logar(@RequestBody LoginDto loginDto) {
 		try {
 			return new ResponseEntity<>(usuarioService.logar(loginDto), HttpStatus.OK);
@@ -102,7 +102,7 @@ public class UsuarioController {
 	 * @return
 	 */
 
-	@RequestMapping(value = RotasKeys.PICTURE, method = RequestMethod.POST)
+	@PostMapping(RotasKeys.PICTURE)
 	public ResponseEntity<Void> uploadProfilePicture(@RequestParam(name = ParamsKeys.FILE) MultipartFile file) {
 		URI uri = usuarioService.uploadProfilePicture(file);
 		return ResponseEntity.created(uri).build();

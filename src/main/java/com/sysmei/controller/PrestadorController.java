@@ -13,65 +13,56 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@RestController
-@RequestMapping(value = RotasKeys.PRESTADOR)
-public class PrestadorController {
+@RestController @RequestMapping(value = RotasKeys.PRESTADOR) public class PrestadorController {
 
-	@Autowired
-	private PrestadorServiceImpl prestadorService;
+	@Autowired private PrestadorServiceImpl prestadorService;
 
 	/**
-	 * 
 	 * @param login
 	 * @return
 	 */
 
-	@RequestMapping(method = RequestMethod.GET, params = { ParamsKeys.LOGIN })
-	public ResponseEntity<List<PrestadorDTO>> findAll(@RequestParam(name = ParamsKeys.LOGIN) String login) {
+	@RequestMapping(method = RequestMethod.GET, params = {ParamsKeys.LOGIN})
+	public ResponseEntity<List<PrestadorDTO>> findAll(
+		@RequestParam(name = ParamsKeys.LOGIN) String login) {
 		List<Prestador> list = prestadorService.getPrestadorWithLogin(login);
 		List<PrestadorDTO> listDto = list.stream().map(PrestadorDTO::new).collect(Collectors.toList());
 		return ResponseEntity.ok().body(listDto);
 	}
 
 	/**
-	 * 
 	 * @param id
 	 * @return
 	 */
 
-	@GetMapping(RotasKeys.ID)
-	public ResponseEntity<Prestador> getById(@PathVariable Long id) {
+	@GetMapping(RotasKeys.ID) public ResponseEntity<Prestador> getById(@PathVariable Long id) {
 		Prestador dto = prestadorService.getById(id);
 		return ResponseEntity.ok().body(dto);
 	}
 
 	/**
-	 * 
 	 * @param telefone
 	 * @return
 	 */
 
-	@GetMapping(RotasKeys.BUSCA_TELEFONE)
-	public ResponseEntity<Prestador> getByTelefone(@PathVariable String telefone) {
+	@GetMapping(RotasKeys.BUSCA_TELEFONE) public ResponseEntity<Prestador> getByTelefone(
+		@PathVariable String telefone) {
 		Prestador dto = prestadorService.getByTelefone(telefone);
 		return ResponseEntity.ok().body(dto);
 	}
 
 	/**
-	 * 
 	 * @param dto
 	 * @return
 	 */
 
-	@PostMapping
-	public ResponseEntity<?> insert(@RequestBody PrestadorDTO dto) {
+	@PostMapping public ResponseEntity<?> insert(@RequestBody PrestadorDTO dto) {
 		Prestador prestador = prestadorService.fromDTO(dto);
 
 		return new ResponseEntity<>(prestadorService.insert(prestador), HttpStatus.CREATED);
 	}
 
 	/**
-	 * 
 	 * @param objDto
 	 * @param id
 	 * @return
@@ -87,7 +78,6 @@ public class PrestadorController {
 	}
 
 	/**
-	 * 
 	 * @param id
 	 * @return
 	 */

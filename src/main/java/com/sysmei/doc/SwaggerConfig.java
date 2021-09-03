@@ -18,47 +18,45 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
-@Configuration
-@EnableSwagger2
-public class SwaggerConfig {
-    @Bean
-    public Docket detalheApi() {
+@Configuration @EnableSwagger2 public class SwaggerConfig {
+    @Bean public Docket detalheApi() {
 
         ParameterBuilder paramBuilder = new ParameterBuilder();
         List<Parameter> params = new ArrayList<>();
-        paramBuilder.name("Authorization").modelRef(new ModelRef("string")).parameterType("header").required(false)
-				.build();
-		params.add(paramBuilder.build());
+        paramBuilder.name("Authorization").modelRef(new ModelRef("string")).parameterType("header")
+            .required(false).build();
+        params.add(paramBuilder.build());
 
-		Docket docket = new Docket(DocumentationType.SWAGGER_2);
+        Docket docket = new Docket(DocumentationType.SWAGGER_2);
 
-		docket.globalOperationParameters(params).select()
-				.apis(RequestHandlerSelectors.basePackage("com.sysmei.controller")).paths(PathSelectors.any())
-				.build().apiInfo(this.informacoesApi().build())
-				.consumes(new HashSet<String>(Arrays.asList("application/json")))
-				.produces(new HashSet<String>(Arrays.asList("application/json")));
+        docket.globalOperationParameters(params).select()
+            .apis(RequestHandlerSelectors.basePackage("com.sysmei.controller"))
+            .paths(PathSelectors.any()).build().apiInfo(this.informacoesApi().build())
+            .consumes(new HashSet<String>(Arrays.asList("application/json")))
+            .produces(new HashSet<String>(Arrays.asList("application/json")));
 
-		return docket;
-	}
+        return docket;
+    }
 
-	private ApiInfoBuilder informacoesApi() {
+    private ApiInfoBuilder informacoesApi() {
 
-		ApiInfoBuilder apiInfoBuilder = new ApiInfoBuilder();
+        ApiInfoBuilder apiInfoBuilder = new ApiInfoBuilder();
 
-		apiInfoBuilder.title("Sysmei - Sistema para Micro-Empreendedor Invidual");
-		apiInfoBuilder.description("API Sysmei");
-		apiInfoBuilder.version("1.0");
-		apiInfoBuilder.termsOfServiceUrl("Termo de uso: Uso Sysmei");
-		apiInfoBuilder.license("Licença - Wesley Vicente");
-		apiInfoBuilder.licenseUrl("https://github.com/wesleyvicen");
-		apiInfoBuilder.contact(this.contato());
+        apiInfoBuilder.title("Sysmei - Sistema para Micro-Empreendedor Invidual");
+        apiInfoBuilder.description("API Sysmei");
+        apiInfoBuilder.version("1.0");
+        apiInfoBuilder.termsOfServiceUrl("Termo de uso: Uso Sysmei");
+        apiInfoBuilder.license("Licença - Wesley Vicente");
+        apiInfoBuilder.licenseUrl("https://github.com/wesleyvicen");
+        apiInfoBuilder.contact(this.contato());
 
-		return apiInfoBuilder;
+        return apiInfoBuilder;
 
-	}
+    }
 
-	private Contact contato() {
+    private Contact contato() {
 
-		return new Contact("Wesley Vicente", "https://github.com/wesleyvicen", "wesley1535@hotmail.com");
-	}
+        return new Contact("Wesley Vicente", "https://github.com/wesleyvicen",
+            "wesley1535@hotmail.com");
+    }
 }

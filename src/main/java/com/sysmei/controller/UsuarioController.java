@@ -15,43 +15,37 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.net.URI;
 
-@RestController
-@RequestMapping(value = RotasKeys.USER)
-public class UsuarioController {
+@RestController @RequestMapping(value = RotasKeys.USER) public class UsuarioController {
 
-	@Autowired
-	private UsuarioServiceImpl usuarioService;
+	@Autowired private UsuarioServiceImpl usuarioService;
 
 	/**
-	 * 
 	 * @param id
 	 * @return
 	 */
 
-	@GetMapping(RotasKeys.ID)
-	public ResponseEntity<?> find(@PathVariable Integer id) {
+	@GetMapping(RotasKeys.ID) public ResponseEntity<?> find(@PathVariable Integer id) {
 		try {
 			Usuario obj = usuarioService.search(id);
 			return ResponseEntity.ok().body(obj);
 		} catch (ObjectNotFoundException e) {
 			return new ResponseEntity<>(
-					String.format("Usuario de ID %s Não encontrado, por favor tente um ID diferente.", id),
-					HttpStatus.NOT_ACCEPTABLE);
+				String.format("Usuario de ID %s Não encontrado, por favor tente um ID diferente.", id),
+				HttpStatus.NOT_ACCEPTABLE);
 		} catch (Exception e) {
 			return new ResponseEntity<>(("Houve algum erro intento, por favor tente mais tarde."),
-					HttpStatus.BAD_REQUEST);
+				HttpStatus.BAD_REQUEST);
 		}
 
 	}
 
 	/**
-	 * 
 	 * @param code
 	 * @return
 	 */
 
-	@GetMapping(RotasKeys.TOKEN)
-	public String verificarUser(@RequestHeader(name = ParamsKeys.code) String code) {
+	@GetMapping(RotasKeys.TOKEN) public String verificarUser(
+		@RequestHeader(name = ParamsKeys.code) String code) {
 		if (usuarioService.verificarUser(code)) {
 			return "verify_success";
 		} else {
@@ -60,50 +54,46 @@ public class UsuarioController {
 	}
 
 	/**
-	 * 
 	 * @param usuarioDto
 	 * @return
 	 */
-	@PostMapping()
-	public ResponseEntity<?> addConta(@RequestBody UsuarioDto usuarioDto) {
+	@PostMapping() public ResponseEntity<?> addConta(@RequestBody UsuarioDto usuarioDto) {
 		try {
 
 			return new ResponseEntity<>(usuarioService.addUsuario(usuarioDto), HttpStatus.CREATED);
 
 		} catch (IllegalStateException e) {
 			return new ResponseEntity<>(String.format(
-					"Usuario %s já existe no sistema e não pode ser criado, por favor tente um login diferente.",
-					usuarioDto.getLogin()), HttpStatus.NOT_ACCEPTABLE);
+				"Usuario %s já existe no sistema e não pode ser criado, por favor tente um login diferente.",
+				usuarioDto.getLogin()), HttpStatus.NOT_ACCEPTABLE);
 		} catch (Exception e) {
 			return new ResponseEntity<>(("Houve algum erro intento, por favor tente mais tarde."),
-					HttpStatus.BAD_REQUEST);
+				HttpStatus.BAD_REQUEST);
 		}
 	}
 
 	/**
-	 * 
 	 * @param loginDto
 	 * @return
 	 */
 
-	@PostMapping(RotasKeys.LOGIN)
-	public ResponseEntity<?> logar(@RequestBody LoginDto loginDto) {
+	@PostMapping(RotasKeys.LOGIN) public ResponseEntity<?> logar(@RequestBody LoginDto loginDto) {
 		try {
 			return new ResponseEntity<>(usuarioService.logar(loginDto), HttpStatus.OK);
 
 		} catch (IllegalArgumentException ex) {
-			return new ResponseEntity<>(String.format("Erro: %s", ex.getMessage()), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(String.format("Erro: %s", ex.getMessage()),
+				HttpStatus.BAD_REQUEST);
 		}
 	}
 
 	/**
-	 * 
 	 * @param file
 	 * @return
 	 */
 
-	@PostMapping(RotasKeys.PICTURE)
-	public ResponseEntity<Void> uploadProfilePicture(@RequestParam(name = ParamsKeys.FILE) MultipartFile file) {
+	@PostMapping(RotasKeys.PICTURE) public ResponseEntity<Void> uploadProfilePicture(
+		@RequestParam(name = ParamsKeys.FILE) MultipartFile file) {
 		URI uri = usuarioService.uploadProfilePicture(file);
 		return ResponseEntity.created(uri).build();
 	}

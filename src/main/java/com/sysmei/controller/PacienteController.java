@@ -19,101 +19,85 @@ import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@RestController
-@RequestMapping(value = RotasKeys.PACIENTE)
-public class PacienteController {
+@RestController @RequestMapping(value = RotasKeys.PACIENTE) public class PacienteController {
 
-	@Autowired
-	private PacienteServiceImpl pacienteService;
+	@Autowired private PacienteServiceImpl pacienteService;
 
-	@Autowired
-	private S3ServiceImpl s3Service;
+	@Autowired private S3ServiceImpl s3Service;
 
-	@Autowired
-	private DocumentsServiceImpl documentsService;
+	@Autowired private DocumentsServiceImpl documentsService;
 
 	/**
-	 * 
 	 * @param login
 	 * @return
 	 */
 
-	@GetMapping
-	public ResponseEntity<List<PacienteDTO>> findAll(
-			@RequestParam(name = ParamsKeys.LOGIN) String login) {
+	@GetMapping public ResponseEntity<List<PacienteDTO>> findAll(
+		@RequestParam(name = ParamsKeys.LOGIN) String login) {
 		List<Paciente> list = pacienteService.getPacientesWithLogin(login);
 		List<PacienteDTO> listDto = list.stream().map(PacienteDTO::new).collect(Collectors.toList());
 		return ResponseEntity.ok().body(listDto);
 	}
 
 	/**
-	 * 
 	 * @param id
 	 * @return
 	 */
 
-	@GetMapping(RotasKeys.ID)
-	public ResponseEntity<Paciente> getById(@PathVariable Long id) {
+	@GetMapping(RotasKeys.ID) public ResponseEntity<Paciente> getById(@PathVariable Long id) {
 		Paciente dto = pacienteService.getById(id);
 		return ResponseEntity.ok().body(dto);
 	}
 
 	/**
-	 * 
 	 * @param page
 	 * @param linesPerPage
 	 * @param orderBy
 	 * @param direction
 	 * @return
 	 */
-	
-	@GetMapping(RotasKeys.PAGE)
-	public ResponseEntity<Page<PacienteDTO>> findPage(
-			@RequestParam(value = RotasKeys.PAGE, defaultValue = "0") Integer page,
-			@RequestParam(value = ParamsKeys.LINES_PER_PAGE, defaultValue = "24") Integer linesPerPage,
-			@RequestParam(value = ParamsKeys.ORDER_BY, defaultValue = "nome") String orderBy,
-			@RequestParam(value = ParamsKeys.DIRECTION, defaultValue = "ASC") String direction) {
+
+	@GetMapping(RotasKeys.PAGE) public ResponseEntity<Page<PacienteDTO>> findPage(
+		@RequestParam(value = RotasKeys.PAGE, defaultValue = "0") Integer page,
+		@RequestParam(value = ParamsKeys.LINES_PER_PAGE, defaultValue = "24") Integer linesPerPage,
+		@RequestParam(value = ParamsKeys.ORDER_BY, defaultValue = "nome") String orderBy,
+		@RequestParam(value = ParamsKeys.DIRECTION, defaultValue = "ASC") String direction) {
 		Page<Paciente> list = pacienteService.findPage(page, linesPerPage, orderBy, direction);
 		Page<PacienteDTO> listDto = list.map(PacienteDTO::new);
 		return ResponseEntity.ok().body(listDto);
 	}
 
 	/**
-	 * 
 	 * @param id
 	 * @param file
 	 * @return
 	 */
 
-	@PostMapping(RotasKeys.PACIENTE_ID)
-	public ResponseEntity<Void> uploadProfilePicture(@PathVariable Long id,
-			@RequestParam(name = ParamsKeys.FILE) MultipartFile file) {
+	@PostMapping(RotasKeys.PACIENTE_ID) public ResponseEntity<Void> uploadProfilePicture(
+		@PathVariable Long id, @RequestParam(name = ParamsKeys.FILE) MultipartFile file) {
 		URI uri = pacienteService.uploadProfilePicture(id, file);
 		return ResponseEntity.created(uri).build();
 	}
 
 	/**
-	 * 
 	 * @param dto
 	 * @return
 	 */
 
-	@PostMapping
-	public ResponseEntity<?> insert(@RequestBody NewPacienteDTO dto) {
+	@PostMapping public ResponseEntity<?> insert(@RequestBody NewPacienteDTO dto) {
 		Paciente paciente = pacienteService.fromDTO(dto);
 
 		return new ResponseEntity<>(pacienteService.insert(paciente), HttpStatus.CREATED);
 	}
 
 	/**
-	 * 
 	 * @param objDto
 	 * @param id
 	 * @return
 	 */
 
-	@PutMapping(RotasKeys.ID)
-	public ResponseEntity<Void> update(@RequestBody NewPacienteDTO objDto, @PathVariable Long id) {
+	@PutMapping(RotasKeys.ID) public ResponseEntity<Void> update(@RequestBody NewPacienteDTO objDto,
+		@PathVariable Long id) {
 		Paciente obj = pacienteService.fromDTO(objDto);
 		obj.setId(id);
 		obj = pacienteService.update(obj);
@@ -122,27 +106,24 @@ public class PacienteController {
 	}
 
 	/**
-	 * 
 	 * @param id
 	 * @return
 	 */
 
-	@DeleteMapping(RotasKeys.ID)
-	public ResponseEntity<?> delete(@PathVariable Long id) {
+	@DeleteMapping(RotasKeys.ID) public ResponseEntity<?> delete(@PathVariable Long id) {
 		pacienteService.delete(id);
 		return ResponseEntity.noContent().build();
 	}
 
 	/**
-	 * 
 	 * @param keyName
 	 * @param fileId
 	 * @return
 	 */
 
-	@DeleteMapping(RotasKeys.DELETE)
-	public ResponseEntity<String> deleteFile(@RequestParam(value = ParamsKeys.FILE_NAME) String keyName,
-			@RequestParam(value = ParamsKeys.FILE_ID) Long fileId) {
+	@DeleteMapping(RotasKeys.DELETE) public ResponseEntity<String> deleteFile(
+		@RequestParam(value = ParamsKeys.FILE_NAME) String keyName,
+		@RequestParam(value = ParamsKeys.FILE_ID) Long fileId) {
 		s3Service.deleteFile(keyName);
 		documentsService.delete(fileId);
 		final String response = "[" + keyName + "] detelado com sucesso.";

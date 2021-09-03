@@ -13,22 +13,23 @@ import java.util.List;
 
 public interface UsuarioService {
 
-	public UsuarioDto addUsuario(UsuarioDto usuarioDto) throws UnsupportedEncodingException, MessagingException;
+    public UsuarioDto addUsuario(UsuarioDto usuarioDto)
+        throws UnsupportedEncodingException, MessagingException;
 
-	public Usuario getUsuarioWithLoginAndSenha(String login, String senha);
+    public Usuario getUsuarioWithLoginAndSenha(String login, String senha);
 
-	public Usuario getUsuarioWithLogin(String login);
+    public Usuario getUsuarioWithLogin(String login);
 
-	public boolean existsUsuarioWithLogin(String login);
+    public boolean existsUsuarioWithLogin(String login);
 
-	public Usuario search(Integer id);
+    public Usuario search(Integer id);
 
-	public List<UsuarioDto> findAll(Integer id);
+    public List<UsuarioDto> findAll(Integer id);
 
-	public SessaoDto logar(LoginDto loginDto);
+    public SessaoDto logar(LoginDto loginDto);
 
-	public URI uploadProfilePicture(MultipartFile multipartFile);
+    public URI uploadProfilePicture(MultipartFile multipartFile);
 
-	public boolean verificarUser(String verificationCode);
+    public boolean verificarUser(String verificationCode);
 
 }

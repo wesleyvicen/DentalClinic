@@ -15,9 +15,9 @@ public interface PrestadorService {
 
     public Prestador update(Prestador obj);
 
-	public Prestador insert(Prestador prestador);
+    public Prestador insert(Prestador prestador);
 
-	public void delete(Long id);
+    public void delete(Long id);
 
-	public Prestador fromDTO(PrestadorDTO dto);
+    public Prestador fromDTO(PrestadorDTO dto);
 }

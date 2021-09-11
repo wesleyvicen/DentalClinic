@@ -1,15 +1,15 @@
 package com.sysmei.enums;
 
 public enum TipoSexo {
-    M("Particular"), F("Convênio");
+  M("Masculino"), F("Feminino");
 
-    private String descricao;
+  private String descricao;
 
-    private TipoSexo(String descricao) {
-        this.descricao = descricao;
-    }
+  private TipoSexo(String descricao) {
+    this.descricao = descricao;
+  }
 
-    public String getDescricao() {
-        return descricao;
-    }
+  public String getDescricao() {
+    return descricao;
+  }
 }

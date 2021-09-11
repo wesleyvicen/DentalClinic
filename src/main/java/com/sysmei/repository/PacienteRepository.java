@@ -10,9 +10,10 @@ import java.util.List;
 
 public interface PacienteRepository extends JpaRepository<Paciente, Long> {
 
-    List<Paciente> findAll();
+  List<Paciente> findAll();
 
-    @Query(value = "Select paciente from Paciente paciente Left Join Fetch paciente.usuario usuario where paciente.usuario.login = :loginUsuario ORDER BY paciente.nome")
-    List<Paciente> getPacientesWithLogin(@Param("loginUsuario") String login);
+  @Query(
+      value = "Select paciente from Paciente paciente Left Join Fetch paciente.usuario usuario where paciente.usuario.login = :loginUsuario ORDER BY paciente.nome")
+  List<Paciente> getPacientesWithLogin(@Param("loginUsuario") String login);
 
 }

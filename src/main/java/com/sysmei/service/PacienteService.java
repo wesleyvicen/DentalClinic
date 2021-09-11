@@ -10,21 +10,21 @@ import java.util.List;
 
 public interface PacienteService {
 
-    public List<Paciente> getPacientesWithLogin(String login);
+  public List<Paciente> getPacientesWithLogin(String login);
 
-    public Paciente getById(Long id);
+  public Paciente getById(Long id);
 
-    public Paciente update(Paciente obj);
+  public Paciente update(Paciente obj);
 
-    public Paciente insert(Paciente paciente);
+  public Paciente insert(Paciente paciente);
 
-    public Page<Paciente> findPage(Integer page, Integer linesPerPage, String orderBy,
-        String direction);
+  public Page<Paciente> findPage(Integer page, Integer linesPerPage, String orderBy,
+      String direction);
 
-    public void delete(Long id);
+  public void delete(Long id);
 
-    public Paciente fromDTO(NewPacienteDTO dto);
+  public Paciente fromDTO(NewPacienteDTO dto);
 
-    public URI uploadProfilePicture(Long id, MultipartFile multipartFile);
+  public URI uploadProfilePicture(Long id, MultipartFile multipartFile);
 
 }

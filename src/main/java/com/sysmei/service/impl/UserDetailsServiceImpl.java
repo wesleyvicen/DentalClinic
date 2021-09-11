@@ -14,18 +14,20 @@ import org.springframework.stereotype.Service;
 /**
  * Classe de Serviço que implementa a interface UserDetailsService
  */
-@Service public class UserDetailsServiceImpl implements UserDetailsService {
+@Service
+public class UserDetailsServiceImpl implements UserDetailsService {
 
-    @Autowired UsuarioServiceImpl usuarioService;
+  @Autowired
+  UsuarioServiceImpl usuarioService;
 
-    @Override public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
-        Usuario usuario = usuarioService.getUsuarioWithLogin(login);
+  @Override
+  public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
+    Usuario usuario = usuarioService.getUsuarioWithLogin(login);
 
-        if (usuario == null) {
-            throw new UsernameNotFoundException(login);
-        }
-        return new UserSS(usuario.getId(), usuario.getLogin(), usuario.getSenha(),
-            usuario.getPerfis());
+    if (usuario == null) {
+      throw new UsernameNotFoundException(login);
     }
+    return new UserSS(usuario.getId(), usuario.getLogin(), usuario.getSenha(), usuario.getPerfis());
+  }
 
 }

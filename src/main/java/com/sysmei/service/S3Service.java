@@ -7,10 +7,10 @@ import java.net.URI;
 
 public interface S3Service {
 
-    public URI uploadFile(MultipartFile multipartfile);
+  public URI uploadFile(MultipartFile multipartfile);
 
-    public URI uploadFile(InputStream is, String fileName, String contentType);
+  public URI uploadFile(InputStream is, String fileName, String contentType);
 
-    public void deleteFile(final String keyName);
+  public void deleteFile(final String keyName);
 
 }

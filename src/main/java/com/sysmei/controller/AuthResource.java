@@ -19,21 +19,21 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping(value = RotasKeys.AUTH)
 public class AuthResource {
 
-	@Autowired
-	private JWTUtil jwtUtil;
+  @Autowired
+  private JWTUtil jwtUtil;
 
-	
-	/**
-	 * 
-	 * @param response
-	 * @return
-	 */
-	@PostMapping(RotasKeys.REFRESH_TOKEN)
-	public ResponseEntity<Void> refreshToken(HttpServletResponse response) {
-		UserSS user = UsuarioServiceImpl.authenticated();
-		String token = jwtUtil.generateToken(user.getUsername());
-		response.addHeader("Authorization", "Bearer " + token);
-		response.addHeader("access-control-expose-headers", "Authorization");
-		return ResponseEntity.noContent().build();
-	}
+
+  /**
+   * 
+   * @param response
+   * @return
+   */
+  @PostMapping(RotasKeys.REFRESH_TOKEN)
+  public ResponseEntity<Void> refreshToken(HttpServletResponse response) {
+    UserSS user = UsuarioServiceImpl.authenticated();
+    String token = jwtUtil.generateToken(user.getUsername());
+    response.addHeader("Authorization", "Bearer " + token);
+    response.addHeader("access-control-expose-headers", "Authorization");
+    return ResponseEntity.noContent().build();
+  }
 }

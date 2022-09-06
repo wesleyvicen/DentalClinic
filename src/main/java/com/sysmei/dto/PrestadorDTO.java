@@ -4,7 +4,15 @@
 package com.sysmei.dto;
 
 import com.sysmei.model.Prestador;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class PrestadorDTO {
   private Long id;
   private String nome;
@@ -22,40 +30,6 @@ public class PrestadorDTO {
     this.nome = entity.getNome();
     this.login_usuario = entity.getUsuario().getLogin();
     this.telefone = entity.getTelefone();
-  }
-
-  public PrestadorDTO() {}
-
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
-
-  public String getTelefone() {
-    return telefone;
-  }
-
-  public void setTelefone(String telefone) {
-    this.telefone = telefone;
-  }
-
-  public String getLogin_usuario() {
-    return login_usuario;
-  }
-
-  public void setLogin_usuario(String login_usuario) {
-    this.login_usuario = login_usuario;
-  }
-
-  public String getNome() {
-    return nome;
-  }
-
-  public void setNome(String nome) {
-    this.nome = nome;
   }
 
 }

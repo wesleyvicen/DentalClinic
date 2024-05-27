@@ -54,6 +54,12 @@ public class PacienteServiceImpl implements PacienteService {
     return obj.orElseThrow(() -> new ObjectNotFoundException(
         "Objeto Não encontrado! ID: " + id + ", Tipo: " + Paciente.class.getName()));
   }
+  
+  public Paciente getByIdAndLoginUsuario(Long id, String loginUsuario) {
+	Optional<Paciente> obj = pacienteRepository.findByIdAndLoginUsuario(id, loginUsuario);
+    return obj.orElseThrow(() -> new ObjectNotFoundException(
+        "Objeto Não encontrado! ID: " + id + ", Tipo: " + Paciente.class.getName()));
+  }
 
   public Paciente update(Paciente obj) {
     Paciente newObj = getById(obj.getId());

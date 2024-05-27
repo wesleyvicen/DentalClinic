@@ -13,6 +13,8 @@ public interface PacienteService {
   public List<Paciente> getPacientesWithLogin(String login);
 
   public Paciente getById(Long id);
+  
+  public Paciente getByIdAndLoginUsuario(Long id, String loginUsuario);
 
   public Paciente update(Paciente obj);
 

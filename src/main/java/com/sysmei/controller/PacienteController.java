@@ -55,6 +55,12 @@ public class PacienteController {
     Paciente dto = pacienteService.getById(id);
     return ResponseEntity.ok().body(dto);
   }
+  
+  @GetMapping(RotasKeys.ID)
+  public ResponseEntity<Paciente> getByIdAndLoginUsuario(@PathVariable Long id, @RequestHeader("login_usuario") String loginUsuario) {
+    Paciente dto = pacienteService.getByIdAndLoginUsuario(id, loginUsuario);
+    return ResponseEntity.ok().body(dto);
+  }
 
   /**
    * @param page

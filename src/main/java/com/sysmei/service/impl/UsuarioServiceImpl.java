@@ -357,4 +357,31 @@ public class UsuarioServiceImpl implements UsuarioService {
             return true;
         }
     }
+    
+    @Transactional
+    public UsuarioDto updateUsuario(Integer id, UsuarioDto usuarioDto, String loginUsuario) {
+        Usuario usuario = search(id); // Busca o usuário pelo ID, lançando exceção se não encontrado
+
+        // Verifica se o login do usuário autenticado corresponde ao login do usuário a ser atualizado
+        if (!usuario.getLogin().equals(loginUsuario)) {
+            throw new AuthorizationException("Usuário não autorizado a atualizar este perfil");
+        }
+
+        usuario.setNome(usuarioDto.getNome());
+        usuario.setTelefone(usuarioDto.getTelefone());
+        usuario.setStatus(usuarioDto.getStatus());
+
+        // Verifica a senha antiga antes de atualizar para uma nova senha
+        if (usuarioDto.getSenha() != null && !usuarioDto.getSenha().isEmpty()) {
+            if (usuarioDto.getSenhaAntiga() == null || !passwordEncoder.matches(usuarioDto.getSenhaAntiga(), usuario.getSenha())) {
+                throw new IllegalArgumentException("Senha antiga incorreta!");
+            }
+            usuario.setSenha(passwordEncoder.encode(usuarioDto.getSenha()));
+        }
+
+        usuario = usuarioRepository.save(usuario);
+        return new UsuarioDto(usuario);
+    }
+
+
 }

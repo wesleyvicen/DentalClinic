@@ -13,6 +13,7 @@ public class UsuarioDto {
   private String login;
   private String nome;
   private String senha;
+  private String senhaAntiga;
   private Boolean status;
   private boolean enabled;
 

@@ -8,6 +8,7 @@ import com.sysmei.repository.AgendaRepository;
 import com.sysmei.service.AgendaService;
 import com.sysmei.service.exception.DataIntegrityException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,9 +24,11 @@ public class AgendaServiceImpl implements AgendaService {
   private AgendaRepository agendaRepository;
 
   @Autowired
+  @Lazy
   private PacienteServiceImpl pacienteService;
 
   @Autowired
+  @Lazy
   private UsuarioServiceImpl usuarioService;
 
   @Autowired

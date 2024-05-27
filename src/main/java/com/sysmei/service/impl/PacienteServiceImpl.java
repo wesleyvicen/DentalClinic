@@ -10,6 +10,7 @@ import com.sysmei.service.PacienteService;
 import com.sysmei.service.exception.AuthorizationException;
 import com.sysmei.service.exception.DataIntegrityException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -31,6 +32,7 @@ public class PacienteServiceImpl implements PacienteService {
   private PacienteRepository pacienteRepository;
 
   @Autowired
+  @Lazy
   private UsuarioServiceImpl usuarioService;
 
   @Autowired

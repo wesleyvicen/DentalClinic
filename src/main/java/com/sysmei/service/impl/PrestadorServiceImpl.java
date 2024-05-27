@@ -7,6 +7,7 @@ import com.sysmei.repository.PrestadorRepository;
 import com.sysmei.service.PrestadorService;
 import com.sysmei.service.exception.DataIntegrityException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +22,7 @@ public class PrestadorServiceImpl implements PrestadorService {
   private PrestadorRepository prestadorRepository;
 
   @Autowired
+  @Lazy
   private UsuarioServiceImpl usuarioService;
 
   public List<Prestador> getPrestadorWithLogin(String login) {

@@ -85,7 +85,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         usuario.setVerificationCode(randomCode);
         if (!existsUsuarioWithLogin(usuario.getLogin())) {
             incluirUsuarioConta(usuario);
-            // sendVerificationEmail(usuario, "https://sysmei.com");
+            sendVerificationEmail(usuario, "https://sysmei.com");
             Prestador prestador = new Prestador();
             prestador.setNome("Geral");
             prestador.setTelefone("");

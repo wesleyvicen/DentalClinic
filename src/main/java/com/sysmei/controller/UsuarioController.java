@@ -62,7 +62,7 @@ public class UsuarioController {
    */
 
   @GetMapping(RotasKeys.TOKEN)
-  public String verificarUser(@RequestHeader(name = ParamsKeys.code) String code) {
+  public String verificarUser(@RequestParam(name = ParamsKeys.code) String code) {
     if (usuarioService.verificarUser(code)) {
       return "verify_success";
     } else {

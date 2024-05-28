@@ -18,8 +18,9 @@ public interface AgendaRepository extends JpaRepository<Agenda, Long> {
   List<Agenda> getAgendasWithLogin(@Param("loginUsuario") String login);
 
   @Query(
-      value = "Select agenda from Agenda agenda Left Join Fetch agenda.paciente paciente where agenda.paciente.id = :paciente_id")
-  List<Agenda> getAgendasWithPaciente(@Param("paciente_id") Long pacienteId);
+	  value = "SELECT agenda FROM Agenda agenda LEFT JOIN FETCH agenda.paciente paciente WHERE agenda.paciente.id = :paciente_id ORDER BY agenda.start DESC")
+	List<Agenda> getAgendasWithPaciente(@Param("paciente_id") Long pacienteId);
+
 
   @Query(
       value = "Select agenda from Agenda agenda where agenda.usuario.login = :loginUsuario and agenda.allDay between :dataInicio and :dataFim")

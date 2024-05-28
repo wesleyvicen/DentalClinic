@@ -29,11 +29,16 @@ import java.util.Arrays;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private static final String[] PUBLIC_MATCHERS = {"/h2-console/**", "/user/token"};
+	private static final String[] PUBLIC_MATCHERS = {"/h2-console/**", "/user/token"};
     private static final String[] SWAGGER_WHITELIST =
         {"/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**"};
     private static final String[] PUBLIC_MATCHERS_GET = {"/agenda/public"};
-    private static final String[] PUBLIC_MATCHERS_POST = {"/user", "/user/login/**"};
+    private static final String[] PUBLIC_MATCHERS_POST = {
+        "/user", 
+        "/user/login/**", 
+        "/user/forgot_password", 
+        "/user/reset_password"
+    };
 
     @Autowired
     private Environment env;
@@ -80,8 +85,7 @@ public class SecurityConfig {
 
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-
+        CorsConfiguration configuration = new CorsConfiguration().applyPermitDefaultValues();
         configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200",
             "http://localhost:4200/**", "https://sysmei.netlify.app", "https://sysmei.netlify.app/**",
             "https://sysmei.com", "https://www.sysmei.com", "https://sysmei.com/**",
@@ -89,8 +93,9 @@ public class SecurityConfig {
             "https://dev-sysmei.netlify.app/**", "https://dev.sysmei.com/**", "https://dev.sysmei.com",
             "https://api2.sysmei.com/**", "https://api2.sysmei.com"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "OPTIONS", "DELETE", "HEAD"));
+        configuration.setAllowCredentials(true); // Permitir credenciais
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration.applyPermitDefaultValues());
+        source.registerCorsConfiguration("/**", configuration);
         return source;
     }
 }

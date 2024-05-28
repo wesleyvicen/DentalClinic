@@ -29,6 +29,7 @@ public class Usuario implements Serializable {
   private String nome;
   @Column(nullable = false, length = 11)
   private String telefone;
+  private String resetPasswordToken;
   /*
    * @OneToMany(mappedBy = "usuario") private List<Conta> contas;
    */
@@ -160,6 +161,12 @@ public class Usuario implements Serializable {
     this.verificationCode = verificationCode;
   }
 
+  public String getResetPasswordToken() {
+	return resetPasswordToken;
+  }
 
+  public void setResetPasswordToken(String resetPasswordToken) {
+	this.resetPasswordToken = resetPasswordToken;
+  }
 
 }

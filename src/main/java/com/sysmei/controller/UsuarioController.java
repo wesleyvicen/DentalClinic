@@ -124,5 +124,17 @@ public class UsuarioController {
       UsuarioDto updatedUsuario = usuarioService.updateUsuario(id, usuarioDto, loginUsuario);
       return ResponseEntity.ok(updatedUsuario);
   }
+  
+  @PostMapping("/forgot_password")
+  public ResponseEntity<?> processForgotPassword(@RequestParam String email) {
+      usuarioService.sendResetPasswordEmail(email);
+      return ResponseEntity.ok("E-mail de redefinição de senha enviado");
+  }
+
+  @PostMapping("/reset_password")
+  public ResponseEntity<?> processResetPassword(@RequestParam String token, @RequestParam String password) {
+      usuarioService.resetPassword(token, password);
+      return ResponseEntity.ok("Senha redefinida com sucesso");
+  }
 
 }

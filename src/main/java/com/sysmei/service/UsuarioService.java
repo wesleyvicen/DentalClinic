@@ -32,4 +32,8 @@ public interface UsuarioService {
 
   public boolean verificarUser(String verificationCode);
 
+  void sendResetPasswordEmail(String email);
+
+  void resetPassword(String token, String newPassword);
+
 }

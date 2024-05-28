@@ -34,6 +34,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -383,5 +384,61 @@ public class UsuarioServiceImpl implements UsuarioService {
         return new UsuarioDto(usuario);
     }
 
+    @Override
+    @Transactional
+    public void sendResetPasswordEmail(String email) {
+        Optional<Usuario> optionalUser = usuarioRepository.findByLogin(email);
+        if (!optionalUser.isPresent()) {
+            throw new ObjectNotFoundException("Usuário não encontrado com este email");
+        }
+
+        Usuario usuario = optionalUser.get();
+        String token = UUID.randomUUID().toString();
+        usuario.setResetPasswordToken(token);
+        usuarioRepository.save(usuario);
+
+        String resetPasswordLink = "http://localhost:8080/reset_password?token=" + token;
+        sendEmail(usuario.getLogin(), resetPasswordLink);
+    }
+
+    private void sendEmail(String email, String resetPasswordLink) {
+        try {
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message);
+
+            helper.setFrom("no-reply@sysmei.com", "Sysmei Support");
+            helper.setTo(email);
+
+            String subject = "Redefinição de senha";
+            String content = "<p>Olá,</p>"
+                    + "<p>Você solicitou a redefinição de sua senha.</p>"
+                    + "<p>Clique no link abaixo para redefinir sua senha:</p>"
+                    + "<p><a href=\"" + resetPasswordLink + "\">Redefinir minha senha</a></p>"
+                    + "<br>"
+                    + "<p>Ignore este e-mail se você se lembrar de sua senha, "
+                    + "ou não fez esta solicitação.</p>";
+
+            helper.setSubject(subject);
+            helper.setText(content, true);
+
+            mailSender.send(message);
+        } catch (MessagingException | UnsupportedEncodingException e) {
+            throw new RuntimeException("Erro ao enviar email", e);
+        }
+    }
+
+    @Override
+    @Transactional
+    public void resetPassword(String token, String newPassword) {
+        Optional<Usuario> optionalUser = usuarioRepository.findByResetPasswordToken(token);
+        if (!optionalUser.isPresent()) {
+            throw new ObjectNotFoundException("Token inválido");
+        }
+
+        Usuario usuario = optionalUser.get();
+        usuario.setSenha(passwordEncoder.encode(newPassword));
+        usuario.setResetPasswordToken(null);
+        usuarioRepository.save(usuario);
+    }
 
 }

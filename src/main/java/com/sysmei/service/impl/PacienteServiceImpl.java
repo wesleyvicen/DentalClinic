@@ -47,8 +47,7 @@ public class PacienteServiceImpl implements PacienteService {
   // }
 
   public List<Paciente> getPacientesWithLogin(String login) {
-    List<Paciente> list = pacienteRepository.getPacientesWithLogin(login);
-    return list;
+    return pacienteRepository.getPacientesWithLogin(login);
   }
 
   public Paciente getById(Long id) {

@@ -1,131 +1,101 @@
 package com.sysmei.config;
 
-import java.util.Arrays;
-
+import com.sysmei.security.JWTAuthenticationFilter;
+import com.sysmei.security.JWTAuthorizationFilter;
+import com.sysmei.security.JWTUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import com.sysmei.security.JWTAuthenticationFilter;
-import com.sysmei.security.JWTAuthorizationFilter;
-import com.sysmei.security.JWTUtil;
+import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
-//@EnableGlobalMethodSecurity(prePostEnabled = true)
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig {
 
-	@Autowired
-	private Environment env;
+	private static final String[] PUBLIC_MATCHERS = {"/h2-console/**", "/user/token"};
+    private static final String[] SWAGGER_WHITELIST =
+        {"/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**"};
+    private static final String[] PUBLIC_MATCHERS_GET = {"/agenda/public"};
+    private static final String[] PUBLIC_MATCHERS_POST = {
+        "/user", 
+        "/user/login/**", 
+        "/user/forgot_password", 
+        "/user/reset_password"
+    };
 
-	@Autowired
-	private UserDetailsService userDetailsService;
+    @Autowired
+    private Environment env;
 
-	@Autowired
-	private JWTUtil jwtUtil;
+    @Autowired
+    @Lazy
+    private UserDetailsService userDetailsService;
 
-	/***
-	 * Array com os endpoints liberação sem precisar de autenticação
-	 */
-	private static final String[] PUBLIC_MATCHERS = { "/h2-console/**" , "/user/token"};
+    @Autowired
+    private JWTUtil jwtUtil;
 
-	private static final String[] SWAGGER_WHITELIST = { "/v2/api-docs", "/swagger-resources", "/swagger-resources/**",
-			"/configuration/ui", "/configuration/security", "/swagger-ui.html", "/webjars/**" };
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        if (Arrays.asList(env.getActiveProfiles()).contains("test")) {
+            http.headers().frameOptions().disable();
+        }
 
-	/***
-	 * Array com os endpoints liberação para recuperar dados sem autenticação
-	 */
-	private static final String[] PUBLIC_MATCHERS_GET = {"/agenda/public"};
+        http.csrf().disable()
+            .cors().and()
+            .authorizeRequests()
+            .antMatchers(HttpMethod.GET, PUBLIC_MATCHERS_GET).permitAll()
+            .antMatchers(HttpMethod.POST, PUBLIC_MATCHERS_POST).permitAll()
+            .antMatchers(PUBLIC_MATCHERS).permitAll()
+            .antMatchers(SWAGGER_WHITELIST).permitAll()
+            .anyRequest().authenticated();
 
-	private static final String[] PUBLIC_MATCHERS_POST = { "/user", "/user/login/**" };
+        http.addFilterBefore(new JWTAuthenticationFilter(authenticationManager(http.getSharedObject(AuthenticationConfiguration.class)), jwtUtil), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(new JWTAuthorizationFilter(authenticationManager(http.getSharedObject(AuthenticationConfiguration.class)), jwtUtil, userDetailsService), UsernamePasswordAuthenticationFilter.class);
 
-	// Basic Auth com usuario em memoria e sem criptografia
-//	@Autowired
-//	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-//		auth.inMemoryAuthentication().withUser("user").password("{noop}123").roles("ROLE_ADMIN");
-//	}
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-	/***
-	 * Método para autorizar acesso aos endpoints que precisam de autenticação, sem
-	 * configuração de ataque CSRF pois o sistema é stateless e sem criar seção de
-	 * usuário.
-	 */
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-		if (Arrays.asList(env.getActiveProfiles()).contains("test")) {
-			http.headers().frameOptions().disable();
-		}
-		http.csrf().disable();
-		http.cors().and().authorizeRequests().antMatchers(HttpMethod.GET, PUBLIC_MATCHERS_GET).permitAll()
-				.antMatchers(HttpMethod.POST, PUBLIC_MATCHERS_POST).permitAll().antMatchers(PUBLIC_MATCHERS).permitAll()
-				.antMatchers(SWAGGER_WHITELIST).permitAll().anyRequest().authenticated();
-//				.antMatchers(HttpMethod.POST, "/palavrashome/**").hasAnyRole("ADMIN");
+        return http.build();
+    }
 
-		http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil));
-		http.addFilter(new JWTAuthorizationFilter(authenticationManager(), jwtUtil, userDetailsService));
-		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-	}
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
+    }
 
-	@Override
-	public void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
-	}
+    @Bean
+    public PasswordEncoder bCryptPasswordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
-	/***
-	 * Método que configura as restrições de CORS com restrições básicas
-	 *
-	 * @return
-	 */
-
-	@Bean
-	CorsConfigurationSource corsConfigurationSource() {
-		CorsConfiguration configuration = new CorsConfiguration();
-
-		configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200", "http://localhost:4200/**",
-				"https://sysmei.netlify.app", "https://sysmei.netlify.app/**", "https://sysmei.com",
-				"https://www.sysmei.com", "https://sysmei.com/**", "https://www.sysmei.com/**",
-				"https://dev-sysmei.netlify.app", "https://dev-sysmei.netlify.app/**", "https://dev.sysmei.com/**",
-				"https://dev.sysmei.com", "https://api2.sysmei.com/**", "https://api2.sysmei.com"));
-		configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "OPTIONS", "DELETE", "HEAD"));
-		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-		source.registerCorsConfiguration("/**", configuration.applyPermitDefaultValues());
-		return source;
-	}
-	/*
-	 * @Bean CorsConfigurationSource corsConfigurationSource() { final
-	 * UrlBasedCorsConfigurationSource source = new
-	 * UrlBasedCorsConfigurationSource(); CorsConfiguration corsConfiguration = new
-	 * CorsConfiguration(); corsConfiguration.addAllowedMethod(HttpMethod.GET);
-	 * corsConfiguration.addAllowedMethod(HttpMethod.POST);
-	 * corsConfiguration.addAllowedMethod(HttpMethod.PUT);
-	 * corsConfiguration.addAllowedMethod(HttpMethod.DELETE);
-	 * corsConfiguration.addAllowedMethod(HttpMethod.OPTIONS);
-	 * corsConfiguration.addAllowedMethod(HttpMethod.HEAD);
-	 * corsConfiguration.addAllowedOrigin("**");
-	 * corsConfiguration.addAllowedOrigin("/**");
-	 * source.registerCorsConfiguration("/**",
-	 * corsConfiguration.applyPermitDefaultValues()); return source; }
-	 */
-
-	/***
-	 * Método que encripta a senha
-	 *
-	 * @return
-	 */
-	@Bean
-	public BCryptPasswordEncoder bCryptPasswordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration().applyPermitDefaultValues();
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200",
+            "http://localhost:4200/**", "https://sysmei.netlify.app", "https://sysmei.netlify.app/**",
+            "https://sysmei.com", "https://www.sysmei.com", "https://sysmei.com/**",
+            "https://www.sysmei.com/**", "https://dev-sysmei.netlify.app",
+            "https://dev-sysmei.netlify.app/**", "https://dev.sysmei.com/**", "https://dev.sysmei.com",
+            "https://api2.sysmei.com/**", "https://api2.sysmei.com"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "OPTIONS", "DELETE", "HEAD"));
+        configuration.setAllowCredentials(true); // Permitir credenciais
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
 }

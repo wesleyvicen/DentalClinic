@@ -1,19 +1,23 @@
 package com.sysmei.repository;
 
 
-import java.util.List;
-
+import com.sysmei.model.Paciente;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.sysmei.model.Paciente;
+import java.util.List;
+import java.util.Optional;
 
 public interface PacienteRepository extends JpaRepository<Paciente, Long> {
 
-	List<Paciente> findAll();
+  List<Paciente> findAll();
 
-	@Query(value = "Select paciente from Paciente paciente Left Join Fetch paciente.usuario usuario where paciente.usuario.login = :loginUsuario")
-	List<Paciente> getPacientesWithLogin(@Param("loginUsuario") String login);
+  @Query(
+	value = "SELECT paciente FROM Paciente paciente JOIN FETCH paciente.usuario usuario WHERE usuario.login = :loginUsuario ORDER BY paciente.nome")
+  List<Paciente> getPacientesWithLogin(@Param("loginUsuario") String login);
+
+  @Query("SELECT p FROM Paciente p WHERE p.id = :id AND p.usuario.login = :loginUsuario")
+  Optional<Paciente> findByIdAndLoginUsuario(Long id, String loginUsuario);
 
 }

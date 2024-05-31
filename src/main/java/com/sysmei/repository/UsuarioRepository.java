@@ -1,6 +1,7 @@
 package com.sysmei.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -10,18 +11,21 @@ import org.springframework.stereotype.Repository;
 import com.sysmei.model.Usuario;
 
 @Repository
-public interface UsuarioRepository extends JpaRepository<Usuario, Integer>{
-	@Query(value = "Select usuario from Usuario usuario where usuario.login = :login")
-	Usuario getUsuarioWithLogin(@Param("login") String login);
+public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
+  @Query(value = "Select usuario from Usuario usuario where usuario.login = :login")
+  Usuario getUsuarioWithLogin(@Param("login") String login);
 
-	@Query(value = "Select usuario from Usuario usuario where usuario.login = :login and usuario.senha = :senha")
-	Usuario getUsuarioWithLoginAndSenha(@Param("login") String login, @Param("senha") String senha);
+  @Query(
+      value = "Select usuario from Usuario usuario where usuario.login = :login and usuario.senha = :senha")
+  Usuario getUsuarioWithLoginAndSenha(@Param("login") String login, @Param("senha") String senha);
 
-	@Query(nativeQuery = true, value = "SELECT * FROM USUARIO\r\n"
-			+ "INNER JOIN CONTA\r\n"
-			+ "ON (USUARIO.LOGIN = CONTA.LOGIN_USUARIO) WHERE usuario.id= :id")
-	List<Usuario> findUsuarioAndConta(@Param("id") Integer id);
+  @Query(nativeQuery = true, value = "SELECT * FROM USUARIO\r\n" + "INNER JOIN CONTA\r\n"
+      + "ON (USUARIO.LOGIN = CONTA.LOGIN_USUARIO) WHERE usuario.id= :id")
+  List<Usuario> findUsuarioAndConta(@Param("id") Integer id);
 
-	@Query("Select usuario from Usuario usuario where usuario.verificationCode = :code")
-    public Usuario findByVerificationCode(String code);
+  @Query("Select usuario from Usuario usuario where usuario.verificationCode = :code")
+  public Usuario findByVerificationCode(String code);
+  
+  Optional<Usuario> findByLogin(String login);
+  Optional<Usuario> findByResetPasswordToken(String token);
 }

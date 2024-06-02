@@ -166,7 +166,21 @@ public class AgendaController {
     objDto.setPrestador_id(prestadorId);
     Agenda obj = agendaService.fromDTO(objDto);
     obj.setId(id);
-    obj = agendaService.update(obj);
+    agendaService.update(obj);
+    return ResponseEntity.noContent().build();
+  }
+  
+  /**
+   * Atualiza o status de uma agenda específica.
+   *
+   * @param id    ID da agenda
+   * @param status Novo status da agenda
+   * @return ResponseEntity com status 204 (No Content)
+   */
+  
+  @PatchMapping("/{id}/status")
+  public ResponseEntity<Void> updateStatus(@PathVariable Long id, @RequestParam Integer status) {
+    agendaService.updateStatus(id, status);
     return ResponseEntity.noContent().build();
   }
 

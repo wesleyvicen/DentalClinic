@@ -148,5 +148,13 @@ public class AgendaServiceImpl implements AgendaService {
     List<Agenda> list = agendaRepository.getAgendasWithLoginAndStatus(login, status);
     return list;
   }
+  
+  @Transactional
+  public Agenda updateStatus(Long id, Integer status) {
+    Agenda agenda = agendaRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException(
+        "Objeto não encontrado! ID: " + id + ", Tipo: " + Agenda.class.getName()));
+    agenda.setStatus(status);
+    return agendaRepository.save(agenda);
+  }
 
 }

@@ -1,44 +1,123 @@
-[![N|Sysmei](https://sysmei.com/assets/logo.svg)](https://nodesource.com/products/nsolid)
-## _Sistema para Microempreendedor individual_
+# Sysmei
 
-Sysmei é um sistema de agenda para microempreendedores individuais, podendo ter varios prestadores e cada um com suas agendas.
-#### Para quem se enquadra?
-- Dentista
-- Clinicas
-- Estética em Geral
+![Sysmei Logo](https://sysmei.com/assets/logo.svg)
 
-## Tecnologias
+Sysmei é um sistema de agenda para microempreendedores individuais (MEI), desenvolvido utilizando tecnologias modernas como Java, Spring Boot, Spring Security com JWT e AWS S3. O projeto está hospedado na AWS EC2.
 
-- Java
-- Spring boot
-- Spring Security com JWT
-- Upload para S3 da AWS
-- Swagger
-- RestFul
+## Funcionalidades
 
-Atualmente está hospedado na EC2 na Amazon AWS, no link:  [sysmei.com](https://sysmei.com)
+- Gerenciamento de agendas
+- Autenticação e autorização com JWT
+- Upload de arquivos para AWS S3
+
+## Tecnologias Utilizadas
+
+- **Linguagem:** Java 17
+- **Frameworks:**
+  - Spring Boot
+  - Spring Security
+  - Spring Data JPA
+  - Springdoc OpenAPI
+- **Banco de Dados:** MySQL
+- **Segurança:** JWT (JSON Web Token)
+- **Armazenamento de Arquivos:** AWS S3
+- **Documentação:** Springdoc OpenAPI
+- **Email:** Spring Boot Starter Mail
+
+## Dependências
+
+- **Persistência:** `jakarta.persistence-api`, `spring-boot-starter-data-jpa`
+- **Banco de Dados:** `h2`, `mysql-connector-java`
+- **AWS:** `aws-java-sdk`, `commons-io`
+- **Segurança:** `spring-boot-starter-security`, `jjwt`
+- **Utilitários:** `lombok`, `webjars-locator-core`, `classgraph`
+- **Documentação:** `springdoc-openapi-ui`, `springdoc-openapi-security`
+- **Email:** `spring-boot-starter-mail`
+
+## Pré-requisitos
+
+- Java 17
+- IDE (Spring Tools Suite, IntelliJ)
 
 ## Instalação
 
-Sysmei requer o [java](https://www.oracle.com/br/java/technologies/javase/jdk11-archive-downloads.html) v11+ para rodar.
+1. Clone o repositório:
+   ```bash
+   git clone https://github.com/wesleyvicen/Sysmei.git
+   cd Sysmei
+   ```
 
-Utilize uma IDE de sua preferencia, recomendamos [Spring tools Suite](https://spring.io/tools) ou [Intellij](https://www.jetbrains.com/pt-br/idea/) e instale a dependencias do Maven
+2. Importe o projeto na sua IDE preferida.
 
----
+3. Configure as variáveis de ambiente para AWS e JWT no arquivo `application.properties`.
 
-### Rotas da API.
+4. Execute o projeto:
+   ```bash
+   ./mvnw spring-boot:run
+   ```
 
-base_url: `http:\\localhost:8080`
+## Uso
 
-Todas as rotas exceto a agenda/public precisa mandar um Authorization
+### Rotas da API
+
+#### Usuário
+- `GET /user/{id}` - Obter detalhes de um usuário específico
+- `PUT /user/{id}` - Atualizar informações do usuário
+- `POST /user` - Criar novo usuário
+- `POST /user/reset_password` - Resetar senha do usuário
+- `POST /user/picture` - Upload de foto do usuário
+- `POST /user/login` - Login do usuário
+- `POST /user/forgot_password` - Recuperar senha do usuário
+- `GET /user/token` - Obter novo token de acesso
+
+#### Prestador
+- `GET /prestador/{id}` - Obter detalhes de um prestador específico
+- `PUT /prestador/{id}` - Atualizar informações do prestador
+- `DELETE /prestador/{id}` - Deletar prestador
+- `GET /prestador` - Listar todos os prestadores
+- `POST /prestador` - Criar novo prestador
+- `GET /prestador/busca/{telefone}` - Buscar prestador por telefone
+
+#### Paciente
+- `GET /paciente/{id}` - Obter detalhes de um paciente específico
+- `PUT /paciente/{id}` - Atualizar informações do paciente
+- `DELETE /paciente/{id}` - Deletar paciente
+- `GET /paciente` - Listar todos os pacientes
+- `POST /paciente` - Criar novo paciente
+- `POST /paciente/picture/{id}` - Upload de foto do paciente
+- `GET /paciente/page` - Listar pacientes com paginação
+- `DELETE /paciente/delete` - Deletar múltiplos pacientes
+
 #### Agenda
-| Método | URI | Descrição |
-| --- | --- | --- |
-| GET | /agenda/ | Trás todas as Agendas conforme status - Params: status |
-| GET | /agenda/ | Trás todas as Agendas conforme status e login - Params: status= & login= |
-| GET | /agenda/prestador | Trás todas as Agendas do prestador - Params: dataInicio= & dataFim= & login= & prestadorId |
-| GET | /agenda/public | Trás todas as agendas de usuário - Params: dataInicio= & dataFim= & login= |
-| GET | /agenda/soma | Trás a soma das agendas por data - Params: dataInicio= & dataFim= & login= |
-| POST | /agenda/ | Cria um novo usuário na API - corpo: { allDay: detalhes: end: login_usuario: paciente_id: pagamento: prestador_id: start: status: title: valor:} |
-| PUT | /agenda/{id} | Atualiza a agenda - Corpo: { allDay: detalhes: end: pagamento: start: status: title: valor:} |
-| PATCH | /agenda/{id} | Atualiza a agenda - Corpo: { allDay: detalhes: end: pagamento: start: status: title: valor:} |
+- `GET /agenda/{id}` - Obter detalhes de uma agenda específica
+- `PUT /agenda/{id}` - Atualizar agenda
+- `DELETE /agenda/{id}` - Deletar agenda
+- `PATCH /agenda/{id}` - Atualizar parcialmente uma agenda
+- `GET /agenda` - Listar todas as agendas
+- `POST /agenda` - Criar nova agenda
+- `GET /agenda/status/{tipo}` - Obter agendas por status
+- `GET /agenda/soma` - Somar agendas
+- `GET /agenda/public` - Obter agendas públicas
+- `GET /agenda/prestador` - Listar agendas por prestador
+
+#### Autenticação
+- `POST /auth/refresh_token` - Obter novo token de autenticação
+
+#### Arquivos
+- `POST /files/upload` - Upload de arquivos para AWS S3
+- `GET /files/{filename}` - Obter arquivo pelo nome
+- `DELETE /files/{filename}` - Deletar arquivo pelo nome
+
+Para mais detalhes sobre as rotas, consulte a [documentação Swagger](https://api2.sysmei.com/swagger-ui/index.html).
+
+## Contribuição
+
+1. Faça um fork do projeto.
+2. Crie uma branch para sua feature (`git checkout -b feature/nova-feature`).
+3. Faça commit das suas alterações (`git commit -m 'Adiciona nova feature'`).
+4. Envie para o branch (`git push origin feature/nova-feature`).
+5. Abra um Pull Request.
+
+## Licença
+
+Este projeto está licenciado sob a Licença MIT - consulte o arquivo [LICENSE](LICENSE) para mais detalhes.

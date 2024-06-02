@@ -18,8 +18,8 @@ public class OpenApiConfig {
                 .components(new Components()
                         .addSecuritySchemes("bearer-key",
                                 new SecurityScheme().type(SecurityScheme.Type.HTTP).scheme("bearer").bearerFormat("JWT")))
-                .info(new Info().title("Sysmei - Sistema para Micro-Empreendedor Individual")
-                        .description("API Sysmei")
+                .info(new Info().title("Sysmei API")
+                        .description("API para gerenciamento de agendamentos do Sysmei")
                         .version("1.0")
                         .contact(new Contact()
                                 .name("Wesley Vicente")

@@ -18,7 +18,7 @@ public interface AgendaService {
       LocalDate dataFim);
 
   public List<Agenda> getAgendasWithDateBetweenWithPrestador(String login, LocalDate dataInicio,
-      LocalDate dataFim, Long prestadorId);
+      LocalDate dataFim, String prestadorId);
 
   public List<Agenda> getAgendasWithPaciente(Long id);
 

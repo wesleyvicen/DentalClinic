@@ -61,9 +61,8 @@ public class AgendaServiceImpl implements AgendaService {
 
   @Transactional
   public List<Agenda> getAgendasWithDateBetweenWithPrestador(String login, LocalDate dataInicio,
-      LocalDate dataFim, Long prestadorId) {
-    List<Agenda> list = agendaRepository.getAgendasWithDateBetweenWithPrestador(login, dataInicio,
-        dataFim, prestadorId);
+      LocalDate dataFim, String prestadorId) {
+    List<Agenda> list = agendaRepository.getAgendasWithDateBetweenWithPrestador(login, dataInicio, dataFim, prestadorId);
     return list;
   }
 

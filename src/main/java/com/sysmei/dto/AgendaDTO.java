@@ -31,10 +31,12 @@ public class AgendaDTO implements Serializable {
   private Double valor;
   private Integer status;
   private Long paciente_id;
+  private String paciente_nome;
   private String login_usuario;
   private String pagamento;
   private String detalhes;
   private Long prestador_id;
+  private String prestador_nome;
 
   public AgendaDTO(Agenda obj) {
     this.id = obj.getId();
@@ -46,9 +48,11 @@ public class AgendaDTO implements Serializable {
     this.status = obj.getStatus();
     this.login_usuario = obj.getUsuario().getLogin();
     this.paciente_id = obj.getPaciente().getId();
+    this.paciente_nome = obj.getPaciente().getNome();
     this.setPagamento(obj.getPagamento());
     this.setDetalhes(obj.getDetalhes());
     this.prestador_id = obj.getPrestador().getId() == null ? 1 : obj.getPrestador().getId();
-
+    this.prestador_nome = obj.getPrestador().getNome();
   }
 }
+

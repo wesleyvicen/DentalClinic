@@ -5,15 +5,7 @@ import java.net.URI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.sysmei.dto.LoginDto;
@@ -25,8 +17,13 @@ import com.sysmei.model.Usuario;
 import com.sysmei.security.JWTUtil;
 import com.sysmei.service.impl.UsuarioServiceImpl;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController
 @RequestMapping(value = RotasKeys.USER)
+@Tag(name = "Usuario Controller", description = "Gerenciamento de usuários")
 public class UsuarioController {
 
   @Autowired
@@ -36,12 +33,12 @@ public class UsuarioController {
   private JWTUtil jwtUtil;
 
   /**
-   * @param id
-   * @return
+   * @param id ID do usuário
+   * @return Retorna o usuário com o ID especificado
    */
-
+  @Operation(summary = "Retorna um usuário pelo ID")
   @GetMapping(RotasKeys.ID)
-  public ResponseEntity<?> find(@PathVariable Integer id) {
+  public ResponseEntity<?> find(@Parameter(description = "ID do usuário", required = true) @PathVariable Integer id) {
     try {
       Usuario obj = usuarioService.search(id);
       return ResponseEntity.ok().body(obj);
@@ -50,19 +47,19 @@ public class UsuarioController {
           String.format("Usuario de ID %s Não encontrado, por favor tente um ID diferente.", id),
           HttpStatus.NOT_ACCEPTABLE);
     } catch (Exception e) {
-      return new ResponseEntity<>(("Houve algum erro intento, por favor tente mais tarde."),
+      return new ResponseEntity<>(("Houve algum erro interno, por favor tente mais tarde."),
           HttpStatus.BAD_REQUEST);
     }
 
   }
 
   /**
-   * @param code
-   * @return
+   * @param code Código de verificação
+   * @return Retorna "verify_success" ou "verify_fail" baseado na verificação do usuário
    */
-
+  @Operation(summary = "Verifica o usuário através do código de verificação")
   @GetMapping(RotasKeys.TOKEN)
-  public String verificarUser(@RequestParam(name = ParamsKeys.code) String code) {
+  public String verificarUser(@Parameter(description = "Código de verificação", required = true) @RequestParam(name = ParamsKeys.code) String code) {
     if (usuarioService.verificarUser(code)) {
       return "verify_success";
     } else {
@@ -71,35 +68,33 @@ public class UsuarioController {
   }
 
   /**
-   * @param usuarioDto
-   * @return
+   * @param usuarioDto Dados do novo usuário
+   * @return Retorna o novo usuário criado
    */
+  @Operation(summary = "Cria um novo usuário")
   @PostMapping()
-  public ResponseEntity<?> addConta(@RequestBody UsuarioDto usuarioDto) {
+  public ResponseEntity<?> addConta(@Parameter(description = "Dados do novo usuário", required = true) @RequestBody UsuarioDto usuarioDto) {
     try {
-
       return new ResponseEntity<>(usuarioService.addUsuario(usuarioDto), HttpStatus.CREATED);
-
     } catch (IllegalStateException e) {
       return new ResponseEntity<>(String.format(
           "Usuario %s já existe no sistema e não pode ser criado, por favor tente um login diferente.",
           usuarioDto.getLogin()), HttpStatus.NOT_ACCEPTABLE);
     } catch (Exception e) {
-      return new ResponseEntity<>(("Houve algum erro intento, por favor tente mais tarde."),
+      return new ResponseEntity<>(("Houve algum erro interno, por favor tente mais tarde."),
           HttpStatus.BAD_REQUEST);
     }
   }
 
   /**
-   * @param loginDto
-   * @return
+   * @param loginDto Dados de login do usuário
+   * @return Retorna os dados da sessão do usuário logado
    */
-
+  @Operation(summary = "Realiza o login do usuário")
   @PostMapping(RotasKeys.LOGIN)
-  public ResponseEntity<?> logar(@RequestBody LoginDto loginDto) {
+  public ResponseEntity<?> logar(@Parameter(description = "Dados de login do usuário", required = true) @RequestBody LoginDto loginDto) {
     try {
       return new ResponseEntity<>(usuarioService.logar(loginDto), HttpStatus.OK);
-
     } catch (IllegalArgumentException ex) {
       return new ResponseEntity<>(String.format("Erro: %s", ex.getMessage()),
           HttpStatus.BAD_REQUEST);
@@ -107,34 +102,54 @@ public class UsuarioController {
   }
 
   /**
-   * @param file
-   * @return
+   * @param file Arquivo de imagem do perfil do usuário
+   * @return Retorna o URI da imagem do perfil do usuário
    */
-
+  @Operation(summary = "Faz o upload da imagem do perfil do usuário")
   @PostMapping(RotasKeys.PICTURE)
   public ResponseEntity<Void> uploadProfilePicture(
-      @RequestParam(name = ParamsKeys.FILE) MultipartFile file) {
+      @Parameter(description = "Arquivo de imagem do perfil do usuário", required = true) @RequestParam(name = ParamsKeys.FILE) MultipartFile file) {
     URI uri = usuarioService.uploadProfilePicture(file);
     return ResponseEntity.created(uri).build();
   }
-  
+
+  /**
+   * @param id ID do usuário
+   * @param usuarioDto Dados atualizados do usuário
+   * @param token Token de autorização JWT
+   * @return Retorna os dados atualizados do usuário
+   */
+  @Operation(summary = "Atualiza os dados de um usuário")
   @PutMapping("/{id}")
-  public ResponseEntity<UsuarioDto> updateUsuario(@PathVariable Integer id, @RequestBody UsuarioDto usuarioDto, @RequestHeader("Authorization") String token) {
+  public ResponseEntity<UsuarioDto> updateUsuario(@Parameter(description = "ID do usuário", required = true) @PathVariable Integer id,
+      @Parameter(description = "Dados atualizados do usuário", required = true) @RequestBody UsuarioDto usuarioDto, 
+      @Parameter(description = "Token de autorização JWT", required = true) @RequestHeader("Authorization") String token) {
       String loginUsuario = jwtUtil.getUsername(token.substring(7)); // Remove "Bearer " do token
       UsuarioDto updatedUsuario = usuarioService.updateUsuario(id, usuarioDto, loginUsuario);
       return ResponseEntity.ok(updatedUsuario);
   }
-  
+
+  /**
+   * @param email Email do usuário
+   * @return Retorna mensagem de confirmação do envio do email de redefinição de senha
+   */
+  @Operation(summary = "Processa a solicitação de esquecimento de senha")
   @PostMapping("/forgot_password")
-  public ResponseEntity<?> processForgotPassword(@RequestParam String email) {
+  public ResponseEntity<?> processForgotPassword(@Parameter(description = "Email do usuário", required = true) @RequestParam String email) {
       usuarioService.sendResetPasswordEmail(email);
       return ResponseEntity.ok("E-mail de redefinição de senha enviado");
   }
 
+  /**
+   * @param token Token de redefinição de senha
+   * @param password Nova senha do usuário
+   * @return Retorna mensagem de confirmação da redefinição de senha
+   */
+  @Operation(summary = "Processa a redefinição de senha")
   @PostMapping("/reset_password")
-  public ResponseEntity<?> processResetPassword(@RequestParam String token, @RequestParam String password) {
+  public ResponseEntity<?> processResetPassword(@Parameter(description = "Token de redefinição de senha", required = true) @RequestParam String token, 
+      @Parameter(description = "Nova senha do usuário", required = true) @RequestParam String password) {
       usuarioService.resetPassword(token, password);
       return ResponseEntity.ok("Senha redefinida com sucesso");
   }
-
 }

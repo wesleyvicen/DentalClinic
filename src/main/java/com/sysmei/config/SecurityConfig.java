@@ -92,7 +92,7 @@ public class SecurityConfig {
             "https://www.sysmei.com/**", "https://dev-sysmei.netlify.app",
             "https://dev-sysmei.netlify.app/**", "https://dev.sysmei.com/**", "https://dev.sysmei.com",
             "https://api2.sysmei.com/**", "https://api2.sysmei.com"));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "OPTIONS", "DELETE", "HEAD"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "OPTIONS", "DELETE", "HEAD", "PATCH"));
         configuration.setAllowCredentials(true); // Permitir credenciais
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);

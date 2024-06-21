@@ -120,12 +120,11 @@ public class UsuarioController {
    * @return Retorna os dados atualizados do usuário
    */
   @Operation(summary = "Atualiza os dados de um usuário")
-  @PutMapping("/{id}")
-  public ResponseEntity<UsuarioDto> updateUsuario(@Parameter(description = "ID do usuário", required = true) @PathVariable Integer id,
-      @Parameter(description = "Dados atualizados do usuário", required = true) @RequestBody UsuarioDto usuarioDto, 
+  @PutMapping("")
+  public ResponseEntity<UsuarioDto> updateUsuario(@Parameter(description = "Dados atualizados do usuário", required = true) @RequestBody UsuarioDto usuarioDto, 
       @Parameter(description = "Token de autorização JWT", required = true) @RequestHeader("Authorization") String token) {
       String loginUsuario = jwtUtil.getUsername(token.substring(7)); // Remove "Bearer " do token
-      UsuarioDto updatedUsuario = usuarioService.updateUsuario(id, usuarioDto, loginUsuario);
+      UsuarioDto updatedUsuario = usuarioService.updateUsuario(usuarioDto, loginUsuario);
       return ResponseEntity.ok(updatedUsuario);
   }
 

@@ -39,6 +39,9 @@ public class SecurityConfig {
         "/user/forgot_password", 
         "/user/reset_password"
     };
+    private static final String[] PUBLIC_MATCHERS_PUT = {
+            "/user"
+        };
 
     @Autowired
     private Environment env;
@@ -61,6 +64,7 @@ public class SecurityConfig {
             .authorizeRequests()
             .antMatchers(HttpMethod.GET, PUBLIC_MATCHERS_GET).permitAll()
             .antMatchers(HttpMethod.POST, PUBLIC_MATCHERS_POST).permitAll()
+            .antMatchers(HttpMethod.PUT, PUBLIC_MATCHERS_PUT).permitAll()
             .antMatchers(PUBLIC_MATCHERS).permitAll()
             .antMatchers(SWAGGER_WHITELIST).permitAll()
             .anyRequest().authenticated();

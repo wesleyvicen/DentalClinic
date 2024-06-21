@@ -360,10 +360,10 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
     
     @Transactional
-    public UsuarioDto updateUsuario(Integer id, UsuarioDto usuarioDto, String loginUsuario) {
-        Usuario usuario = search(id); // Busca o usuário pelo ID, lançando exceção se não encontrado
-
+    public UsuarioDto updateUsuario(UsuarioDto usuarioDto, String loginUsuario) {
+    	Optional<Usuario> optionalUser = usuarioRepository.findByLogin(loginUsuario); // Busca o usuário pelo ID, lançando exceção se não encontrado
         // Verifica se o login do usuário autenticado corresponde ao login do usuário a ser atualizado
+    	Usuario usuario = optionalUser.get();
         if (!usuario.getLogin().equals(loginUsuario)) {
             throw new AuthorizationException("Usuário não autorizado a atualizar este perfil");
         }

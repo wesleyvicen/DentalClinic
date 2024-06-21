@@ -33,18 +33,21 @@ public class UsuarioController {
   private JWTUtil jwtUtil;
 
   /**
-   * @param id ID do usuário
-   * @return Retorna o usuário com o ID especificado
+   * Retorna um usuário com base no token JWT.
+   * 
+   * @param token Token de autorização JWT
+   * @return Retorna o usuário encontrado ou uma mensagem de erro
    */
-  @Operation(summary = "Retorna um usuário pelo ID")
-  @GetMapping(RotasKeys.ID)
-  public ResponseEntity<?> find(@Parameter(description = "ID do usuário", required = true) @PathVariable Integer id) {
+  @Operation(summary = "Retorna um usuário")
+  @GetMapping()
+  public ResponseEntity<?> find(@Parameter(description = "Token de autorização JWT", required = true) @RequestHeader("Authorization") String token) {
+      String loginUsuario = jwtUtil.getUsername(token.substring(7)); // Remove "Bearer " do token
     try {
-      Usuario obj = usuarioService.search(id);
+      Usuario obj = usuarioService.getUsuarioWithLogin(loginUsuario);
       return ResponseEntity.ok().body(obj);
     } catch (ObjectNotFoundException e) {
       return new ResponseEntity<>(
-          String.format("Usuario de ID %s Não encontrado, por favor tente um ID diferente.", id),
+          String.format("Usuario de Login %s Não encontrado, por favor tente um ID diferente.", loginUsuario),
           HttpStatus.NOT_ACCEPTABLE);
     } catch (Exception e) {
       return new ResponseEntity<>(("Houve algum erro interno, por favor tente mais tarde."),
@@ -54,6 +57,8 @@ public class UsuarioController {
   }
 
   /**
+   * Verifica o usuário através do código de verificação.
+   * 
    * @param code Código de verificação
    * @return Retorna "verify_success" ou "verify_fail" baseado na verificação do usuário
    */
@@ -68,6 +73,8 @@ public class UsuarioController {
   }
 
   /**
+   * Cria um novo usuário.
+   * 
    * @param usuarioDto Dados do novo usuário
    * @return Retorna o novo usuário criado
    */
@@ -87,6 +94,8 @@ public class UsuarioController {
   }
 
   /**
+   * Realiza o login do usuário.
+   * 
    * @param loginDto Dados de login do usuário
    * @return Retorna os dados da sessão do usuário logado
    */
@@ -102,6 +111,8 @@ public class UsuarioController {
   }
 
   /**
+   * Faz o upload da imagem do perfil do usuário.
+   * 
    * @param file Arquivo de imagem do perfil do usuário
    * @return Retorna o URI da imagem do perfil do usuário
    */
@@ -114,13 +125,14 @@ public class UsuarioController {
   }
 
   /**
-   * @param id ID do usuário
+   * Atualiza os dados de um usuário.
+   * 
    * @param usuarioDto Dados atualizados do usuário
    * @param token Token de autorização JWT
    * @return Retorna os dados atualizados do usuário
    */
   @Operation(summary = "Atualiza os dados de um usuário")
-  @PutMapping("")
+  @PutMapping()
   public ResponseEntity<UsuarioDto> updateUsuario(@Parameter(description = "Dados atualizados do usuário", required = true) @RequestBody UsuarioDto usuarioDto, 
       @Parameter(description = "Token de autorização JWT", required = true) @RequestHeader("Authorization") String token) {
       String loginUsuario = jwtUtil.getUsername(token.substring(7)); // Remove "Bearer " do token
@@ -129,6 +141,8 @@ public class UsuarioController {
   }
 
   /**
+   * Processa a solicitação de esquecimento de senha.
+   * 
    * @param email Email do usuário
    * @return Retorna mensagem de confirmação do envio do email de redefinição de senha
    */
@@ -140,6 +154,8 @@ public class UsuarioController {
   }
 
   /**
+   * Processa a redefinição de senha.
+   * 
    * @param token Token de redefinição de senha
    * @param password Nova senha do usuário
    * @return Retorna mensagem de confirmação da redefinição de senha

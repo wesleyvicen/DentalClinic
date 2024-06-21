@@ -29,19 +29,16 @@ import java.util.Arrays;
 @EnableWebSecurity
 public class SecurityConfig {
 
-	private static final String[] PUBLIC_MATCHERS = {"/h2-console/**", "/user/token"};
+	private static final String[] PUBLIC_MATCHERS = {"/h2-console/**", "/user/token", "/user"};
     private static final String[] SWAGGER_WHITELIST =
         {"/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**"};
     private static final String[] PUBLIC_MATCHERS_GET = {"/agenda/public"};
     private static final String[] PUBLIC_MATCHERS_POST = {
-        "/user", 
         "/user/login/**", 
         "/user/forgot_password", 
-        "/user/reset_password"
+        "/user/reset_password",
+        "/user/picture"
     };
-    private static final String[] PUBLIC_MATCHERS_PUT = {
-            "/user"
-        };
 
     @Autowired
     private Environment env;
@@ -64,7 +61,6 @@ public class SecurityConfig {
             .authorizeRequests()
             .antMatchers(HttpMethod.GET, PUBLIC_MATCHERS_GET).permitAll()
             .antMatchers(HttpMethod.POST, PUBLIC_MATCHERS_POST).permitAll()
-            .antMatchers(HttpMethod.PUT, PUBLIC_MATCHERS_PUT).permitAll()
             .antMatchers(PUBLIC_MATCHERS).permitAll()
             .antMatchers(SWAGGER_WHITELIST).permitAll()
             .anyRequest().authenticated();

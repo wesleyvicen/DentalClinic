@@ -29,15 +29,31 @@ import java.util.Arrays;
 @EnableWebSecurity
 public class SecurityConfig {
 
-	private static final String[] PUBLIC_MATCHERS = {"/h2-console/**", "/user/token", "/user"};
-    private static final String[] SWAGGER_WHITELIST =
-        {"/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**"};
-    private static final String[] PUBLIC_MATCHERS_GET = {"/agenda/public"};
+    private static final String[] PUBLIC_MATCHERS = {
+        "/h2-console/**", 
+        "/user/token", 
+        "/user"
+    };
+    
+    private static final String[] SWAGGER_WHITELIST = {
+        "/v3/api-docs/**", 
+        "/swagger-ui.html", 
+        "/swagger-ui/**"
+    };
+    
+    private static final String[] PUBLIC_MATCHERS_GET = {
+        "/agenda/public"
+    };
+    
     private static final String[] PUBLIC_MATCHERS_POST = {
         "/user/login/**", 
         "/user/forgot_password", 
         "/user/reset_password",
-        "/user/picture"
+        "/paciente/register", 
+        "/paciente/create",
+        "/paciente/login",
+        "/paciente/send-password-setup",
+        "/paciente/reset_password"
     };
 
     @Autowired
@@ -86,12 +102,22 @@ public class SecurityConfig {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration().applyPermitDefaultValues();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200",
-            "http://localhost:4200/**", "https://sysmei.netlify.app", "https://sysmei.netlify.app/**",
-            "https://sysmei.com", "https://www.sysmei.com", "https://sysmei.com/**",
-            "https://www.sysmei.com/**", "https://dev-sysmei.netlify.app",
-            "https://dev-sysmei.netlify.app/**", "https://dev.sysmei.com/**", "https://dev.sysmei.com",
-            "https://api2.sysmei.com/**", "https://api2.sysmei.com"));
+        configuration.setAllowedOrigins(Arrays.asList(
+            "http://localhost:4200",
+            "http://localhost:4200/**", 
+            "https://sysmei.netlify.app", 
+            "https://sysmei.netlify.app/**",
+            "https://sysmei.com", 
+            "https://www.sysmei.com", 
+            "https://sysmei.com/**",
+            "https://www.sysmei.com/**", 
+            "https://dev-sysmei.netlify.app",
+            "https://dev-sysmei.netlify.app/**", 
+            "https://dev.sysmei.com/**", 
+            "https://dev.sysmei.com",
+            "https://api2.sysmei.com/**", 
+            "https://api2.sysmei.com"
+        ));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "OPTIONS", "DELETE", "HEAD", "PATCH"));
         configuration.setAllowCredentials(true); // Permitir credenciais
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

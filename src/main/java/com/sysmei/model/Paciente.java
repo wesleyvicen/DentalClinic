@@ -59,6 +59,9 @@ public class Paciente implements Serializable {
   private String cidade;
   private String estado;
   private String cep;
+  private String senha;
+  @Column(name = "reset_password_token")
+  private String resetPasswordToken;
 
   public Paciente() {}
 
@@ -122,6 +125,23 @@ public class Paciente implements Serializable {
     this.estado = estado;
     this.cep = cep;
   }
+  
+  public Paciente(Long id, String nome, String email, String telefone1, String senha, String login_usuario) {
+	    this.id = id;
+	    this.nome = nome;
+	    this.email = email;
+	    this.telefone1 = telefone1;
+	    this.senha = senha;
+	    this.usuario.setLogin(login_usuario);
+	  }
+
+	  public Paciente(String nome, String email, String telefone1, String senha, String login_usuario) {
+	    this.nome = nome;
+	    this.email = email;
+	    this.telefone1 = telefone1;
+	    this.senha = senha;
+	    this.usuario.setLogin(login_usuario);
+	  }
 
   public Long getId() {
     return id;
@@ -347,5 +367,21 @@ public class Paciente implements Serializable {
   public void setSocialName(String socialName) {
     this.socialName = socialName;
   }
+
+public String getSenha() {
+	return senha;
+}
+
+public void setSenha(String senha) {
+	this.senha = senha;
+}
+
+public String getResetPasswordToken() {
+	return resetPasswordToken;
+}
+
+public void setResetPasswordToken(String resetPasswordToken) {
+	this.resetPasswordToken = resetPasswordToken;
+}
 
 }

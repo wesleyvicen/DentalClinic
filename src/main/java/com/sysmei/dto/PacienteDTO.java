@@ -25,6 +25,7 @@ public class PacienteDTO implements Serializable {
   private String nome;
   private String socialName;
   private String email;
+  private String senha;
 
   private String telefone1;
 
@@ -81,5 +82,20 @@ public class PacienteDTO implements Serializable {
     this.setDocumentsUrl(entity.getDocumentsUrl());
     this.login_usuario = entity.getUsuario().getLogin();
   }
+  
+  public PacienteDTO(Long id, String nome, String email, String telefone1, String senha) {
+	    this.id = id;
+	    this.nome = nome;
+	    this.email = email;
+	    this.telefone1 = telefone1;
+	    this.senha = senha;  // Inicializar senha
+	  }
+
+	  public PacienteDTO(String nome, String email, String telefone1, String senha) {
+	    this.nome = nome;
+	    this.email = email;
+	    this.telefone1 = telefone1;
+	    this.senha = senha;  // Inicializar senha
+	  }
 
 }

@@ -1,6 +1,7 @@
 package com.sysmei.service.impl;
 
 import com.sysmei.dto.NewPacienteDTO;
+import com.sysmei.dto.PacienteDTO;
 import com.sysmei.exceptions.ObjectNotFoundException;
 import com.sysmei.model.DocumentUrl;
 import com.sysmei.model.Paciente;
@@ -10,20 +11,29 @@ import com.sysmei.service.PacienteService;
 import com.sysmei.service.exception.AuthorizationException;
 import com.sysmei.service.exception.DataIntegrityException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.awt.image.BufferedImage;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
+import java.util.UUID;
+
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 
 @Service
 public class PacienteServiceImpl implements PacienteService {
@@ -40,6 +50,12 @@ public class PacienteServiceImpl implements PacienteService {
 
   @Autowired
   private ImageServiceImpl imageService;
+  
+  @Autowired
+  private JavaMailSender mailSender;
+  
+  @Value("${spring.mail.username}")
+  private String mail;
 
   // @Transactional(readOnly = true)
   // public List<Paciente> findAll() {
@@ -157,5 +173,107 @@ public class PacienteServiceImpl implements PacienteService {
 
     return uri;
   }
+
+@Override
+public PacienteDTO insert(PacienteDTO pacienteDTO, boolean isInternal) {
+    Paciente paciente = new Paciente(
+        pacienteDTO.getNome(),
+        pacienteDTO.getEmail(),
+        pacienteDTO.getTelefone1(),
+        isInternal ? null : new BCryptPasswordEncoder().encode(pacienteDTO.getSenha()),
+        pacienteDTO.getLogin_usuario()
+    );
+    pacienteRepository.save(paciente);
+
+    if (isInternal) {
+        sendPasswordSetupEmail(paciente.getEmail());
+    }
+
+    return new PacienteDTO(paciente.getId(), paciente.getNome(), paciente.getEmail(), paciente.getTelefone1(), null);
+}
+
+@Override
+public PacienteDTO register(PacienteDTO pacienteDTO) {
+    Paciente paciente = new Paciente(
+        pacienteDTO.getNome(),
+        pacienteDTO.getEmail(),
+        pacienteDTO.getTelefone1(),
+        pacienteDTO.getLogin_usuario(),
+        new BCryptPasswordEncoder().encode(pacienteDTO.getSenha()) // Criptografar senha
+    );
+    pacienteRepository.save(paciente);
+    return new PacienteDTO(paciente.getId(), paciente.getNome(), paciente.getEmail(), paciente.getTelefone1(), null);
+}
+
+@Override
+public PacienteDTO login(String email, String senha) {
+	Optional<Paciente> optionalPaciente = pacienteRepository.findByEmail(email);
+    if (!optionalPaciente.isPresent()) {
+        throw new RuntimeException("Paciente não encontrado com este email");
+    }
+
+    Paciente paciente = optionalPaciente.get();
+    if (paciente != null && new BCryptPasswordEncoder().matches(senha, paciente.getSenha())) {
+        return new PacienteDTO(paciente.getId(), paciente.getNome(), paciente.getEmail(), paciente.getTelefone1(), null);
+    }
+    throw new RuntimeException("Email ou senha inválidos");
+}
+
+@Override
+@Transactional
+public void sendPasswordSetupEmail(String email) {
+    Optional<Paciente> optionalPaciente = pacienteRepository.findByEmail(email);
+    if (!optionalPaciente.isPresent()) {
+        throw new RuntimeException("Paciente não encontrado com este email");
+    }
+
+    Paciente paciente = optionalPaciente.get();
+    String token = UUID.randomUUID().toString();
+    paciente.setResetPasswordToken(token);
+    pacienteRepository.save(paciente);
+
+    String setupPasswordLink = "http://localhost:8080/setup_password?token=" + token;
+    sendEmail(paciente.getEmail(), setupPasswordLink);
+}
+
+private void sendEmail(String email, String setupPasswordLink) {
+    try {
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message);
+
+        helper.setFrom("no-reply@sysmei.com", "Sysmei Support");
+        helper.setTo(email);
+
+        String subject = "Configuração de senha";
+        String content = "<p>Olá,</p>"
+                + "<p>Você foi registrado no sistema Sysmei.</p>"
+                + "<p>Clique no link abaixo para configurar sua senha:</p>"
+                + "<p><a href=\"" + setupPasswordLink + "\">Configurar minha senha</a></p>"
+                + "<br>"
+                + "<p>Ignore este e-mail se você já configurou sua senha, "
+                + "ou não fez esta solicitação.</p>";
+
+        helper.setSubject(subject);
+        helper.setText(content, true);
+
+        mailSender.send(message);
+    } catch (MessagingException | UnsupportedEncodingException e) {
+        throw new RuntimeException("Erro ao enviar email", e);
+    }
+}
+
+@Override
+@Transactional
+public void resetPassword(String token, String newPassword) {
+    Optional<Paciente> optionalPaciente = pacienteRepository.findByResetPasswordToken(token);
+    if (!optionalPaciente.isPresent()) {
+        throw new RuntimeException("Token inválido");
+    }
+
+    Paciente paciente = optionalPaciente.get();
+    paciente.setSenha(new BCryptPasswordEncoder().encode(newPassword));
+    paciente.setResetPasswordToken(null);
+    pacienteRepository.save(paciente);
+}
 
 }

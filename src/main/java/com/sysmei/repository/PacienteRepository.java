@@ -19,5 +19,9 @@ public interface PacienteRepository extends JpaRepository<Paciente, Long> {
 
   @Query("SELECT p FROM Paciente p WHERE p.id = :id AND p.usuario.login = :loginUsuario")
   Optional<Paciente> findByIdAndLoginUsuario(Long id, String loginUsuario);
+  
+  Optional<Paciente> findByEmail(String email);
+  
+  Optional<Paciente> findByResetPasswordToken(String token);
 
 }

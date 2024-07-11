@@ -8,6 +8,7 @@ import com.sysmei.repository.AgendaRepository;
 import com.sysmei.service.AgendaService;
 import com.sysmei.service.exception.DataIntegrityException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -43,7 +44,7 @@ public class AgendaServiceImpl implements AgendaService {
   public Agenda find(Long id) {
     Optional<Agenda> obj = agendaRepository.findById(id);
     return obj.orElseThrow(() -> new ObjectNotFoundException(
-        "Objeto Não encontrado! ID: " + id + ", Tipo: " + Agenda.class.getName()));
+            "Objeto Não encontrado! ID: " + id + ", Tipo: " + Agenda.class.getName()));
   }
 
   @Transactional
@@ -54,14 +55,15 @@ public class AgendaServiceImpl implements AgendaService {
 
   @Transactional
   public List<Agenda> getAgendasWithDateBetween(String login, LocalDate dataInicio,
-      LocalDate dataFim) {
+                                                LocalDate dataFim) {
     List<Agenda> list = agendaRepository.getAgendasWithDateBetween(login, dataInicio, dataFim);
     return list;
   }
 
+  @Cacheable("agendas")
   @Transactional
   public List<Agenda> getAgendasWithDateBetweenWithPrestador(String login, LocalDate dataInicio,
-      LocalDate dataFim, String prestadorId) {
+                                                             LocalDate dataFim, String prestadorId) {
     List<Agenda> list = agendaRepository.getAgendasWithDateBetweenWithPrestador(login, dataInicio, dataFim, prestadorId);
     return list;
   }
@@ -101,7 +103,7 @@ public class AgendaServiceImpl implements AgendaService {
       agendaRepository.deleteById(id);
     } catch (DataIntegrityViolationException e) {
       throw new DataIntegrityException(
-          "Não é possível excluir porque existe entidades relacionadas");
+              "Não é possível excluir porque existe entidades relacionadas");
     }
   }
 
@@ -119,15 +121,15 @@ public class AgendaServiceImpl implements AgendaService {
 
   public Agenda fromDTO(AgendaDTO objDto) {
     Agenda agenda = new Agenda(objDto.getId(), objDto.getTitle(), objDto.getStart(),
-        objDto.getEnd(), objDto.getAllDay(), objDto.getValor(), objDto.getStatus(),
-        objDto.getPagamento(), objDto.getDetalhes());
+            objDto.getEnd(), objDto.getAllDay(), objDto.getValor(), objDto.getStatus(),
+            objDto.getPagamento(), objDto.getDetalhes());
     agenda.setPaciente(pacienteService.getById(objDto.getPaciente_id()));
     agenda.setPrestador(prestadorService.getById(objDto.getPrestador_id()));
     return agenda;
   }
 
   public AgendaSomaDTO getSomaAgendamentosBetween(String login, LocalDate dataInicio,
-      LocalDate dataFim) {
+                                                  LocalDate dataFim) {
     Double soma = agendaRepository.getSomaAgendamentosBetween(login, dataInicio, dataFim);
     if (soma == null) {
       soma = 0.0;
@@ -147,11 +149,11 @@ public class AgendaServiceImpl implements AgendaService {
     List<Agenda> list = agendaRepository.getAgendasWithLoginAndStatus(login, status);
     return list;
   }
-  
+
   @Transactional
   public Agenda updateStatus(Long id, Integer status) {
     Agenda agenda = agendaRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException(
-        "Objeto não encontrado! ID: " + id + ", Tipo: " + Agenda.class.getName()));
+            "Objeto não encontrado! ID: " + id + ", Tipo: " + Agenda.class.getName()));
     agenda.setStatus(status);
     return agendaRepository.save(agenda);
   }

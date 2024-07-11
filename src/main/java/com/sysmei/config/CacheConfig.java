@@ -10,7 +10,6 @@ public class CacheConfig {
 
     @Bean
     public CacheManager cacheManager() {
-        return new ConcurrentMapCacheManager("agendas", "agenda", "agendaSoma");
+        return new ConcurrentMapCacheManager("agendas", "agenda", "agendaSoma", "pacientes", "paciente", "pacientesPage");
     }
 }
-

@@ -10,7 +10,7 @@
     </parent>
     <groupId>sysmei.com</groupId>
     <artifactId>sysmei</artifactId>
-    <version>0.0.3</version>
+    <version>0.0.4</version>
     <name>Sysmei - Sistema para MEI</name>
     <description>Sistema de agendamento para microempreendedor individual!</description>
     <properties>
